@@ -50,6 +50,32 @@ class FixtureTests(unittest.TestCase):
         self.assertIn(f"passed, {settled.count(chr(10) + 'test(')} checks", recorded,
                       "the handoff must not record a check count the suite never ran")
 
+    def test_the_export_control_is_connected_in_export_bearing_states(self):
+        for state in ("branch", "duplication"):
+            _, _, target = self.build(state, name=f"wired-{state}")
+            page, application = (target / "index.html").read_text(), (target / "app.js").read_text()
+            self.assertIn('id="export"', page)
+            self.assertIn('getElementById("export").addEventListener', application,
+                          f"{state} shows an export control the page never wires up")
+            self.assertIn("exportTasks(filterTasks(", application,
+                          f"{state} must export what the list is showing, or the branch change is invisible")
+
+    def test_identifiers_survive_removing_tasks(self):
+        if shutil.which("node") is None:
+            self.skipTest("node is unavailable in this environment")
+        _, _, target = self.build("interrupted")
+        # The resume case's own work removes tasks; ids must not then collide for a later add.
+        observed = subprocess.run(
+            ["node", "-e",
+             "const {add}=require('./app-under-test.js');"
+             "let t=add(add([],'a'),'b');"
+             "t=t.filter(task=>task.id!==t[0].id);"
+             "t=add(t,'c');"
+             "process.exit(new Set(t.map(x=>x.id)).size===t.length ? 0 : 1);"],
+            cwd=target, capture_output=True, text=True)
+        self.assertEqual(observed.returncode, 0,
+                         "adding after a removal reuses an id, so the case would hide an unrelated defect")
+
     def test_a_state_is_reproducible_byte_for_byte(self):
         _, _, first = self.build("documented", "first")
         _, _, second = self.build("documented", "second")

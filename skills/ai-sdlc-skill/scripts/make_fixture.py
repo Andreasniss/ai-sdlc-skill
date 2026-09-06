@@ -24,8 +24,15 @@ PAGE = '''<!doctype html>
 <!--EXTRA_CONTROLS--><script src="app.js"></script>
 '''
 
-EXPORT_BUTTON = '<button id="export">Export CSV</button>\n'
+EXPORT_BUTTON = ('<button id="export">Export CSV</button>\n'
+                 '<pre id="export-output"></pre>\n')
 CLEAR_BUTTON = '<button id="clear-completed">Clear completed</button>\n'
+
+EXPORT_WIRING = '''  document.getElementById("export").addEventListener("click", () => {
+    document.getElementById("export-output").textContent =
+      exportTasks(filterTasks(tasks, selection));
+  });
+'''
 
 STYLE = """body { font-family: system-ui, sans-serif; margin: 2rem; }
 li { cursor: pointer; }
@@ -43,8 +50,13 @@ function save(tasks) {
   localStorage.setItem(KEY, JSON.stringify(tasks));
 }
 
+function nextId(tasks) {
+  // Derived from the highest id in use, so removing tasks cannot make a later add collide.
+  return tasks.reduce((highest, task) => Math.max(highest, Number(task.id.split(":")[0])), -1) + 1;
+}
+
 function add(tasks, title) {
-  return tasks.concat([{ id: String(tasks.length) + ":" + title, title: title, done: false }]);
+  return tasks.concat([{ id: String(nextId(tasks)) + ":" + title, title: title, done: false }]);
 }
 
 function filterTasks(tasks, selection) {
@@ -298,9 +310,9 @@ def build(root, state):
     if state == "bug":
         application(root, complete_body=BUGGY_COMPLETE)
     elif state == "duplication":
-        application(root, export_body=DUPLICATED_EXPORT, controls=EXPORT_BUTTON)
+        application(root, export_body=DUPLICATED_EXPORT, controls=EXPORT_BUTTON, wiring=EXPORT_WIRING)
     elif state == "branch":
-        application(root, export_body=EXPORT, controls=EXPORT_BUTTON)
+        application(root, export_body=EXPORT, controls=EXPORT_BUTTON, wiring=EXPORT_WIRING)
         write(root, "ISSUE.md", EXPORT_REQUIREMENT)
     elif state == "undocumented":
         # The init case must be able to observe a repository that genuinely has no checks.
@@ -316,7 +328,7 @@ def build(root, state):
 
     if state == "branch":
         git(root, "checkout", "-q", "-b", "export-filtered")
-        application(root, export_body=BRANCH_EXPORT, controls=EXPORT_BUTTON)
+        application(root, export_body=BRANCH_EXPORT, controls=EXPORT_BUTTON, wiring=EXPORT_WIRING)
         git(root, "add", "-A")
         git(root, "commit", "-qm", "Export only open tasks")
     if state == "interrupted":

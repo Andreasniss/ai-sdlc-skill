@@ -57,7 +57,7 @@ python3 skills/ai-sdlc-skill/scripts/eval_report.py \
   --cases skills/ai-sdlc-skill/evals/cases.json --digest
 ```
 
-Put that value in the run as `cases_sha256`, then validate the completed run against the same case set. The digest covers both `cases.json` and `scripts/make_fixture.py`, because fixture-backed cases run repositories the builder writes: change either and an earlier run stops validating, since it says nothing about the states people get now.
+Put that value in the run as `cases_sha256`, then validate the completed run against the same case set. The digest covers `cases.json`, `scripts/make_fixture.py` and `scripts/render_cases.py`: the cases, the repositories the builder writes, and the renderer whose own prose is part of the instructions people read. Change any of them and an earlier run stops validating, because it says nothing about what an evaluator would face now.
 
 ```sh
 python3 skills/ai-sdlc-skill/scripts/eval_report.py \

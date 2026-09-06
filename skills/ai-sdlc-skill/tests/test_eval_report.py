@@ -169,26 +169,30 @@ class ReportTests(unittest.TestCase):
         self.assertEqual(code, 2)
         self.assertEqual(report["status"], "invalid")
 
-    def test_a_change_to_the_fixture_builder_invalidates_a_run(self):
-        # Fixture-backed cases run repositories the builder writes, so it is part of what was
-        # evaluated: a run recorded before it changed says nothing about the states people get now.
+    def test_a_change_to_the_builder_or_the_renderer_invalidates_a_run(self):
+        # A run's outcomes depend on the repositories the builder writes and the instructions
+        # the renderer produces, so a run recorded before either changed is not current.
         cases = self.write("cases.json", MINIMAL)
-        builder = self.root / "builder.py"
-        builder.write_text("STATES = {}\n")
-        recorded = json.loads(subprocess.run(
-            [sys.executable, str(SCRIPT), "--cases", str(cases), "--builder", str(builder), "--digest"],
-            capture_output=True, text=True).stdout)
-        run = self.run_for(cases)
-        run["cases_sha256"] = recorded["cases_sha256"]
-        against_same = subprocess.run(
-            [sys.executable, str(SCRIPT), "--cases", str(cases), "--builder", str(builder),
-             "--results", str(self.write("run.json", run))], capture_output=True, text=True)
-        self.assertEqual(against_same.returncode, 0)
-        builder.write_text("STATES = {}\n# a later change to how a starting state is built\n")
-        against_changed = subprocess.run(
-            [sys.executable, str(SCRIPT), "--cases", str(cases), "--builder", str(builder),
-             "--results", str(self.root / "run.json")], capture_output=True, text=True)
-        self.assertEqual(against_changed.returncode, 2, "the run must not survive a builder change")
+        for name, note in (("builder.py", "# a later change to how a starting state is built"),
+                           ("renderer.py", "# a later change to the instructions people read")):
+            source = self.root / name
+            source.write_text("CONTENT = 1\n")
+            flags = ["--builder", str(self.root / "builder.py"), "--renderer", str(self.root / "renderer.py")]
+            (self.root / "builder.py").write_text("CONTENT = 1\n")
+            (self.root / "renderer.py").write_text("CONTENT = 1\n")
+            recorded = json.loads(subprocess.run(
+                [sys.executable, str(SCRIPT), "--cases", str(cases), *flags, "--digest"],
+                capture_output=True, text=True).stdout)
+            run = self.run_for(cases)
+            run["cases_sha256"] = recorded["cases_sha256"]
+            results = self.write("run.json", run)
+            same = subprocess.run([sys.executable, str(SCRIPT), "--cases", str(cases), *flags,
+                                   "--results", str(results)], capture_output=True, text=True)
+            self.assertEqual(same.returncode, 0, f"an unchanged {name} must still validate")
+            source.write_text("CONTENT = 1\n" + note + "\n")
+            changed = subprocess.run([sys.executable, str(SCRIPT), "--cases", str(cases), *flags,
+                                      "--results", str(results)], capture_output=True, text=True)
+            self.assertEqual(changed.returncode, 2, f"the run must not survive a change to {name}")
 
     def test_the_report_keeps_the_evidence_it_requires(self):
         cases = self.write("cases.json", MINIMAL)

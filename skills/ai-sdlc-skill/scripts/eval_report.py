@@ -24,12 +24,14 @@ def load(path):
     return json.loads(raw), hashlib.sha256(raw).hexdigest()
 
 
-def evaluated_digest(case_digest, builder):
-    # Fixture-backed cases run repositories the builder writes, so it is part of what was
-    # evaluated. A change to either the cases or the builder invalidates an earlier run.
-    builder_digest = hashlib.sha256(Path(builder).read_bytes()).hexdigest()
-    combined = hashlib.sha256((case_digest + builder_digest).encode()).hexdigest()
-    return combined, {"cases": case_digest, "fixture_builder": builder_digest}
+def evaluated_digest(case_digest, builder, renderer):
+    # A run's outcomes depend on the cases, the repositories the builder writes, and the
+    # renderer's own prose in the instructions people read. A change to any invalidates it.
+    parts = {"cases": case_digest,
+             "fixture_builder": hashlib.sha256(Path(builder).read_bytes()).hexdigest(),
+             "case_renderer": hashlib.sha256(Path(renderer).read_bytes()).hexdigest()}
+    combined = hashlib.sha256("".join(parts[name] for name in sorted(parts)).encode()).hexdigest()
+    return combined, parts
 
 
 def cases(document):
@@ -111,13 +113,15 @@ def main(argv=None):
     parser.add_argument("--results")
     parser.add_argument("--builder", default=str(Path(__file__).resolve().parent / "make_fixture.py"),
                         help="the fixture builder whose output the cases run against")
+    parser.add_argument("--renderer", default=str(Path(__file__).resolve().parent / "render_cases.py"),
+                        help="the renderer that writes the instructions evaluators read")
     parser.add_argument("--digest", action="store_true",
                         help="print the case-set digest to record in a run, then exit")
     args = parser.parse_args(argv)
     try:
         case_document, case_digest = load(args.cases)
         defined, known_flags = cases(case_document)
-        digest, components = evaluated_digest(case_digest, args.builder)
+        digest, components = evaluated_digest(case_digest, args.builder, args.renderer)
         if args.digest:
             print(json.dumps({"cases_sha256": digest, "components": components,
                               "case_count": len(defined)}, indent=2))
