@@ -6,7 +6,7 @@ Independently built from selected [Anthropic AI-native SDLC guidance](https://cl
 
 ## Try it
 
-Read the [workflow](skills/ai-sdlc-skill/SKILL.md), then follow the [installation and migration guide](skills/ai-sdlc-skill/README.md). Pin a reviewed full commit SHA before installing. The guide includes a bounded documentation-change example and expected outcomes.
+Read the [workflow](skills/ai-sdlc-skill/SKILL.md), then follow the [installation guide for ChatGPT, Codex, Claude, and other assistants](INSTALLATION.md). Pin a reviewed full commit SHA before installing. The guide includes a bounded documentation-change example and expected outcomes.
 
 Run the deterministic helper tests from the repository root:
 
