@@ -14,9 +14,15 @@ npx skills@latest add Andreasniss/ai-sdlc-skill --skill ai-sdlc-skill
 
 The [Skills CLI](https://github.com/vercel-labs/skills) lets you choose your coding agents and installation scope. It needs Node.js and npm. To inspect the available skill first, append `--list`. See the [installation guide](INSTALLATION.md) for Codex, Claude, chat-only hosts, reviewed revision pinning, and updates. Local installation does not automatically install a skill into ChatGPT web or mobile.
 
-Then ask your agent:
+Then give your agent a concrete task. You can start with an empty directory, an undocumented codebase, or an existing project:
 
-> Use AI SDLC Skill to fix this documentation example. Read the repository rules, make the smallest useful change, and report the revision and checks actually run.
+> Use AI SDLC Skill to start a new local task tracker in this directory. Use plain HTML, CSS, and JavaScript with browser storage. Build a first version that can add and complete tasks and keeps them after reload. Add setup instructions and verify those behaviors.
+
+For an existing project without documentation:
+
+> Use AI SDLC Skill to initialize project guidance from this codebase. Inspect the code, configuration, and CI. Add a concise README and instructions for the agent I am using, with verified commands and clearly marked unknowns. Keep application behavior unchanged.
+
+See [common cases and example prompts](skills/ai-sdlc-skill/references/common-cases.md) for native `/init`, features, bugs, refactoring, review, and resuming work.
 
 Read the [workflow](skills/ai-sdlc-skill/SKILL.md) to see what the agent loads. The instructions need no Python dependency; the optional helper requires Python 3.10+, Git, and POSIX.
 
@@ -34,14 +40,6 @@ The familiar Plan, Design, Build, Test, Deploy, and Maintain responsibilities re
 The [7DayFocus implementation](https://github.com/Andreasniss/7dayfocus-ai-delivery-lab#the-anthropic-method-this-repository-demonstrates) makes this concrete with `intent.md`, `spec.md`, `plan.md`, and `evidence.md`. Those filenames are project conventions, not required skill output. Existing authorization persists; a new document does not create a new approval ceremony.
 
 The skill adapts selected Anthropic guidance. AWS AI-DLC adds broader lifecycle coordination, while OpenAI's harness engineering focuses on the agent's execution environment. These emphases overlap. The [companion article](https://andreasnissen.dev/writing/ai-native-software-delivery-methods/) explains when each helps; this skill does not implement the complete AWS method or reproduce either company's internal process.
-
-## Verify the optional helper
-
-```sh
-python3 -m unittest discover -s skills/ai-sdlc-skill/tests -v
-```
-
-Run this from a source checkout. It tests the helper, not the assistant's judgment.
 
 ## What it adds
 
@@ -65,6 +63,16 @@ These are deterministic and repository integration results. They do not establis
 The pilots retain their earlier reviewed bundles. For reproducible team adoption, record the full canonical source commit and review updates through a PR. Ordinary installations can use the CLI's explicit update command; the skill never updates itself on startup.
 
 ## Contribute and verify
+
+The optional Python helper runs a project's reviewed check commands against a clean Git commit and writes a report of the revision, configuration digest, and results. For example, it can record whether that project's build and tests passed for the candidate being reviewed. It does not decide which tests are sufficient or review the code. Ordinary agent use needs no helper setup: the agent can run the project's checks directly. See the [helper setup and limits](skills/ai-sdlc-skill/references/adoption.md) if you need that report.
+
+If you are changing or evaluating the helper itself, run this from a checkout of **this skill repository**:
+
+```sh
+python3 -m unittest discover -s skills/ai-sdlc-skill/tests -v
+```
+
+This runs the helper's own regression tests, including command failures and timeouts. It does not test your application, install the skill, or verify that an agent loaded it.
 
 Preserve the execution boundaries and add meaningful regression coverage when changing the helper. Follow [AGENTS.md](AGENTS.md) and the [publication privacy checks](PRIVACY.md). Keep application-specific check commands in the adopter repository.
 
