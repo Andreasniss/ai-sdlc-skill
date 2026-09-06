@@ -6,6 +6,8 @@ A reusable, experimental skill for carrying a software change from an agreed pro
 
 Independently built from selected [Anthropic AI-native SDLC guidance](https://claude.com/blog/the-ai-native-sdlc-playbook). This is the canonical source for the `ai-sdlc-skill` identifier, version 0.2.0.
 
+Read the [project article](https://andreasnissen.dev/projects/ai-sdlc-skill/) for three explanatory diagrams, a detailed file walkthrough, and the 7DayFocus worked example.
+
 ## Install
 
 From the project where you want to use the skill, run:
