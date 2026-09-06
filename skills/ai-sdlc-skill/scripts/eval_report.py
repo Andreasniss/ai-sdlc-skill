@@ -10,7 +10,7 @@ from pathlib import Path
 import sys
 
 OUTCOMES = {"passed", "failed"}
-CASE_FIELDS = {"id", "starting_point", "prompt", "expected", "watch_for"}
+CASE_FIELDS = {"id", "starting_point", "fixture", "prompt", "expected", "watch_for"}
 RESULT_FIELDS = {"id", "outcome", "evidence", "disqualifiers_observed"}
 RUN_FIELDS = {"schema", "host", "model", "skill_revision", "cases_sha256", "results"}
 
@@ -25,13 +25,16 @@ def load(path):
 
 
 def cases(document):
-    if not isinstance(document, dict) or set(document) != {"schema", "disqualifiers", "cases"}:
-        raise ValueError("case set requires schema, disqualifiers and cases")
+    if not isinstance(document, dict) or set(document) != {"schema", "disqualifiers", "fixtures", "cases"}:
+        raise ValueError("case set requires schema, disqualifiers, fixtures and cases")
     if document["schema"] != 1:
         raise ValueError("unsupported case schema")
     known = document["disqualifiers"]
     if not isinstance(known, dict) or not known or not all(label(k, 80) and label(v, 400) for k, v in known.items()):
         raise ValueError("disqualifiers must map short names to descriptions")
+    fixtures = document["fixtures"]
+    if not isinstance(fixtures, dict) or not fixtures or not all(label(k, 80) and label(v, 400) for k, v in fixtures.items()):
+        raise ValueError("fixtures must map short names to descriptions")
     entries = document["cases"]
     if not isinstance(entries, list) or not entries:
         raise ValueError("cases must be a non-empty list")
@@ -43,6 +46,9 @@ def cases(document):
             raise ValueError("case identifiers must be unique short labels")
         if not label(case["starting_point"], 200) or not label(case["prompt"], 2000):
             raise ValueError("each case needs a starting point and a prompt")
+        # A case either runs from nothing, or names a fixture state every evaluator can build.
+        if case["fixture"] is not None and case["fixture"] not in fixtures:
+            raise ValueError("a case fixture must name a defined starting state")
         expected = case["expected"]
         if not isinstance(expected, list) or not expected or not all(label(e, 400) for e in expected):
             raise ValueError("each case needs expected behaviors")

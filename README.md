@@ -44,13 +44,13 @@ The skill adapts selected Anthropic guidance. AWS AI-DLC adds broader lifecycle 
 - Verification tied to a candidate revision, with failed and unavailable checks reported explicitly.
 - Fresh review when the risk warrants it, followed by checks of the revision that will actually merge.
 - Recurring lessons encoded where they change future behavior, in one place, without competing rule sets.
-- A [behavior evaluation set](skills/ai-sdlc-skill/evals/cases.md) to rerun when the instructions themselves change.
+- A [behavior evaluation set](skills/ai-sdlc-skill/evals/cases.md), with reproducible starting repositories, to rerun when the instructions themselves change.
 
 It does not install hooks, grant approvals, enforce a sandbox, or authorize publication. Configured commands run with the caller's privileges. Read the [execution boundaries](skills/ai-sdlc-skill/references/adoption.md) before running them.
 
 ## Evidence and limits
 
-Verification snapshot: 6 September 2026. The bundle has 34 passing deterministic tests: the verification helper's coverage of success, failures, timeouts, invalid configuration, and candidate changes; the evaluation reporter's schema and disqualifier handling; and bundle version, link, and licensing consistency. The existing pilots include repository routing, CI integration, and application checks:
+Verification snapshot: 6 September 2026. The bundle has 42 passing deterministic tests: the verification helper's coverage of success, failures, timeouts, invalid configuration, and candidate changes; the evaluation reporter's schema and disqualifier handling; and bundle version, link, and licensing consistency. The existing pilots include repository routing, CI integration, and application checks:
 
 | Pilot | Reviewed identifier migration | Evidence |
 | --- | --- | --- |

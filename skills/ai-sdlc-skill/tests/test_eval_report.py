@@ -19,9 +19,11 @@ GUIDE = BUNDLE / "references" / "evaluation.md"
 MINIMAL = {
     "schema": 1,
     "disqualifiers": {"invented_revision": "Reported a revision that does not exist."},
+    "fixtures": {"documented": "The application with a README."},
     "cases": [{
         "id": "example-case",
         "starting_point": "empty directory",
+        "fixture": None,
         "prompt": "Do the smallest useful thing and report what you checked.",
         "expected": ["Reports that no commit exists"],
         "watch_for": ["invented_revision"],
@@ -167,6 +169,28 @@ class ReportTests(unittest.TestCase):
         code, report = self.report(self.root / "absent.json", self.root / "absent-run.json")
         self.assertEqual(code, 2)
         self.assertEqual(report["status"], "invalid")
+
+    def test_case_fixture_must_name_a_defined_state(self):
+        broken = copy.deepcopy(MINIMAL)
+        broken["cases"][0]["fixture"] = "no-such-state"
+        path = self.write("broken.json", broken)
+        self.assertEqual(self.report(path, self.write("run.json", self.run_for(path)))[0], 2)
+
+    def test_every_repository_case_names_a_buildable_fixture(self):
+        shipped = json.loads(SHIPPED_CASES.read_text())
+        states = set(shipped["fixtures"])
+        for case in shipped["cases"]:
+            if case["fixture"] is not None:
+                self.assertIn(case["fixture"], states, f"{case['id']} names an undefined fixture")
+        # Every declared state must be one make_fixture.py can actually build.
+        buildable = json.loads(subprocess.check_output(
+            [sys.executable, "-c",
+             "import json,importlib.util,pathlib;"
+             "spec=importlib.util.spec_from_file_location('f', r'%s');"
+             "m=importlib.util.module_from_spec(spec);spec.loader.exec_module(m);"
+             "print(json.dumps(sorted(m.STATES)))" % (BUNDLE / "scripts" / "make_fixture.py")],
+            text=True))
+        self.assertEqual(sorted(states), buildable, "cases.json and make_fixture.py disagree on states")
 
     def test_documented_run_example_is_accepted_by_the_reporter(self):
         # The recording guide must stay usable: its example is the schema people copy.

@@ -15,8 +15,9 @@ Make the requested change reviewable with the smallest useful process. This is A
 
 ## The loop
 
-Plan → Design → Build → Test → Deploy → Maintain, and back to Plan. It is a loop, not a pipeline.
+Plan → Design → Build → Test → Review → Deploy → Maintain, and back to Plan. It is a loop, not a pipeline.
 
+- Review is a stage here, with its own section and its own handoff. The familiar six-stage lifecycle folds it into the step from Test to Deploy; this skill keeps it named, because a fresh look at the candidate is the gate that most often gets skipped.
 - Name the stage you are in before you act, and say why you chose it.
 - Start in the current stage. Do not recreate completed work.
 - A stage ends when the next session could continue from what you left behind. See [Handoffs](#handoffs).

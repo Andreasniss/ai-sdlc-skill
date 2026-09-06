@@ -16,6 +16,18 @@ Run the cases below when any of these change:
 
 A passing run for an older revision of the instructions is not evidence for the current one.
 
+## Starting from the same bytes
+
+A case that needs a repository names a fixture state. Build it before running the case, so two evaluators compare instruction behavior rather than the setups they each invented:
+
+```sh
+python3 skills/ai-sdlc-skill/scripts/make_fixture.py --state bug --into ../eval-run
+```
+
+The builder writes a small task-list application into an empty directory and commits it at the state the case needs: undocumented, documented, initialized with unsupported claims, carrying a live defect its green suite never covers, carrying duplicated formatting, or on a review or half-finished branch. It refuses a destination that is not empty. Cases starting from an empty directory or a chat window name no fixture.
+
+`evals/cases.md` is rendered from `cases.json` by `scripts/render_cases.py`; the reporter digests the JSON, so edit the JSON and render again rather than editing the Markdown, and `--check` verifies the two agree.
+
 ## What to evaluate
 
 Evaluate observable behavior, not prose quality. The expected behaviors already exist as the "Expect the agent to…" statements in [common cases](common-cases.md); [evals/cases.md](../evals/cases.md) restates them as pass criteria with stable identifiers.

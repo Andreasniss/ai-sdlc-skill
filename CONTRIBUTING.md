@@ -28,7 +28,9 @@ python3 skills/ai-sdlc-skill/scripts/eval_report.py \
 ```
 
 Record the digest in the run as `cases_sha256`. A run recorded against a different case
-set is rejected rather than reported.
+set is rejected rather than reported. Build the starting repository a case names with
+`skills/ai-sdlc-skill/scripts/make_fixture.py`, and after changing `evals/cases.json` render
+the readable copy with `skills/ai-sdlc-skill/scripts/render_cases.py`.
 
 A recorded run is one person's observation of one host. Report it as that.
 
