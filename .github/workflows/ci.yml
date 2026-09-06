@@ -1,0 +1,17 @@
+name: Skill verification
+on:
+  pull_request:
+  push:
+    branches: [main]
+permissions:
+  contents: read
+jobs:
+  skill-tests:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+        with:
+          persist-credentials: false
+      - name: Run deterministic helper tests
+        run: python3 -m unittest discover -s skills/ai-sdlc-skill/tests -v
