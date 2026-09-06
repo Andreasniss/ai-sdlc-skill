@@ -24,6 +24,14 @@ def load(path):
     return json.loads(raw), hashlib.sha256(raw).hexdigest()
 
 
+def evaluated_digest(case_digest, builder):
+    # Fixture-backed cases run repositories the builder writes, so it is part of what was
+    # evaluated. A change to either the cases or the builder invalidates an earlier run.
+    builder_digest = hashlib.sha256(Path(builder).read_bytes()).hexdigest()
+    combined = hashlib.sha256((case_digest + builder_digest).encode()).hexdigest()
+    return combined, {"cases": case_digest, "fixture_builder": builder_digest}
+
+
 def cases(document):
     if not isinstance(document, dict) or set(document) != {"schema", "disqualifiers", "fixtures", "cases"}:
         raise ValueError("case set requires schema, disqualifiers, fixtures and cases")
@@ -101,14 +109,18 @@ def main(argv=None):
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--cases", required=True)
     parser.add_argument("--results")
+    parser.add_argument("--builder", default=str(Path(__file__).resolve().parent / "make_fixture.py"),
+                        help="the fixture builder whose output the cases run against")
     parser.add_argument("--digest", action="store_true",
                         help="print the case-set digest to record in a run, then exit")
     args = parser.parse_args(argv)
     try:
-        case_document, digest = load(args.cases)
+        case_document, case_digest = load(args.cases)
         defined, known_flags = cases(case_document)
+        digest, components = evaluated_digest(case_digest, args.builder)
         if args.digest:
-            print(json.dumps({"cases_sha256": digest, "case_count": len(defined)}, indent=2))
+            print(json.dumps({"cases_sha256": digest, "components": components,
+                              "case_count": len(defined)}, indent=2))
             return 0
         if not args.results:
             raise ValueError("a recorded run is required unless --digest is requested")
@@ -121,6 +133,7 @@ def main(argv=None):
     report = {
         "schema": 1,
         "cases_sha256": digest,
+        "components": components,
         "case_count": len(defined),
         "host": run_document["host"],
         "model": run_document["model"],
@@ -128,6 +141,7 @@ def main(argv=None):
         "reported_at": datetime.now(timezone.utc).isoformat(),
         "results": [
             {"id": name, "outcome": recorded[name]["outcome"],
+             "evidence": recorded[name]["evidence"],
              "disqualifiers_observed": sorted(recorded[name]["disqualifiers_observed"])}
             for name in sorted(recorded)
         ],

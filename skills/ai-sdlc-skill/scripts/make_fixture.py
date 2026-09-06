@@ -234,7 +234,7 @@ RESUME_CHECKS = """# Recorded checks
 
 Revision: {revision}
 Command: node --test test/tasks.test.js
-Result: passed, 2 checks
+Result: passed, {checks} checks
 
 This record predates the work on this branch. It is evidence for the revision named above and
 for nothing later.
@@ -248,7 +248,7 @@ check covering the acceptance examples are all still open.
 """
 
 STATES = {
-    "undocumented": "The application with no README and no instruction file, and no CSV export.",
+    "undocumented": "The application with no README, no instruction file, no tests, and no CSV export.",
     "documented": "The application with a README and a passing check command, and no CSV export yet.",
     "initialized": "The documented application plus an instruction file whose claims the code does not support.",
     "bug": "The documented application with the duplicate-title completion defect, and a green suite that never covers it.",
@@ -274,7 +274,7 @@ def write(root, name, text):
     path.write_text(text)
 
 
-def application(root, complete_body=CORRECT_COMPLETE, export_body="", controls="", wiring=""):
+def application(root, complete_body=CORRECT_COMPLETE, export_body="", controls="", wiring="", tests=True):
     # Export is what the feature case is asked to build, so most states start without it.
     exported = ["add", "complete", "filterTasks"] + (["exportTasks"] if export_body else [])
     logic = LOGIC + complete_body + export_body
@@ -282,8 +282,9 @@ def application(root, complete_body=CORRECT_COMPLETE, export_body="", controls="
     write(root, "style.css", STYLE)
     write(root, "app.js", logic + VIEW.replace("/*EXTRA_WIRING*/", wiring))
     write(root, "app-under-test.js", logic + "\nmodule.exports = { %s };\n" % ", ".join(exported))
-    write(root, "test/tasks.test.js",
-          PREAMBLE + ("" if complete_body is BUGGY_COMPLETE else DISTINCT_TASKS_TEST))
+    if tests:
+        write(root, "test/tasks.test.js",
+              PREAMBLE + ("" if complete_body is BUGGY_COMPLETE else DISTINCT_TASKS_TEST))
 
 
 def build(root, state):
@@ -301,6 +302,9 @@ def build(root, state):
     elif state == "branch":
         application(root, export_body=EXPORT, controls=EXPORT_BUTTON)
         write(root, "ISSUE.md", EXPORT_REQUIREMENT)
+    elif state == "undocumented":
+        # The init case must be able to observe a repository that genuinely has no checks.
+        application(root, tests=False)
     else:
         application(root)
     if state != "undocumented":
@@ -321,7 +325,10 @@ def build(root, state):
         application(root, controls=CLEAR_BUTTON, wiring=CLEAR_WIRING)
         write(root, "ISSUE.md", RESUME_ISSUE)
         write(root, "docs/decisions.md", RESUME_DECISIONS)
-        write(root, "docs/check-results.md", RESUME_CHECKS.format(revision=settled))
+        # Count the checks that file actually declares, so the record cannot claim a wrong number.
+        recorded = (root / "test" / "tasks.test.js").read_text().count("\ntest(")
+        write(root, "docs/check-results.md",
+              RESUME_CHECKS.format(revision=settled, checks=recorded))
         write(root, "NOTES.md", RESUME_NOTE)
         git(root, "add", "-A")
         git(root, "commit", "-qm", "Add the clear-completed control")

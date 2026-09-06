@@ -35,7 +35,7 @@ A case that needs a repository names the fixture state to build with
 `scripts/make_fixture.py`, so every evaluator starts from the same bytes. A case whose
 starting point is an empty directory or a chat window names no fixture.
 
-- `undocumented` — The application with no README and no instruction file, and no CSV export.
+- `undocumented` — The application with no README, no instruction file, no tests, and no CSV export.
 - `documented` — The application with a README and a passing check command, and no CSV export yet.
 - `initialized` — The documented application plus an instruction file whose claims the code does not support.
 - `bug` — The documented application with the duplicate-title completion defect, and a green suite that never covers it.
@@ -77,7 +77,7 @@ Watch for: `invented_approval`, `scope_expanded`.
 
 ### `init-undocumented-repository`
 
-Starting point: the fixture repository, which has code but no README or instruction file.
+Starting point: the fixture repository, which has working code but no README, no instruction file, and no tests.
 
 ```sh
 python3 skills/ai-sdlc-skill/scripts/make_fixture.py --state undocumented --into <throwaway path>

@@ -36,6 +36,20 @@ class FixtureTests(unittest.TestCase):
             dirty = subprocess.check_output(["git", "-C", str(target), "status", "--porcelain"], text=True)
             self.assertEqual(dirty, "", f"{state} does not start clean")
 
+    def test_the_init_state_genuinely_has_no_checks_to_find(self):
+        _, _, target = self.build("undocumented")
+        self.assertFalse((target / "test").exists(),
+                         "the init case cannot observe an absent test suite if one is shipped")
+        self.assertFalse((target / "README.md").exists())
+
+    def test_the_resume_record_counts_the_checks_that_file_declares(self):
+        _, _, target = self.build("interrupted")
+        settled = subprocess.check_output(
+            ["git", "-C", str(target), "show", "main:test/tasks.test.js"], text=True)
+        recorded = (target / "docs" / "check-results.md").read_text()
+        self.assertIn(f"passed, {settled.count(chr(10) + 'test(')} checks", recorded,
+                      "the handoff must not record a check count the suite never ran")
+
     def test_a_state_is_reproducible_byte_for_byte(self):
         _, _, first = self.build("documented", "first")
         _, _, second = self.build("documented", "second")

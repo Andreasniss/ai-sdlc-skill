@@ -2,7 +2,6 @@
 # SPDX-License-Identifier: Apache-2.0
 """Behavior tests for the evaluation reporter. No credentials, no network."""
 import copy
-import hashlib
 import json
 import re
 from pathlib import Path
@@ -55,7 +54,7 @@ class ReportTests(unittest.TestCase):
             "host": "example host",
             "model": "example model",
             "skill_revision": "0" * 40,
-            "cases_sha256": hashlib.sha256(Path(cases_path).read_bytes()).hexdigest(),
+            "cases_sha256": self.digest_of(cases_path)[1].get("cases_sha256", "0" * 64),
             "results": [{"id": case["id"], "outcome": "passed", "evidence": "observed", "disqualifiers_observed": []}
                         for case in cases_document["cases"]],
         }
@@ -170,6 +169,37 @@ class ReportTests(unittest.TestCase):
         self.assertEqual(code, 2)
         self.assertEqual(report["status"], "invalid")
 
+    def test_a_change_to_the_fixture_builder_invalidates_a_run(self):
+        # Fixture-backed cases run repositories the builder writes, so it is part of what was
+        # evaluated: a run recorded before it changed says nothing about the states people get now.
+        cases = self.write("cases.json", MINIMAL)
+        builder = self.root / "builder.py"
+        builder.write_text("STATES = {}\n")
+        recorded = json.loads(subprocess.run(
+            [sys.executable, str(SCRIPT), "--cases", str(cases), "--builder", str(builder), "--digest"],
+            capture_output=True, text=True).stdout)
+        run = self.run_for(cases)
+        run["cases_sha256"] = recorded["cases_sha256"]
+        against_same = subprocess.run(
+            [sys.executable, str(SCRIPT), "--cases", str(cases), "--builder", str(builder),
+             "--results", str(self.write("run.json", run))], capture_output=True, text=True)
+        self.assertEqual(against_same.returncode, 0)
+        builder.write_text("STATES = {}\n# a later change to how a starting state is built\n")
+        against_changed = subprocess.run(
+            [sys.executable, str(SCRIPT), "--cases", str(cases), "--builder", str(builder),
+             "--results", str(self.root / "run.json")], capture_output=True, text=True)
+        self.assertEqual(against_changed.returncode, 2, "the run must not survive a builder change")
+
+    def test_the_report_keeps_the_evidence_it_requires(self):
+        cases = self.write("cases.json", MINIMAL)
+        run = self.run_for(cases)
+        run["results"][0]["evidence"] = "named the stage, reported that no commit exists"
+        code, report = self.report(cases, self.write("run.json", run))
+        self.assertEqual(code, 0)
+        self.assertEqual(report["results"][0]["evidence"],
+                         "named the stage, reported that no commit exists",
+                         "a report claiming a pass must carry what was observed")
+
     def test_case_fixture_must_name_a_defined_state(self):
         broken = copy.deepcopy(MINIMAL)
         broken["cases"][0]["fixture"] = "no-such-state"
@@ -198,7 +228,7 @@ class ReportTests(unittest.TestCase):
         self.assertIsNotNone(block, "evaluation.md must show a run example")
         example = json.loads(block.group(1))
         shipped = json.loads(SHIPPED_CASES.read_text())
-        example["cases_sha256"] = hashlib.sha256(SHIPPED_CASES.read_bytes()).hexdigest()
+        example["cases_sha256"] = self.digest_of(SHIPPED_CASES)[1]["cases_sha256"]
         template = example["results"][0]
         example["results"] = [dict(template, id=case["id"]) for case in shipped["cases"]]
         code, report = self.report(SHIPPED_CASES, self.write("documented.json", example))
