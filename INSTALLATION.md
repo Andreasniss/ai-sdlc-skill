@@ -85,6 +85,17 @@ Choose a task that matches your starting point from [common cases and prompts](s
 
 For native invocation, prefix that task with the host's skill selector. Check three observable outcomes: the agent found the repository rules, kept the requested scope, and distinguished completed checks from missing evidence. Ask it which skill file it loaded.
 
+## Optional: recorded evaluation runs
+
+Changing `SKILL.md` or its references changes agent configuration. The bundle ships behavior cases in `skills/ai-sdlc-skill/evals/cases.md` for rechecking the obvious failure modes after such a change, and a reporter that validates a recorded run against them:
+
+```sh
+python3 skills/ai-sdlc-skill/scripts/eval_report.py \
+  --cases skills/ai-sdlc-skill/evals/cases.json --results run.json
+```
+
+You run the cases by hand against your own host and record what you observed. Read [evaluating this skill](skills/ai-sdlc-skill/references/evaluation.md) for the recording format and its limits: a run is one person's observation of one host, not authenticated evidence and not approval.
+
 ## Optional: recorded check reports
 
 You can use the skill without this helper. The agent normally runs your project's build, tests, or other checks directly and reports what happened. The helper is useful when you want a structured report tying reviewed commands and their results to a clean committed candidate. It does not select suitable checks or review your application.
@@ -106,6 +117,6 @@ That second path assumes the project keeps the bundle at `skills/ai-sdlc-skill/`
 
 ## What is verified
 
-As of 6 September 2026, 12 helper tests pass, and 7DayFocus and Runbook Relay have merged repository integrations with application checks and pinned source manifests. Installation instructions follow the linked product and installer documentation. File copying, installer discovery, and helper tests are separate from interactive compatibility or better decisions across assistants. Record the actual host and observed behavior when you try the first task.
+As of 6 September 2026, 53 bundle tests pass, and 7DayFocus and Runbook Relay have merged repository integrations with application checks and pinned source manifests. Those pilots were verified against an earlier reviewed bundle and have not been rerun for this revision. Installation instructions follow the linked product and installer documentation. File copying, installer discovery, and helper tests are separate from interactive compatibility or better decisions across assistants. Record the actual host and observed behavior when you try the first task.
 
 For pinned adopters, compare the chosen source revision and replace the reviewed bundle through the project's change process. Keep the full source commit and file digests. For ordinary CLI installations, use the explicit update command above after preserving edits. Never update automatically when an agent starts. See the [migration guide](skills/ai-sdlc-skill/README.md#migrate-from-evidence-sdlc) for the old identifier.

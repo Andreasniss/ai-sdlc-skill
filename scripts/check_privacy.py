@@ -1,4 +1,6 @@
 #!/usr/bin/env python3
+# SPDX-FileCopyrightText: 2026 Andreas Nissen
+# SPDX-License-Identifier: Apache-2.0
 """Check Git objects before public upload. No third-party dependencies; pre-push confirms destination refs."""
 import argparse
 import codecs

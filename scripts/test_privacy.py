@@ -1,3 +1,5 @@
+# SPDX-FileCopyrightText: 2026 Andreas Nissen
+# SPDX-License-Identifier: Apache-2.0
 """Behavioral checks for Git-index and outgoing-history privacy boundaries."""
 import hashlib
 import importlib.util
