@@ -1,4 +1,6 @@
 #!/usr/bin/env python3
+# SPDX-FileCopyrightText: 2026 Andreas Nissen
+# SPDX-License-Identifier: Apache-2.0
 """Run reviewed repository checks; report observations, never authorization."""
 import argparse
 from datetime import datetime, timezone

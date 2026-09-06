@@ -1,9 +1,13 @@
 ---
 name: ai-sdlc-skill
+license: Apache-2.0
 description: Carry a software change from intent through verification and review, preserving repository rules and evidence for the exact revision. Use for starting new software projects, initializing delivery guidance in undocumented repositories, implementing or reviewing changes, and adopting an AI-assisted delivery workflow.
 metadata:
   version: 0.2.0
 ---
+
+<!-- SPDX-FileCopyrightText: 2026 Andreas Nissen -->
+<!-- SPDX-License-Identifier: Apache-2.0 -->
 
 # AI SDLC Skill
 

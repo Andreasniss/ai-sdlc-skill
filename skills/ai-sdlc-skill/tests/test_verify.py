@@ -1,3 +1,5 @@
+# SPDX-FileCopyrightText: 2026 Andreas Nissen
+# SPDX-License-Identifier: Apache-2.0
 """Behavior tests use isolated repositories and no credentials or network."""
 import importlib.util
 import json

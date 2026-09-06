@@ -1,5 +1,7 @@
 # AI SDLC Skill
 
+[Built by Andreas Nissen](https://github.com/Andreasniss) · [andreasnissen.dev](https://andreasnissen.dev) · [Connect on LinkedIn](https://www.linkedin.com/in/andreasnissen) · [Source on GitHub](https://github.com/Andreasniss/ai-sdlc-skill) · [Apache-2.0](LICENSE)
+
 A reusable, experimental skill for carrying a software change from an agreed problem through design, implementation, verification, review, and learning. Each handoff keeps the decisions and evidence the next agent session needs; humans retain product, architecture, risk, and release judgment.
 
 Independently built from selected [Anthropic AI-native SDLC guidance](https://claude.com/blog/the-ai-native-sdlc-playbook). This is the canonical source for the `ai-sdlc-skill` identifier, version 0.2.0.
@@ -80,4 +82,8 @@ See [sources and provenance](skills/ai-sdlc-skill/references/sources.md) and the
 
 Andreas owns intent, architecture, requirements, evaluation criteria, risk, and release decisions and reviews merged changes. AI tools assisted implementation and documentation. Automated and AI-assisted checks are evidence, not human reviewers or accountability owners.
 
-A personal project by [Andreas Nissen](https://github.com/Andreasniss). Views are his own; no employer or Anthropic affiliation, endorsement, or certification is implied. [Portfolio](https://andreasnissen.dev) · [LinkedIn](https://www.linkedin.com/in/andreasnissen)
+A personal project by Andreas Nissen. Views are his own; no employer or Anthropic affiliation, endorsement, or certification is implied.
+
+## Reuse and contributions
+
+Copyright 2026 Andreas Nissen. Original project code and accompanying technical documentation are licensed under [Apache-2.0](LICENSE), except where separately indicated. See [NOTICE](NOTICE). Third-party dependencies and bundled material retain their own terms. Read [CONTRIBUTING.md](CONTRIBUTING.md) for setup, verification, and contribution expectations.
