@@ -59,7 +59,7 @@ class FixtureTests(unittest.TestCase):
         self.assertEqual(observed.returncode, 0, "the duplicate-title defect is not present")
 
     def test_review_and_resume_states_carry_their_branches(self):
-        for state, branch in (("branch", "export-filtered"), ("interrupted", "filter-tasks")):
+        for state, branch in (("branch", "export-filtered"), ("interrupted", "clear-completed")):
             _, _, target = self.build(state)
             head = subprocess.check_output(["git", "-C", str(target), "branch", "--show-current"], text=True)
             self.assertEqual(head.strip(), branch, f"{state} is not on {branch}")
@@ -75,13 +75,37 @@ class FixtureTests(unittest.TestCase):
 
     def test_the_feature_case_starts_before_the_behavior_it_asks_for(self):
         _, _, target = self.build("documented")
-        self.assertNotIn("exportTasks", (target / "app.js").read_text(),
+        application = (target / "app.js").read_text()
+        self.assertNotIn("exportTasks", application,
                          "the feature case must not start with CSV export already written")
         self.assertNotIn("Export CSV", (target / "index.html").read_text(),
                          "the page must not advertise an export the state does not have")
+        # The prompt says "the currently filtered tasks", so filtering and a UI must already exist.
+        for required in ("function render", "function filterTasks", "addEventListener"):
+            self.assertIn(required, application,
+                          f"the feature case assumes working behavior; {required} is missing")
         _, _, with_export = self.build("branch")
         self.assertIn("exportTasks", (with_export / "app.js").read_text(),
                       "the review case needs the export its branch changes")
+
+    def test_the_review_state_supplies_the_requirement_its_diff_is_judged_against(self):
+        _, _, target = self.build("branch")
+        requirement = (target / "ISSUE.md").read_text()
+        self.assertIn("currently showing", requirement,
+                      "the review case needs a stated requirement, not a bare diff")
+        diff = subprocess.check_output(["git", "-C", str(target), "diff", "main..HEAD"], text=True)
+        self.assertIn("task => !task.done", diff,
+                      "the branch must actually depart from the requirement, or there is nothing to find")
+
+    def test_the_resume_note_claims_only_what_the_branch_contains(self):
+        _, _, target = self.build("interrupted")
+        page, application = (target / "index.html").read_text(), (target / "app.js").read_text()
+        self.assertIn('id="clear-completed"', page, "the note claims a control that is not on the page")
+        self.assertIn('clear-completed").addEventListener', application,
+                      "the note claims a handler that is not attached")
+        self.assertIn("TODO", application, "the handler must still be unfinished")
+        self.assertNotIn("clearCompleted", (target / "app-under-test.js").read_text(),
+                         "the removal is the remaining work and must not be implemented")
 
     def test_the_resume_state_supplies_the_inputs_its_case_reads(self):
         _, _, target = self.build("interrupted")

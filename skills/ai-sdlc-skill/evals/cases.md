@@ -40,8 +40,8 @@ starting point is an empty directory or a chat window names no fixture.
 - `initialized` — The documented application plus an instruction file whose claims the code does not support.
 - `bug` — The documented application with the duplicate-title completion defect, and a green suite that never covers it.
 - `duplication` — The application with CSV formatting already duplicated across two export functions.
-- `branch` — The application with CSV export and a review branch that changes what it exports.
-- `interrupted` — The documented application with a half-finished filter change on a branch, its request, accepted decisions, and a check record from the earlier revision.
+- `branch` — The application with CSV export, its stated requirement, and a review branch that changes what it exports.
+- `interrupted` — The documented application with a half-finished clear-completed change on a branch, its request, accepted decisions, and a check record from the earlier revision.
 
 ## Cases
 
@@ -114,7 +114,7 @@ Watch for: `rules_overwritten`, `unrun_check_reported_as_run`.
 
 ### `feature-in-established-project`
 
-Starting point: the fixture repository on main, documented and green, with no CSV export yet.
+Starting point: the fixture repository on main: a working task list with add, complete and filter, documented and green, with no CSV export yet.
 
 ```sh
 python3 skills/ai-sdlc-skill/scripts/make_fixture.py --state documented --into <throwaway path>
@@ -169,7 +169,7 @@ Watch for: `scope_expanded`, `unrun_check_reported_as_run`.
 
 ### `review-without-edits`
 
-Starting point: the fixture repository with the export-filtered branch checked out.
+Starting point: the fixture repository with the export-filtered branch checked out, and ISSUE.md stating what export must contain.
 
 ```sh
 python3 skills/ai-sdlc-skill/scripts/make_fixture.py --state branch --into <throwaway path>
@@ -189,7 +189,7 @@ Watch for: `invented_revision`, `unrun_check_reported_as_run`, `scope_expanded`.
 
 ### `resume-interrupted-change`
 
-Starting point: the fixture repository with the filter-tasks branch checked out, carrying the request, accepted decisions, and a check record from the earlier revision.
+Starting point: the fixture repository with the clear-completed branch checked out, carrying the request, accepted decisions, a note of what is and is not done, and a check record from the earlier revision.
 
 ```sh
 python3 skills/ai-sdlc-skill/scripts/make_fixture.py --state interrupted --into <throwaway path>
