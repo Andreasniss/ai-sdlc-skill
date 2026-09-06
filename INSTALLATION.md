@@ -34,7 +34,7 @@ git log -1 --format=%H
 
 Record the reviewed SHA and use `git checkout --detach` with that SHA when reproducing it. From the adopter project's directory, pass the local checkout path to `npx skills@latest add` with `--skill ai-sdlc-skill`. This avoids treating a moving default branch as a fixed dependency. Keep the source identity with the adopter's change record.
 
-Read `skills/ai-sdlc-skill/SKILL.md` and `references/adoption.md`. Manual installation below assumes you are in the source checkout. Copy the complete folder, preserve existing installations, and select only one discovery location. The shell examples use POSIX; Windows users can use WSL or copy the folder manually. The optional helper requires POSIX, Python 3.10+, and Git.
+Read the [skill instructions](skills/ai-sdlc-skill/SKILL.md) and [adoption guide](skills/ai-sdlc-skill/references/adoption.md). Manual installation below assumes you are in the source checkout. Copy the complete folder, preserve existing installations, and select only one discovery location. The shell examples use POSIX; Windows users can use WSL or copy the folder manually. The optional helper requires POSIX, Python 3.10+, and Git.
 
 ## ChatGPT and Codex
 
