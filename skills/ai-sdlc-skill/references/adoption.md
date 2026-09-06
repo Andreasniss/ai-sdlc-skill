@@ -1,6 +1,6 @@
 # Adopt without replacing the repository
 
-Version 0.2.0. The skill is portable text with an optional Python 3.10+ helper for POSIX systems. Claude Code and Codex interactive installation behavior must be verified in the user's runtime; repository-level pilots do not establish identical runtime behavior.
+Version 0.3.0. The skill is portable text with an optional Python 3.10+ helper for POSIX systems. Claude Code and Codex interactive installation behavior must be verified in the user's runtime; repository-level pilots do not establish identical runtime behavior.
 
 1. Review the bundle at a pinned Git commit. Inspect existing skills, instructions, hooks, CI and licenses.
 2. Use the runtime's documented skill-installation mechanism, or copy the folder into its supported skill directory only if the destination does not exist. Do not overwrite a same-named skill or replace AGENTS.md, CLAUDE.md, hooks or permissions. Keep the source revision with the installation record. This bundle does not install hooks.

@@ -2,15 +2,15 @@
 
 An experimental delivery skill that preserves repository rules, scales planning to the change, and records verification for the candidate revision. Independently implemented by Andreas Nissen from selected [Anthropic AI-native SDLC guidance](https://claude.com/blog/the-ai-native-sdlc-playbook).
 
-Version 0.2.0. Skill identifier and invocation: `ai-sdlc-skill` and `$ai-sdlc-skill`.
+Version 0.3.0. Skill identifier and invocation: `ai-sdlc-skill` and `$ai-sdlc-skill`.
 
 ## Start here
 
-Read [SKILL.md](SKILL.md) for the workflow and [adoption.md](references/adoption.md) for execution limits. The bundle has no Python package dependencies. Its optional helper needs Python 3.10+, Git, and a POSIX environment. It does not install hooks, change permissions, or authorize releases.
+Read [SKILL.md](SKILL.md) for the workflow, [adoption.md](references/adoption.md) for execution limits, and [evaluation.md](references/evaluation.md) for rechecking behavior after the instructions change. The bundle has no Python package dependencies. Its optional helper needs Python 3.10+, Git, and a POSIX environment. It does not install hooks, change permissions, or authorize releases.
 
 Start with [common cases and example prompts](references/common-cases.md), including a new project and initialization of an undocumented codebase. The skill can guide these tasks without its optional helper.
 
-The helper runs a project's reviewed check commands and records results for a clean commit. To evaluate or change the helper itself, run `python3 -m unittest discover -s tests -v` from this bundle's directory. These are the runner's regression tests; they do not test your application or confirm that an agent loaded the skill.
+The helper runs a project's reviewed check commands and records results for a clean commit. To evaluate or change the bundle itself, run `python3 -m unittest discover -s tests -v` from this bundle's directory. These are deterministic regression tests for the helpers and for documentation consistency; they do not test your application or confirm that an agent loaded the skill. For the skill's own behavior after an instruction change, run the [evaluation cases](evals/cases.md) against your host and record the result.
 
 The initial [7DayFocus pilot](https://github.com/Andreasniss/7dayfocus-ai-delivery-lab/blob/main/docs/evidence-sdlc-pilot.md) and [Runbook Relay pilot](https://github.com/Andreasniss/runbook-relay-webmcp/blob/main/docs/evidence-sdlc-pilot.md) record repository integration and verification results. They do not establish faster delivery, better model judgment, or interactive runtime compatibility.
 

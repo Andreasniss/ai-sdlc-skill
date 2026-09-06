@@ -1,6 +1,6 @@
 # Common cases and example prompts
 
-Install and select the skill using your [host's supported route](https://github.com/Andreasniss/ai-sdlc-skill/blob/main/INSTALLATION.md), then give it a task in ordinary language. These examples describe intended behavior, not completed runtime evaluations. Replace the sample requirements with your own. The agent should apply existing authorization and ask only about material gaps that prevent responsible progress.
+Install and select the skill using your [host's supported route](https://github.com/Andreasniss/ai-sdlc-skill/blob/main/INSTALLATION.md), then give it a task in ordinary language. These examples describe intended behavior, not completed runtime evaluations. The same expectations are restated as checkable pass criteria in [evals/cases.md](../evals/cases.md); run those after changing the instructions, as [evaluation.md](evaluation.md) describes. Replace the sample requirements with your own. The agent should apply existing authorization and ask only about material gaps that prevent responsible progress.
 
 ## New project in an empty directory
 

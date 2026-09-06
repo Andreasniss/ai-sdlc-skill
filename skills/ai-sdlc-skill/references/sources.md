@@ -7,6 +7,6 @@ Reviewed 2026-09-06. Source pages may change.
 - [Claude Code skills](https://code.claude.com/docs/en/skills): skill packaging and progressive disclosure.
 - [Claude Code hooks](https://code.claude.com/docs/en/hooks): runtime hook configuration and limitations.
 
-The proportional quick path, optional Python report helper, clean-revision requirement, no-output-retention default, and repository-specific check configuration are this project's choices. No claim of Anthropic certification, endorsement, or full playbook implementation is made.
+The proportional quick path, optional Python report helper, clean-revision requirement, no-output-retention default, repository-specific check configuration, hand-run behavior evaluation set with recorded disqualifiers, and the single-location rule for encoding a recurring lesson are this project's choices. No claim of Anthropic certification, endorsement, or full playbook implementation is made.
 
 Original implementation by Andreas Nissen with AI assistance. Andreas owns intent, architecture, evaluation criteria, risk, and release decisions. No third-party community skill code or substantive text is incorporated. The bundle uses this repository's Apache-2.0 license; retain its license when redistributing.

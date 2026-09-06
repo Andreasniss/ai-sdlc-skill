@@ -13,5 +13,7 @@ jobs:
       - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
         with:
           persist-credentials: false
-      - name: Run deterministic helper tests
+      - name: Run deterministic bundle tests
         run: python3 -m unittest discover -s skills/ai-sdlc-skill/tests -v
+      - name: Check documentation, version and licensing consistency
+        run: python3 scripts/test_docs_consistency.py
