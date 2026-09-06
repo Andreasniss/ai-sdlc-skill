@@ -24,15 +24,16 @@ Preserve local edits and review changes before updating. An installer lockfile t
 
 ## Optional: pin a reviewed source revision
 
-For a team or reproducible pilot, clone the source, select a reviewed full commit SHA, and install from that checkout:
+For a team or reproducible pilot, replace `REVIEWED_FULL_COMMIT_SHA` below with the full 40-character SHA you reviewed. Check it out before the first installation:
 
 ```sh
 git clone https://github.com/Andreasniss/ai-sdlc-skill.git
 cd ai-sdlc-skill
-git log -1 --format=%H
+git checkout --detach REVIEWED_FULL_COMMIT_SHA
+git rev-parse HEAD
 ```
 
-Record the reviewed SHA and use `git checkout --detach` with that SHA when reproducing it. From the adopter project's directory, pass the local checkout path to `npx skills@latest add` with `--skill ai-sdlc-skill`. This avoids treating a moving default branch as a fixed dependency. Keep the source identity with the adopter's change record.
+Continue only after checkout succeeds and `git rev-parse HEAD` matches the selected SHA exactly. From the adopter project's directory, pass this local checkout's path to `npx skills@latest add` with `--skill ai-sdlc-skill`. Record that SHA with the adopter's change record and repeat the same checkout before reinstalling or updating a pinned copy. Never substitute the GitHub shorthand here: it selects the current default branch.
 
 Read the [skill instructions](skills/ai-sdlc-skill/SKILL.md) and [adoption guide](skills/ai-sdlc-skill/references/adoption.md). Manual installation below assumes you are in the source checkout. Copy the complete folder, preserve existing installations, and select only one discovery location. The shell examples use POSIX; Windows users can use WSL or copy the folder manually. The optional helper requires POSIX, Python 3.10+, and Git.
 
