@@ -36,7 +36,14 @@ These mirror the failure modes `SKILL.md` names explicitly. They are the cases w
 
 ## Recording a run
 
-Record one JSON file per run: the host, the model, the skill revision under test, and for each case the observed outcome and the evidence for it. `scripts/eval_report.py` validates that file against `evals/cases.json` and prints a report carrying the case-set digest.
+Record one JSON file per run: the host, the model, the skill revision under test, the digest of the case set you evaluated against, and for each case the observed outcome and the evidence for it. Take the digest before you start:
+
+```sh
+python3 skills/ai-sdlc-skill/scripts/eval_report.py \
+  --cases skills/ai-sdlc-skill/evals/cases.json --digest
+```
+
+Put that value in the run as `cases_sha256`, then validate the completed run against the same case set:
 
 ```sh
 python3 skills/ai-sdlc-skill/scripts/eval_report.py \
@@ -44,7 +51,9 @@ python3 skills/ai-sdlc-skill/scripts/eval_report.py \
   --results run.json
 ```
 
-Exit `0` means every case in the set was recorded as passing. Exit `1` means a case failed or a disqualifier was recorded. Exit `2` means the case set or the results file was invalid.
+The digest binds the run to what was actually evaluated. If the cases change afterwards, the recorded run no longer validates, because its outcomes say nothing about criteria nobody checked. That is the same rule the instructions apply to code: a passing result from an older candidate is not evidence for the current one.
+
+Exit `0` means every case in the set was recorded as passing. Exit `1` means a case failed or a disqualifier was recorded. Exit `2` means the case set was invalid, the run was incomplete, or the run was recorded against a different case set.
 
 The report is a structured record of what a person observed. It is not authenticated, not reproducible without the same host, and can be written by anyone. It is not approval, and it is not evidence that the skill was loaded.
 

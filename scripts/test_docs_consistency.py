@@ -13,6 +13,7 @@ BUNDLE = ROOT / "skills" / "ai-sdlc-skill"
 VERSION = re.compile(r"version (\d+\.\d+\.\d+)", re.I)
 COUNT = re.compile(r"(\d+) (?:bundle|helper) tests pass")
 SNAPSHOT = re.compile(r"(\d+) passing deterministic tests")
+REFERENCED = re.compile(r"(?:skills|scripts|\.github|\.githooks)/[A-Za-z0-9_./-]+\.(?:py|json|md|yml|yaml)")
 
 
 def declared_version():
@@ -55,15 +56,16 @@ class DocumentationConsistencyTests(unittest.TestCase):
         self.assertEqual((ROOT / "NOTICE").read_text(), (BUNDLE / "NOTICE").read_text(),
                          "the bundle NOTICE has drifted from the repository NOTICE")
 
-    def test_documented_commands_reference_files_that_exist(self):
-        referenced = {"skills/ai-sdlc-skill/scripts/verify.py", "skills/ai-sdlc-skill/scripts/eval_report.py",
-                      "skills/ai-sdlc-skill/evals/cases.json", "scripts/test_docs_consistency.py",
-                      "scripts/check_privacy.py"}
-        for name in ("README.md", "INSTALLATION.md", "CONTRIBUTING.md"):
+    def test_documented_paths_exist(self):
+        # Extract the paths each document actually names, so a typo fails instead of being skipped.
+        for name in ("README.md", "INSTALLATION.md", "CONTRIBUTING.md", "AGENTS.md", "PRIVACY.md", "SECURITY.md"):
             text = (ROOT / name).read_text()
-            for path in referenced:
-                if path in text:
-                    self.assertTrue((ROOT / path).is_file(), f"{name} documents missing {path}")
+            found = set(REFERENCED.findall(text))
+            for path in sorted(found):
+                self.assertTrue((ROOT / path).is_file(), f"{name} names missing {path}")
+        commands = (ROOT / "CONTRIBUTING.md").read_text()
+        for required in ("scripts/test_docs_consistency.py", "skills/ai-sdlc-skill/scripts/eval_report.py"):
+            self.assertIn(required, commands, f"CONTRIBUTING.md no longer documents {required}")
 
 
 if __name__ == "__main__":

@@ -12,7 +12,7 @@ import sys
 OUTCOMES = {"passed", "failed"}
 CASE_FIELDS = {"id", "starting_point", "prompt", "expected", "disqualifiers"}
 RESULT_FIELDS = {"id", "outcome", "evidence", "disqualifiers_observed"}
-RUN_FIELDS = {"schema", "host", "model", "skill_revision", "results"}
+RUN_FIELDS = {"schema", "host", "model", "skill_revision", "cases_sha256", "results"}
 
 
 def label(value, limit=200):
@@ -53,13 +53,16 @@ def cases(document):
     return collected, set(known)
 
 
-def run(document, expected_ids, known_flags):
+def run(document, expected_ids, known_flags, digest):
     if not isinstance(document, dict) or set(document) != RUN_FIELDS:
-        raise ValueError("run requires schema, host, model, skill_revision and results")
+        raise ValueError("run requires schema, host, model, skill_revision, cases_sha256 and results")
     if document["schema"] != 1:
         raise ValueError("unsupported run schema")
     if not all(label(document[field]) for field in ("host", "model", "skill_revision")):
         raise ValueError("run must record host, model and skill revision")
+    # A run is evidence only for the case set it was actually evaluated against.
+    if document["cases_sha256"] != digest:
+        raise ValueError("run was recorded against a different case set")
     results = document["results"]
     if not isinstance(results, list) or not results:
         raise ValueError("results must be a non-empty list")
@@ -90,15 +93,22 @@ def run(document, expected_ids, known_flags):
 def main(argv=None):
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--cases", required=True)
-    parser.add_argument("--results", required=True)
+    parser.add_argument("--results")
+    parser.add_argument("--digest", action="store_true",
+                        help="print the case-set digest to record in a run, then exit")
     args = parser.parse_args(argv)
     try:
         case_document, digest = load(args.cases)
         defined, known_flags = cases(case_document)
+        if args.digest:
+            print(json.dumps({"cases_sha256": digest, "case_count": len(defined)}, indent=2))
+            return 0
+        if not args.results:
+            raise ValueError("a recorded run is required unless --digest is requested")
         run_document, _ = load(args.results)
-        recorded = run(run_document, set(defined), known_flags)
+        recorded = run(run_document, set(defined), known_flags, digest)
     except (OSError, ValueError, TypeError):
-        print(json.dumps({"status": "invalid", "reason": "requires a valid case set and a complete recorded run"}))
+        print(json.dumps({"status": "invalid", "reason": "requires a valid case set and a complete run recorded against it"}))
         return 2
     failures = sorted(name for name, result in recorded.items() if result["outcome"] != "passed")
     report = {

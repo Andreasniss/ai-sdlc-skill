@@ -22,8 +22,13 @@ run, and validate it before claiming the instructions still behave:
 
 ```sh
 python3 skills/ai-sdlc-skill/scripts/eval_report.py \
+  --cases skills/ai-sdlc-skill/evals/cases.json --digest
+python3 skills/ai-sdlc-skill/scripts/eval_report.py \
   --cases skills/ai-sdlc-skill/evals/cases.json --results run.json
 ```
+
+Record the digest in the run as `cases_sha256`. A run recorded against a different case
+set is rejected rather than reported.
 
 A recorded run is one person's observation of one host. Report it as that.
 
