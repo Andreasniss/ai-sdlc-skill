@@ -50,7 +50,7 @@ It does not install hooks, grant approvals, enforce a sandbox, or authorize publ
 
 ## Evidence and limits
 
-Verification snapshot: 6 September 2026. The bundle has 33 passing deterministic tests: the verification helper's coverage of success, failures, timeouts, invalid configuration, and candidate changes; the evaluation reporter's schema and disqualifier handling; and bundle version, link, and licensing consistency. The existing pilots include repository routing, CI integration, and application checks:
+Verification snapshot: 6 September 2026. The bundle has 34 passing deterministic tests: the verification helper's coverage of success, failures, timeouts, invalid configuration, and candidate changes; the evaluation reporter's schema and disqualifier handling; and bundle version, link, and licensing consistency. The existing pilots include repository routing, CI integration, and application checks:
 
 | Pilot | Reviewed identifier migration | Evidence |
 | --- | --- | --- |

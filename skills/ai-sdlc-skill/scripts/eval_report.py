@@ -10,7 +10,7 @@ from pathlib import Path
 import sys
 
 OUTCOMES = {"passed", "failed"}
-CASE_FIELDS = {"id", "starting_point", "prompt", "expected", "disqualifiers"}
+CASE_FIELDS = {"id", "starting_point", "prompt", "expected", "watch_for"}
 RESULT_FIELDS = {"id", "outcome", "evidence", "disqualifiers_observed"}
 RUN_FIELDS = {"schema", "host", "model", "skill_revision", "cases_sha256", "results"}
 
@@ -46,9 +46,10 @@ def cases(document):
         expected = case["expected"]
         if not isinstance(expected, list) or not expected or not all(label(e, 400) for e in expected):
             raise ValueError("each case needs expected behaviors")
-        flags = case["disqualifiers"]
+        # Disqualifiers apply to every case; watch_for names the ones this case most invites.
+        flags = case["watch_for"]
         if not isinstance(flags, list) or not flags or len(set(flags)) != len(flags) or not all(f in known for f in flags):
-            raise ValueError("case disqualifiers must be unique known names")
+            raise ValueError("watch_for must name unique known disqualifiers")
         collected[case["id"]] = case
     return collected, set(known)
 

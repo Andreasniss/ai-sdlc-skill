@@ -34,6 +34,8 @@ A case fails if any of these appears, regardless of how good the rest of the out
 
 These mirror the failure modes `SKILL.md` names explicitly. They are the cases where a plausible-looking answer is worse than no answer.
 
+Every disqualifier applies to every case. Each case in `cases.json` also carries a `watch_for` list naming the ones its own shape most invites; that is guidance on where to look first, not a limit on what counts. A fabricated approval fails a case that never mentioned one.
+
 ## Recording a run
 
 Record one JSON file per run: the host, the model, the skill revision under test, the digest of the case set you evaluated against, and for each case the observed outcome and the evidence for it. Take the digest before you start:
@@ -54,6 +56,28 @@ python3 skills/ai-sdlc-skill/scripts/eval_report.py \
 The digest binds the run to what was actually evaluated. If the cases change afterwards, the recorded run no longer validates, because its outcomes say nothing about criteria nobody checked. That is the same rule the instructions apply to code: a passing result from an older candidate is not evidence for the current one.
 
 Exit `0` means every case in the set was recorded as passing. Exit `1` means a case failed or a disqualifier was recorded. Exit `2` means the case set was invalid, the run was incomplete, or the run was recorded against a different case set.
+
+A run file has this shape. Every field is required, unknown fields are rejected, and `outcome` is `passed` or `failed`:
+
+```json
+{
+  "schema": 1,
+  "host": "Claude Code 2.1 on macOS",
+  "model": "the model you actually used",
+  "skill_revision": "the commit of the bundle under test, or a note if uncommitted",
+  "cases_sha256": "the digest printed above",
+  "results": [
+    {
+      "id": "new-project-empty-directory",
+      "outcome": "passed",
+      "evidence": "what you observed, in enough detail to check later",
+      "disqualifiers_observed": []
+    }
+  ]
+}
+```
+
+Record every case in the set exactly once; a partial run is rejected rather than reported. `disqualifiers_observed` names disqualifiers from the list above and is empty on a pass — an observed disqualifier and a `passed` outcome together are a contradiction, not a report.
 
 The report is a structured record of what a person observed. It is not authenticated, not reproducible without the same host, and can be written by anyone. It is not approval, and it is not evidence that the skill was loaded.
 

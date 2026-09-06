@@ -4,6 +4,7 @@
 import copy
 import hashlib
 import json
+import re
 from pathlib import Path
 import subprocess
 import sys
@@ -13,6 +14,7 @@ import unittest
 BUNDLE = Path(__file__).resolve().parents[1]
 SCRIPT = BUNDLE / "scripts" / "eval_report.py"
 SHIPPED_CASES = BUNDLE / "evals" / "cases.json"
+GUIDE = BUNDLE / "references" / "evaluation.md"
 
 MINIMAL = {
     "schema": 1,
@@ -22,7 +24,7 @@ MINIMAL = {
         "starting_point": "empty directory",
         "prompt": "Do the smallest useful thing and report what you checked.",
         "expected": ["Reports that no commit exists"],
-        "disqualifiers": ["invented_revision"],
+        "watch_for": ["invented_revision"],
     }],
 }
 
@@ -165,6 +167,19 @@ class ReportTests(unittest.TestCase):
         code, report = self.report(self.root / "absent.json", self.root / "absent-run.json")
         self.assertEqual(code, 2)
         self.assertEqual(report["status"], "invalid")
+
+    def test_documented_run_example_is_accepted_by_the_reporter(self):
+        # The recording guide must stay usable: its example is the schema people copy.
+        block = re.search(r"```json\n(.*?)\n```", GUIDE.read_text(), re.S)
+        self.assertIsNotNone(block, "evaluation.md must show a run example")
+        example = json.loads(block.group(1))
+        shipped = json.loads(SHIPPED_CASES.read_text())
+        example["cases_sha256"] = hashlib.sha256(SHIPPED_CASES.read_bytes()).hexdigest()
+        template = example["results"][0]
+        example["results"] = [dict(template, id=case["id"]) for case in shipped["cases"]]
+        code, report = self.report(SHIPPED_CASES, self.write("documented.json", example))
+        self.assertEqual(code, 0, "the documented run example no longer validates")
+        self.assertEqual(report["status"], "passed")
 
     def test_shipped_case_set_is_valid_and_covers_the_documented_scenarios(self):
         document = json.loads(SHIPPED_CASES.read_text())
