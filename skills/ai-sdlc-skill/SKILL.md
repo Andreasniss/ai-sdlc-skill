@@ -53,6 +53,8 @@ Inspect the working directory and the applicable parent and repository instructi
 
 For copyable prompts and expected outcomes, see [common cases](references/common-cases.md).
 
+When initializing documentation, locating change records, or choosing an artifact home, read [artifact locations and repository documents](references/artifact-layout.md). Keep standing security, privacy, provenance, contribution, and architecture records in their canonical homes and reference them from the change. Add only documents the project needs. Store adopter change packets outside the installed skill folder; preserve an established layout and make the packet discoverable from the README and issue or PR.
+
 ## Plan — establish the contract
 
 - Read the applicable repository instructions, the active issue or PR, existing change records, verification commands, and the release boundary. Preserve their authority and layout.
@@ -124,7 +126,7 @@ Each stage leaves what the next session needs. Keep it inspectable and versioned
 | Review to release | Resolved findings and the revision that will actually merge | Whether to merge and deploy |
 | Operation to next change | Observed failure or new requirement | Whether another change is justified |
 
-Filenames such as `intent.md`, `spec.md`, and `plan.md` are project conventions, not required output of this skill. A small fix can carry its whole record in one issue or PR.
+Anthropic names `intent.md`, `spec.md`, and `plan.md`. This skill does not require those filenames in every repository. Where a material change needs a packet and no convention exists, the [layout guide](references/artifact-layout.md) recommends one folder per scoped change containing those three files and `evidence.md`, created as work progresses. Reuse the folder across sessions and review corrections. A small fix can carry its whole record in one issue or PR.
 
 ## Definition of done
 
@@ -137,6 +139,7 @@ Filenames such as `intent.md`, `spec.md`, and `plan.md` are project conventions,
 
 ## References
 
+- [Artifact locations and standing repository documents](references/artifact-layout.md)
 - [Common cases and example prompts](references/common-cases.md)
 - [Evaluating this skill after a change](references/evaluation.md)
 - [Adoption, execution boundaries, and the optional helper](references/adoption.md)
