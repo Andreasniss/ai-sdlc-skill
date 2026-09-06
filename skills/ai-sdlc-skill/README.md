@@ -16,9 +16,15 @@ python3 -m unittest discover -s tests -v
 
 The initial [7DayFocus pilot](https://github.com/Andreasniss/7dayfocus-ai-delivery-lab/blob/main/docs/evidence-sdlc-pilot.md) and [Runbook Relay pilot](https://github.com/Andreasniss/runbook-relay-webmcp/blob/main/docs/evidence-sdlc-pilot.md) record repository integration and verification results. They do not establish faster delivery, better model judgment, or interactive runtime compatibility.
 
-## Install a reviewed revision
+## Install
 
-Use the [cross-assistant installation guide](https://github.com/Andreasniss/ai-sdlc-skill/blob/main/INSTALLATION.md) for ChatGPT and Codex, Claude Code, Claude chat and Cowork, Copilot, and assistants without native skill support. It covers reviewed source revisions, installation scope, host-specific invocation, and a first task to check discovery and behavior.
+From your project directory:
+
+```sh
+npx skills@latest add Andreasniss/ai-sdlc-skill --skill ai-sdlc-skill
+```
+
+Choose your coding agent and scope in the installer. Use the [cross-assistant installation guide](https://github.com/Andreasniss/ai-sdlc-skill/blob/main/INSTALLATION.md) for reviewed revision pinning, manual installation, chat-only hosts, invocation, and a first task to check discovery and behavior.
 
 Copy the complete bundle. Native installation, manually supplied instructions, and verified execution are different states. Preserve existing repository rules and report required checks that the host cannot run.
 
@@ -30,7 +36,7 @@ The pilot repositories retain their original dated evidence records. Historical 
 
 ## Updates and the standalone repository
 
-The canonical source is [Andreasniss/ai-sdlc-skill](https://github.com/Andreasniss/ai-sdlc-skill). Pin a reviewed full source commit in each adopter, verify the bundle contents and tests, and update through a PR. Never silently download or replace skills on agent startup. Repository-specific `delivery-checks.json` files stay with their applications.
+The canonical source is [Andreasniss/ai-sdlc-skill](https://github.com/Andreasniss/ai-sdlc-skill). Ordinary CLI installations use `npx skills@latest update ai-sdlc-skill` after preserving local edits. For reproducible team adoption, pin a reviewed full source commit, verify the bundle and tests, and update through a PR. Never silently replace skills on agent startup. Repository-specific `delivery-checks.json` files stay with their applications.
 
 The initial implementation and rename were verified in the two pilot repositories before extraction. Only installation documentation changed during extraction. The pilot bundles remain earlier reviewed copies until explicitly updated; they are not automatic mirrors.
 

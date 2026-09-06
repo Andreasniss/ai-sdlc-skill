@@ -2,23 +2,44 @@
 
 Choose the assistant you already use. The same workflow can guide Codex, Claude, and other agents; installation and available tools belong to the host. This repository ships a skill folder, not a marketplace plugin or an MCP server.
 
-## Obtain a reviewed copy
+## Recommended: Skills CLI
 
-Clone the source and select a reviewed full commit SHA before copying files. This example selects the first published revision; choose a later reviewed commit when updating:
+From your project directory, with Node.js and npm installed:
+
+```sh
+npx skills@latest add Andreasniss/ai-sdlc-skill --skill ai-sdlc-skill
+```
+
+Choose your agents in the installer. Project scope is the default; add `--global` for a personal installation. Choose one installation route and scope so duplicate copies do not compete.
+
+| Task | Command |
+| --- | --- |
+| Discover without installing | `npx skills@latest add Andreasniss/ai-sdlc-skill --list` |
+| Target Codex | `npx skills@latest add Andreasniss/ai-sdlc-skill --skill ai-sdlc-skill --agent codex` |
+| Target Claude Code | `npx skills@latest add Andreasniss/ai-sdlc-skill --skill ai-sdlc-skill --agent claude-code` |
+| Inspect installed skills | `npx skills@latest list` |
+| Update this skill explicitly | `npx skills@latest update ai-sdlc-skill` |
+
+Preserve local edits and review changes before updating. An installer lockfile tracks installation state; it is not evidence that the agent used the skill or that its changes passed review. The [Skills CLI documentation](https://github.com/vercel-labs/skills) owns current options and supported agents. This is a common distribution tool, not a universal native installer for every chat product.
+
+## Optional: pin a reviewed source revision
+
+For a team or reproducible pilot, replace `REVIEWED_FULL_COMMIT_SHA` below with the full 40-character SHA you reviewed. Check it out before the first installation:
 
 ```sh
 git clone https://github.com/Andreasniss/ai-sdlc-skill.git
 cd ai-sdlc-skill
-git checkout --detach 793ca27f23b336e21b50972919146c9bfcacaba2
+git checkout --detach REVIEWED_FULL_COMMIT_SHA
+git rev-parse HEAD
 ```
 
-Read `skills/ai-sdlc-skill/SKILL.md` and its `references/adoption.md`. Keep the complete folder so supporting references and the optional helper remain available. Preserve local modifications before updating. Never overwrite an existing installation without reviewing it.
+Continue only after checkout succeeds and `git rev-parse HEAD` matches the selected SHA exactly. From the adopter project's directory, pass this local checkout's path to `npx skills@latest add` with `--skill ai-sdlc-skill`. Record that SHA with the adopter's change record and repeat the same checkout before reinstalling or updating a pinned copy. Never substitute the GitHub shorthand here: it selects the current default branch.
 
-The following shell commands run from that source checkout. They assume a POSIX shell; Windows users can use WSL or copy the folder manually. The optional helper requires POSIX, Python 3.10+, and Git. Instructions can still support planning on a host without those tools.
+Read the [skill instructions](skills/ai-sdlc-skill/SKILL.md) and [adoption guide](skills/ai-sdlc-skill/references/adoption.md). Manual installation below assumes you are in the source checkout. Copy the complete folder, preserve existing installations, and select only one discovery location. The shell examples use POSIX; Windows users can use WSL or copy the folder manually. The optional helper requires POSIX, Python 3.10+, and Git.
 
 ## ChatGPT and Codex
 
-For local Codex, use `$skill-installer` and give it the repository, `skills/ai-sdlc-skill` directory, and reviewed commit. Alternatively, install a personal copy:
+Use the CLI route above for local Codex. Its native `$skill-installer` is another option: provide the repository and `skills/ai-sdlc-skill` directory, plus a reviewed commit when pinning. For a manual personal copy:
 
 ```sh
 mkdir -p "$HOME/.agents/skills"
@@ -33,7 +54,7 @@ These paths and product distinctions follow [OpenAI's skill documentation](https
 
 ## Claude Code
 
-Install for your personal projects:
+Use the CLI route above, or manually install for your personal projects:
 
 ```sh
 mkdir -p "$HOME/.claude/skills"
@@ -80,6 +101,6 @@ That second path assumes the project keeps the bundle at `skills/ai-sdlc-skill/`
 
 ## What is verified
 
-As of 6 September 2026, 12 helper tests pass, and 7DayFocus and Runbook Relay have merged repository integrations with application checks and pinned source manifests. Installation instructions above are based on the linked product documentation. File copying and test execution do not establish interactive compatibility or better decisions across those assistants. Record the actual host and observed behavior when you try the first task.
+As of 6 September 2026, 12 helper tests pass, and 7DayFocus and Runbook Relay have merged repository integrations with application checks and pinned source manifests. Installation instructions follow the linked product and installer documentation. File copying, installer discovery, and helper tests are separate from interactive compatibility or better decisions across assistants. Record the actual host and observed behavior when you try the first task.
 
-For updates, compare the chosen source revision, preserve local edits, and replace only the reviewed bundle through your project's normal change process. Keep the full source commit and file digests with each adopter. Never update automatically when an agent starts. See the [migration guide](skills/ai-sdlc-skill/README.md#migrate-from-evidence-sdlc) for the old identifier.
+For pinned adopters, compare the chosen source revision and replace the reviewed bundle through the project's change process. Keep the full source commit and file digests. For ordinary CLI installations, use the explicit update command above after preserving edits. Never update automatically when an agent starts. See the [migration guide](skills/ai-sdlc-skill/README.md#migrate-from-evidence-sdlc) for the old identifier.

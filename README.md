@@ -1,20 +1,47 @@
 # AI SDLC Skill
 
-A reusable, experimental skill for taking a software change from intent through verification and review, while preserving the repository's rules and the user's authority.
+A reusable, experimental skill for carrying a software change from an agreed problem through design, implementation, verification, review, and learning. Each handoff keeps the decisions and evidence the next agent session needs; humans retain product, architecture, risk, and release judgment.
 
 Independently built from selected [Anthropic AI-native SDLC guidance](https://claude.com/blog/the-ai-native-sdlc-playbook). This is the canonical source for the `ai-sdlc-skill` identifier, version 0.2.0.
 
-## Try it
+## Install
 
-Read the [workflow](skills/ai-sdlc-skill/SKILL.md), then follow the [installation guide for ChatGPT, Codex, Claude, and other assistants](INSTALLATION.md). Pin a reviewed full commit SHA before installing. The guide includes a bounded documentation-change example and expected outcomes.
+From the project where you want to use the skill, run:
 
-Run the deterministic helper tests from the repository root:
+```sh
+npx skills@latest add Andreasniss/ai-sdlc-skill --skill ai-sdlc-skill
+```
+
+The [Skills CLI](https://github.com/vercel-labs/skills) lets you choose your coding agents and installation scope. It needs Node.js and npm. To inspect the available skill first, append `--list`. See the [installation guide](INSTALLATION.md) for Codex, Claude, chat-only hosts, reviewed revision pinning, and updates. Local installation does not automatically install a skill into ChatGPT web or mobile.
+
+Then ask your agent:
+
+> Use AI SDLC Skill to fix this documentation example. Read the repository rules, make the smallest useful change, and report the revision and checks actually run.
+
+Read the [workflow](skills/ai-sdlc-skill/SKILL.md) to see what the agent loads. The instructions need no Python dependency; the optional helper requires Python 3.10+, Git, and POSIX.
+
+## How the delivery method works
+
+The familiar Plan, Design, Build, Test, Deploy, and Maintain responsibilities remain. The change is the handoff: accepted intent, design decisions, a plan, code and tests, review findings, and incident lessons stay inspectable across sessions. A small fix can keep its record in one issue or PR. A larger change may need a linked artifact packet.
+
+| Handoff | What the next session receives | Judgment retained by the owner |
+| --- | --- | --- |
+| Problem to design | Outcome, constraints, and acceptance examples | What should change and why |
+| Design to implementation | Design choices, boundaries, and a testable plan | Architecture and acceptable risk |
+| Implementation to review | Candidate revision, diff, actual checks, and findings | Whether the evidence supports release |
+| Operation to next change | Observed failure or new requirement | Whether another change is justified |
+
+The [7DayFocus implementation](https://github.com/Andreasniss/7dayfocus-ai-delivery-lab#the-anthropic-method-this-repository-demonstrates) makes this concrete with `intent.md`, `spec.md`, `plan.md`, and `evidence.md`. Those filenames are project conventions, not required skill output. Existing authorization persists; a new document does not create a new approval ceremony.
+
+The skill adapts selected Anthropic guidance. AWS AI-DLC adds broader lifecycle coordination, while OpenAI's harness engineering focuses on the agent's execution environment. These emphases overlap. The [companion article](https://andreasnissen.dev/writing/ai-native-software-delivery-methods/) explains when each helps; this skill does not implement the complete AWS method or reproduce either company's internal process.
+
+## Verify the optional helper
 
 ```sh
 python3 -m unittest discover -s skills/ai-sdlc-skill/tests -v
 ```
 
-The optional verification helper requires Python 3.10+, Git, and POSIX. It has no third-party Python dependencies. The skill itself consists of instructions and supporting documentation.
+Run this from a source checkout. It tests the helper, not the assistant's judgment.
 
 ## What it adds
 
@@ -35,13 +62,13 @@ Verification snapshot: 6 September 2026. The helper has 12 passing deterministic
 
 These are deterministic and repository integration results. They do not establish better model judgment, faster delivery, production readiness, or interactive compatibility across agent runtimes. Repository cleanliness is sampled before and after each command; transient changes restored between observations are outside that check. Reports are observations, not authenticated approvals.
 
-The pilots retain their earlier reviewed bundles. Adopters should record the full canonical source commit and update through a reviewed PR, never download a new version automatically on startup.
+The pilots retain their earlier reviewed bundles. For reproducible team adoption, record the full canonical source commit and review updates through a PR. Ordinary installations can use the CLI's explicit update command; the skill never updates itself on startup.
 
 ## Contribute and verify
 
 Preserve the execution boundaries and add meaningful regression coverage when changing the helper. Follow [AGENTS.md](AGENTS.md) and the [publication privacy checks](PRIVACY.md). Keep application-specific check commands in the adopter repository.
 
-See [sources and provenance](skills/ai-sdlc-skill/references/sources.md) and the [Apache-2.0 license](LICENSE).
+See [sources and provenance](skills/ai-sdlc-skill/references/sources.md) and the [Apache-2.0 license](LICENSE). The installation-first README and self-contained packaging were inspired by [Matt Pocock's skills repository](https://github.com/mattpocock/skills).
 
 Andreas owns intent, architecture, requirements, evaluation criteria, risk, and release decisions and reviews merged changes. AI tools assisted implementation and documentation. Automated and AI-assisted checks are evidence, not human reviewers or accountability owners.
 
