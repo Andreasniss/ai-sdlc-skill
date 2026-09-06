@@ -18,18 +18,9 @@ The initial [7DayFocus pilot](https://github.com/Andreasniss/7dayfocus-ai-delive
 
 ## Install a reviewed revision
 
-Obtain a source checkout at a reviewed full commit SHA. From the source repository root, use one installation location for the runtime you are using. Do not install multiple copies in the same runtime's discovery paths.
+Use the [cross-assistant installation guide](https://github.com/Andreasniss/ai-sdlc-skill/blob/main/INSTALLATION.md) for ChatGPT and Codex, Claude Code, Claude chat and Cowork, Copilot, and assistants without native skill support. It covers reviewed source revisions, installation scope, host-specific invocation, and a first task to check discovery and behavior.
 
-For Claude Code personal skills:
-
-```sh
-mkdir -p "$HOME/.claude/skills"
-test ! -e "$HOME/.claude/skills/ai-sdlc-skill" && cp -R skills/ai-sdlc-skill "$HOME/.claude/skills/ai-sdlc-skill"
-```
-
-For Codex, use its current documented skill-installation flow with this bundle's directory. Repository instructions can also explicitly link `skills/ai-sdlc-skill/SKILL.md`, as both pilots do. Verify discovery in the actual runtime before claiming installation success. File copying alone does not test agent invocation.
-
-Try a bounded request: “Use $ai-sdlc-skill to correct this documentation example. Preserve existing repository rules, choose the appropriate planning depth, and report the checks you actually ran.” The expected outcome is a scoped change with evidence. Existing mandatory acceptance requirements still apply.
+Copy the complete bundle. Native installation, manually supplied instructions, and verified execution are different states. Preserve existing repository rules and report required checks that the host cannot run.
 
 ## Migrate from evidence-sdlc
 
