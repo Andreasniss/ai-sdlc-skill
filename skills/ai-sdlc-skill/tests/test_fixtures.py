@@ -3,6 +3,7 @@
 """Every evaluation case that needs a repository must start from the same bytes."""
 import json
 from pathlib import Path
+import shutil
 import subprocess
 import sys
 import tempfile
@@ -43,11 +44,12 @@ class FixtureTests(unittest.TestCase):
                              f"{name} differs between builds of the same state")
 
     def test_the_bug_state_hides_a_live_defect_behind_a_green_suite(self):
+        # A missing executable raises rather than returning a code, so check before running.
+        if shutil.which("node") is None:
+            self.skipTest("node is unavailable in this environment")
         _, _, target = self.build("bug")
         checks = subprocess.run(["node", "--test", "test/tasks.test.js"], cwd=target,
                                 capture_output=True, text=True)
-        if checks.returncode == 127 or "not found" in checks.stderr:
-            self.skipTest("node is unavailable in this environment")
         self.assertEqual(checks.returncode, 0, "the bug state must ship a passing suite")
         observed = subprocess.run(
             ["node", "-e", "const {add,complete}=require('./app-under-test.js');"
