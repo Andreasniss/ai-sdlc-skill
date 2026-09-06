@@ -79,13 +79,18 @@ For assistants without native support, keep a reviewed copy at `skills/ai-sdlc-s
 
 ## First task and verification
 
-Use a small, reversible change in a disposable branch:
+Choose a task that matches your starting point from [common cases and prompts](skills/ai-sdlc-skill/references/common-cases.md). For a quick trial in an existing repository, use a small, reversible change in a disposable branch:
 
 > Use AI SDLC Skill to correct this documentation example. First read the repository's rules and choose the appropriate planning depth. Make only the requested change. Report the revision, checks actually run, any findings, and remaining limits. If you cannot run a required check, say so.
 
 For native invocation, prefix that task with the host's skill selector. Check three observable outcomes: the agent found the repository rules, kept the requested scope, and distinguished completed checks from missing evidence. Ask it which skill file it loaded.
 
-To test the optional helper itself, from the source repository root run:
+## Optional: recorded check reports
+
+You can use the skill without this helper. The agent normally runs your project's build, tests, or other checks directly and reports what happened. The helper is useful when you want a structured report tying reviewed commands and their results to a clean committed candidate. It does not select suitable checks or review your application.
+
+The following command is for contributors or adopters evaluating the helper's implementation. Run it from a checkout of this skill repository; it tests the bundled Python runner, including its failure handling. It does not test your project or confirm skill discovery:
+
 
 ```sh
 python3 -m unittest discover -s skills/ai-sdlc-skill/tests -v

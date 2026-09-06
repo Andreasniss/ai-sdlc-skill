@@ -1,4 +1,4 @@
 interface:
   display_name: "AI SDLC Skill"
   short_description: "Deliver scoped changes with verifiable evidence"
-  default_prompt: "Use $ai-sdlc-skill to implement this change under the repository's existing rules and verify the candidate revision."
+  default_prompt: "Use $ai-sdlc-skill to handle this software task, identify whether to start, initialize, or continue the project, preserve applicable rules, and report the checks actually run."
