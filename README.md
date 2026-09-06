@@ -32,6 +32,16 @@ Read the [workflow](skills/ai-sdlc-skill/SKILL.md) to see what the agent loads. 
 
 ## How the delivery method works
 
+### Where are the artifacts?
+
+The reusable workflow is [`skills/ai-sdlc-skill/SKILL.md`](skills/ai-sdlc-skill/SKILL.md). The [file-location guide](skills/ai-sdlc-skill/references/artifact-layout.md) explains the recommended layout, repository-wide documents, and Anthropic's actual guidance. Your project's change records live in **your project**, outside the installed skill folder.
+
+For the concrete example, open [all four P04 files in 7DayFocus](https://github.com/Andreasniss/7dayfocus-ai-delivery-lab/tree/main/docs/ai-dlc/changes/P04-plan-my-week), or start at its [lifecycle index](https://github.com/Andreasniss/7dayfocus-ai-delivery-lab/blob/main/docs/ai-dlc/README.md). P04 is the Plan My Week feature's identifier. One material change uses one folder across sessions: `intent.md`, `spec.md`, `plan.md`, then observed `evidence.md`. This folder layout and fourth file are our convention; Anthropic suggests a shared `intent/` home and names the first three artifacts. Small changes can use an issue or PR instead.
+
+Standing files such as `SECURITY.md`, `PRIVACY.md`, `PROVENANCE.md`, and `CONTRIBUTING.md` describe the repository across changes. The guide explains when each helps and how to link them without copying them into every packet.
+
+### The lifecycle and handoffs
+
 The familiar Plan, Design, Build, Test, Deploy, and Maintain responsibilities remain, as a loop rather than a pipeline. The change is the handoff: accepted intent, design decisions, a plan, code and tests, review findings, and incident lessons stay inspectable across sessions. A small fix can keep its record in one issue or PR. A larger change may need a linked artifact packet.
 
 The stages are the familiar loop, and the [handoff contract in SKILL.md](skills/ai-sdlc-skill/SKILL.md#handoffs) is what the agent actually loads: what each stage must leave behind, and which judgment stays with the owner. It is stated once, there, rather than duplicated here.

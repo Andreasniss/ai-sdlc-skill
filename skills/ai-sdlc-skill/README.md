@@ -1,5 +1,7 @@
 # AI SDLC Skill
 
+For file locations, start with [artifact layout and repository documents](references/artifact-layout.md). This installed folder contains reusable instructions. A project's `intent.md`, `spec.md`, `plan.md`, and `evidence.md` belong in that project's change folder, outside this bundle. [Open the complete 7DayFocus example](https://github.com/Andreasniss/7dayfocus-ai-delivery-lab/tree/main/docs/ai-dlc/changes/P04-plan-my-week).
+
 An experimental delivery skill that preserves repository rules, scales planning to the change, and records verification for the candidate revision. Independently implemented by Andreas Nissen from selected [Anthropic AI-native SDLC guidance](https://claude.com/blog/the-ai-native-sdlc-playbook).
 
 Version 0.3.0. Skill identifier and invocation: `ai-sdlc-skill` and `$ai-sdlc-skill`.
