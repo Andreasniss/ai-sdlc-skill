@@ -8,11 +8,9 @@ Version 0.2.0. Skill identifier and invocation: `ai-sdlc-skill` and `$ai-sdlc-sk
 
 Read [SKILL.md](SKILL.md) for the workflow and [adoption.md](references/adoption.md) for execution limits. The bundle has no Python package dependencies. Its optional helper needs Python 3.10+, Git, and a POSIX environment. It does not install hooks, change permissions, or authorize releases.
 
-From this bundle's directory, run its deterministic tests:
+Start with [common cases and example prompts](references/common-cases.md), including a new project and initialization of an undocumented codebase. The skill can guide these tasks without its optional helper.
 
-```sh
-python3 -m unittest discover -s tests -v
-```
+The helper runs a project's reviewed check commands and records results for a clean commit. To evaluate or change the helper itself, run `python3 -m unittest discover -s tests -v` from this bundle's directory. These are the runner's regression tests; they do not test your application or confirm that an agent loaded the skill.
 
 The initial [7DayFocus pilot](https://github.com/Andreasniss/7dayfocus-ai-delivery-lab/blob/main/docs/evidence-sdlc-pilot.md) and [Runbook Relay pilot](https://github.com/Andreasniss/runbook-relay-webmcp/blob/main/docs/evidence-sdlc-pilot.md) record repository integration and verification results. They do not establish faster delivery, better model judgment, or interactive runtime compatibility.
 
