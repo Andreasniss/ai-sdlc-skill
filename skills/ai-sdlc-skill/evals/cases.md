@@ -35,13 +35,13 @@ A case that needs a repository names the fixture state to build with
 `scripts/make_fixture.py`, so every evaluator starts from the same bytes. A case whose
 starting point is an empty directory or a chat window names no fixture.
 
-- `undocumented` — The application with no README and no instruction file.
-- `documented` — The application with a README and a passing check command.
+- `undocumented` — The application with no README and no instruction file, and no CSV export.
+- `documented` — The application with a README and a passing check command, and no CSV export yet.
 - `initialized` — The documented application plus an instruction file whose claims the code does not support.
 - `bug` — The documented application with the duplicate-title completion defect, and a green suite that never covers it.
-- `duplication` — The documented application with CSV formatting duplicated in two functions.
-- `branch` — The documented application with a review branch that changes export behavior.
-- `interrupted` — The documented application with a half-finished filter change on a branch.
+- `duplication` — The application with CSV formatting already duplicated across two export functions.
+- `branch` — The application with CSV export and a review branch that changes what it exports.
+- `interrupted` — The documented application with a half-finished filter change on a branch, its request, accepted decisions, and a check record from the earlier revision.
 
 ## Cases
 
@@ -114,7 +114,7 @@ Watch for: `rules_overwritten`, `unrun_check_reported_as_run`.
 
 ### `feature-in-established-project`
 
-Starting point: the fixture repository on main, documented and green.
+Starting point: the fixture repository on main, documented and green, with no CSV export yet.
 
 ```sh
 python3 skills/ai-sdlc-skill/scripts/make_fixture.py --state documented --into <throwaway path>
@@ -189,7 +189,7 @@ Watch for: `invented_revision`, `unrun_check_reported_as_run`, `scope_expanded`.
 
 ### `resume-interrupted-change`
 
-Starting point: the fixture repository with the filter-tasks branch checked out.
+Starting point: the fixture repository with the filter-tasks branch checked out, carrying the request, accepted decisions, and a check record from the earlier revision.
 
 ```sh
 python3 skills/ai-sdlc-skill/scripts/make_fixture.py --state interrupted --into <throwaway path>

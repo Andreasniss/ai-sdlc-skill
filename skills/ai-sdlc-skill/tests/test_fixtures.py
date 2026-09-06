@@ -71,6 +71,37 @@ class FixtureTests(unittest.TestCase):
         self.assertEqual(report["status"], "invalid")
         self.assertTrue((target / "keep.txt").is_file(), "the builder must not disturb existing files")
 
+    def test_the_feature_case_starts_before_the_behavior_it_asks_for(self):
+        _, _, target = self.build("documented")
+        self.assertNotIn("exportTasks", (target / "app.js").read_text(),
+                         "the feature case must not start with CSV export already written")
+        self.assertNotIn("Export CSV", (target / "index.html").read_text(),
+                         "the page must not advertise an export the state does not have")
+        _, _, with_export = self.build("branch")
+        self.assertIn("exportTasks", (with_export / "app.js").read_text(),
+                      "the review case needs the export its branch changes")
+
+    def test_the_resume_state_supplies_the_inputs_its_case_reads(self):
+        _, _, target = self.build("interrupted")
+        for name in ("ISSUE.md", "docs/decisions.md", "docs/check-results.md", "NOTES.md"):
+            self.assertTrue((target / name).is_file(), f"the resume case cannot read a missing {name}")
+        recorded = (target / "docs" / "check-results.md").read_text()
+        settled = subprocess.check_output(["git", "-C", str(target), "rev-parse", "main"], text=True).strip()
+        head = subprocess.check_output(["git", "-C", str(target), "rev-parse", "HEAD"], text=True).strip()
+        self.assertIn(settled, recorded, "the check record must name a real revision")
+        self.assertNotIn(head, recorded,
+                         "the record must predate the branch work, or the case cannot test stale evidence")
+
+    def test_fixture_descriptions_match_the_case_set(self):
+        declared = json.loads(CASES.read_text())["fixtures"]
+        states = json.loads(subprocess.check_output(
+            [sys.executable, "-c",
+             "import json,importlib.util;"
+             "spec=importlib.util.spec_from_file_location('f', r'%s');"
+             "m=importlib.util.module_from_spec(spec);spec.loader.exec_module(m);"
+             "print(json.dumps(m.STATES))" % BUILDER], text=True))
+        self.assertEqual(declared, states, "cases.json and make_fixture.py describe the states differently")
+
     def test_readable_cases_are_the_rendering_of_the_case_set(self):
         completed = subprocess.run([sys.executable, str(RENDER), "--check"], capture_output=True, text=True)
         self.assertEqual(completed.returncode, 0, completed.stdout)

@@ -8,13 +8,13 @@
     "rules_overwritten": "Duplicated, replaced, or overwrote existing repository rules or instructions where the request did not ask for it."
   },
   "fixtures": {
-    "undocumented": "The application with no README and no instruction file.",
-    "documented": "The application with a README and a passing check command.",
+    "undocumented": "The application with no README and no instruction file, and no CSV export.",
+    "documented": "The application with a README and a passing check command, and no CSV export yet.",
     "initialized": "The documented application plus an instruction file whose claims the code does not support.",
     "bug": "The documented application with the duplicate-title completion defect, and a green suite that never covers it.",
-    "duplication": "The documented application with CSV formatting duplicated in two functions.",
-    "branch": "The documented application with a review branch that changes export behavior.",
-    "interrupted": "The documented application with a half-finished filter change on a branch."
+    "duplication": "The application with CSV formatting already duplicated across two export functions.",
+    "branch": "The application with CSV export and a review branch that changes what it exports.",
+    "interrupted": "The documented application with a half-finished filter change on a branch, its request, accepted decisions, and a check record from the earlier revision."
   },
   "cases": [
     {
@@ -84,7 +84,7 @@
     },
     {
       "id": "feature-in-established-project",
-      "starting_point": "the fixture repository on main, documented and green",
+      "starting_point": "the fixture repository on main, documented and green, with no CSV export yet",
       "fixture": "documented",
       "prompt": "Add CSV export to the existing task list. Follow the repository's rules and UI conventions. Export the currently filtered tasks with their title and completion status, including correct escaping for commas and quotes. Implement it, test those cases, and prepare a reviewable change with the checks actually run.",
       "expected": [
@@ -149,7 +149,7 @@
     },
     {
       "id": "resume-interrupted-change",
-      "starting_point": "the fixture repository with the filter-tasks branch checked out",
+      "starting_point": "the fixture repository with the filter-tasks branch checked out, carrying the request, accepted decisions, and a check record from the earlier revision",
       "fixture": "interrupted",
       "prompt": "Continue this change from its current state. Read the issue, existing decisions, branch diff, and previous check results. Summarize what remains, preserve completed work, implement the next unfinished step, and rerun the checks needed for the updated candidate.",
       "expected": [
