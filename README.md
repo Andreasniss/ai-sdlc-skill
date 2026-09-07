@@ -56,7 +56,7 @@ The skill names the loop **Plan → Design → Build → Test → Review → Dep
 
 | Your change | Useful starting record | What makes it sufficient |
 | --- | --- | --- |
-| Small, reversible fix | Existing issue and PR | Clear outcome, scope, relevant checks, and result |
+| Small, reversible fix | Existing issue or PR | Clear outcome, scope, relevant checks, and result |
 | Material feature or refactor | Existing specification and plan, or a linked change packet | Decisions, boundaries, acceptance examples, and current verification evidence |
 | Consequential data, access, or release change | Design plus the actual authorization record | Explicit risk and recovery decisions, with enforced controls where required |
 
@@ -94,7 +94,7 @@ They connect requirements and decisions to the code revision, actual checks, rev
 
 ### Do I need four Markdown files for every change?
 
-No. A small fix can keep its essential record in an issue and PR. For material work, preserve the existing layout; when none exists, the [artifact guide](skills/ai-sdlc-skill/references/artifact-layout.md) recommends one change folder containing intent, specification, plan, and evidence as work progresses. Keep standing security and architecture documents in their canonical homes and link them.
+No. A small fix can keep its essential record in an issue or PR. For material work, preserve the existing layout; when none exists, the [artifact guide](skills/ai-sdlc-skill/references/artifact-layout.md) recommends one change folder containing intent, specification, plan, and evidence as work progresses. Keep standing security and architecture documents in their canonical homes and link them.
 
 ### How do AGENTS.md and CLAUDE.md fit alongside the skill?
 
