@@ -1,6 +1,6 @@
 # AI SDLC Skill
 
-[Built by Andreas Nissen](https://github.com/Andreasniss) · [andreasnissen.dev](https://andreasnissen.dev) · [Connect on LinkedIn](https://www.linkedin.com/in/andreasnissen) · [Source on GitHub](https://github.com/Andreasniss/ai-sdlc-skill) · [Apache-2.0](LICENSE)
+[Built by Andreas Nissen](https://github.com/Andreasniss) · [AndreasNissen.dev](https://andreasnissen.dev) · [Connect on LinkedIn](https://www.linkedin.com/in/andreasnissen) · [Source on GitHub](https://github.com/Andreasniss/ai-sdlc-skill) · [Apache-2.0](LICENSE)
 
 A reusable, experimental skill that helps a coding agent turn a requested change into working code, relevant checks, and a reviewable delivery record. Start with the smallest process that preserves the decisions and evidence the next session needs. Humans retain product, architecture, risk, and release judgment.
 
@@ -146,12 +146,10 @@ Changing the instructions is changing agent configuration. When `SKILL.md` or it
 
 Preserve the execution boundaries and add meaningful regression coverage when changing the helper. Follow [AGENTS.md](AGENTS.md) and the [publication privacy checks](PRIVACY.md). Keep application-specific check commands in the adopter repository.
 
-See [sources and provenance](skills/ai-sdlc-skill/references/sources.md) and the [Apache-2.0 license](LICENSE). The installation-first README and self-contained packaging were inspired by [Matt Pocock's skills repository](https://github.com/mattpocock/skills).
+See [sources and provenance](skills/ai-sdlc-skill/references/sources.md). The installation-first README and self-contained packaging were inspired by [Matt Pocock's skills repository](https://github.com/mattpocock/skills).
 
 Andreas owns intent, architecture, requirements, evaluation criteria, risk, and release decisions and reviews merged changes. AI tools assisted implementation and documentation. Automated and AI-assisted checks are evidence, not human reviewers or accountability owners.
 
 A personal project by Andreas Nissen. Views are his own; no employer or Anthropic affiliation, endorsement, or certification is implied.
-
-## Reuse and contributions
 
 Copyright 2026 Andreas Nissen. Original project code and accompanying technical documentation are licensed under [Apache-2.0](LICENSE), except where separately indicated. See [NOTICE](NOTICE). Third-party dependencies and bundled material retain their own terms. Read [CONTRIBUTING.md](CONTRIBUTING.md) for setup, verification, and contribution expectations.
