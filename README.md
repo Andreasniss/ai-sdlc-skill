@@ -121,7 +121,7 @@ The articles explain the decisions and trade-offs. The installed [SKILL.md](skil
 
 ## Evidence and limits
 
-Verification snapshot: 6 September 2026. The bundle has 53 passing deterministic tests: the verification helper's coverage of success, failures, timeouts, invalid configuration, and candidate changes; the evaluation reporter's schema and disqualifier handling; and bundle version, link, and licensing consistency. The existing pilots include repository routing, CI integration, and application checks:
+Verification snapshot: 13 September 2026, for version 0.4.0 in [PR 15](https://github.com/Andreasniss/ai-sdlc-skill/pull/15). The bundle has 53 passing deterministic tests: the verification helper's coverage of success, failures, timeouts, invalid configuration, and candidate changes; the evaluation reporter's schema and disqualifier handling; and bundle version, link, and licensing consistency. The PR's checks identify the exact tested revision. A [partial matched behavior pilot](skills/ai-sdlc-skill/evals/feedback-pilot.md) found no regression in three cases and no demonstrated advantage over the 0.3.0 baseline; the remaining ten behavior cases were not rerun. The earlier repository integration pilots include routing, CI integration, and application checks:
 
 | Pilot | Reviewed identifier migration | Evidence |
 | --- | --- | --- |
