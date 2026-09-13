@@ -63,3 +63,13 @@ Expect the agent to pick up the current stage rather than restart planning. Olde
 > Use the attached AI SDLC Skill instructions to review this proposed design and diff against the attached requirements. Identify gaps and suggest verification steps. You do not have the repository or a terminal, so distinguish what the supplied material supports from what still needs execution.
 
 Expect a bounded document review, with no claims about unseen files, executed tests, or an installed skill. Attach the relevant skill files when the host cannot load them itself.
+
+## Feedback gaps and stalled work
+
+Before changing a browser interaction, identify both the logic check and the user path. A Node test may verify task filtering while leaving click wiring, rendering, and reload behavior unobserved. Run the available checks and state that boundary; do not call a mocked DOM an observed browser session.
+
+If an integration check repeatedly reports an unavailable service, rereading the failure or changing application code without a new hypothesis adds no evidence. Inspect the check and its prerequisites, run useful independent local checks, then report the missing service and the smallest authorized next action. Do not suppress the required check, change its expected result, or acquire access through another account.
+
+For a change that passes its direct checks, inspect the interactions it could disturb. Sorting the displayed task list can be correct while accidentally changing the saved order or CSV export. Check the existing contract before changing either. If hands-on use suggests a different ordering rule, that is a product decision to propose, not a test failure to redefine.
+
+Routine implementation can continue without repeated product approvals. Escalate when the intended behavior, architecture, scope, or acceptable risk needs a consequential new decision. A review request still ends with findings even if the skill describes later lifecycle stages.
