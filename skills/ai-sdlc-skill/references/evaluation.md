@@ -95,6 +95,12 @@ The report is a structured record of what a person observed. It is not authentic
 
 ## Honest limits
 
+The [September feedback pilot](../evals/feedback-pilot.md) records three matched baseline/candidate cases and their limits. It is a partial pilot, not a full evaluation-set pass.
+
+For a comparison, run the baseline and candidate instructions against the same case bytes, fixture state, host, model, tools, and task budget, in fresh sessions. Record those conditions and the actual instruction revision for each run. Evaluate observed behavior, including whether failures changed the next action, whether broader requirements survived a local fix, and whether unavailable execution was reported accurately. Do not grade a proposed check as an executed check.
+
+Keep elapsed time, retries, human interventions, and tool or token cost as separate observations when available; mark unavailable measurements as unavailable. One matched run is a regression signal, not a demonstrated productivity gain. A partial pilot must name its cases and omissions and must not be presented as a passing full run through the reporter.
+
 Anthropic's playbook suggests building an eval set from roughly 20 to 50 real tasks before trusting an agent configuration in an enterprise rollout. This bundle ships far fewer, and they are run by hand. A small hand-run set produces behavior signals and catches regressions in the obvious failure modes. It does not establish statistical validity, model quality, or that another host behaves the same way.
 
 Evaluation results and delivery outcomes are different measurements. For the second, see the pilot measures in [adoption.md](adoption.md).

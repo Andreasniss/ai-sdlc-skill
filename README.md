@@ -4,7 +4,7 @@
 
 A reusable, experimental skill that helps a coding agent turn a requested change into working code, relevant checks, and a reviewable delivery record. Start with the smallest process that preserves the decisions and evidence the next session needs. Humans retain product, architecture, risk, and release judgment.
 
-Independently built from selected [Anthropic AI-native SDLC guidance](https://claude.com/blog/the-ai-native-sdlc-playbook). This is the canonical source for the `ai-sdlc-skill` identifier, version 0.3.0.
+Independently built from selected [Anthropic AI-native SDLC guidance](https://claude.com/blog/the-ai-native-sdlc-playbook) and [Peter Steinberger's feedback-driven development practices](skills/ai-sdlc-skill/references/sources.md). This is the canonical source for the `ai-sdlc-skill` identifier, version 0.4.0.
 
 Read the [project article](https://andreasnissen.dev/projects/ai-sdlc-skill/) for three explanatory diagrams, a detailed file walkthrough, and the 7DayFocus worked example.
 
@@ -66,6 +66,8 @@ The skill adapts selected Anthropic guidance. AWS AI-DLC adds broader lifecycle 
 
 ## What it adds
 
+- A short build loop: make a useful slice, exercise it, inspect the result, repair the cause, and rerun affected checks. Establish observable feedback before expanding the implementation.
+- Explicit handling of missing execution capabilities, stalled retries, and interactions with existing behavior. Passing technical checks still leaves product usefulness to human judgment.
 - Planning proportional to the change, with existing repository requirements preserved.
 - Verification tied to a candidate revision, with failed and unavailable checks reported explicitly.
 - Fresh review when the risk warrants it, followed by checks of the revision that will actually merge.

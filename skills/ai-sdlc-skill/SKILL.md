@@ -3,7 +3,7 @@ name: ai-sdlc-skill
 license: Apache-2.0
 description: Carry a software change from intent through verification and review, preserving repository rules and evidence for the exact revision. Use for starting new software projects, initializing delivery guidance in undocumented repositories, implementing or reviewing changes, and adopting an AI-assisted delivery workflow.
 metadata:
-  version: 0.3.0
+  version: 0.4.0
 ---
 
 <!-- SPDX-FileCopyrightText: 2026 Andreas Nissen -->
@@ -11,17 +11,17 @@ metadata:
 
 # AI SDLC Skill
 
-Make the requested change reviewable with the smallest useful process. This is Andreas Nissen's independent adaptation of selected Anthropic guidance. Instructions guide decisions; they do not enforce permissions.
+Make the requested change reviewable with the smallest useful process. This independently authored skill adapts selected Anthropic lifecycle guidance and Peter Steinberger's feedback-driven working practices. Instructions guide decisions; they do not enforce permissions.
 
 ## The loop
 
 Plan → Design → Build → Test → Review → Deploy → Maintain, and back to Plan. It is a loop, not a pipeline.
 
-- Review is a stage here, with its own section and its own handoff. The familiar six-stage lifecycle folds it into the step from Test to Deploy; this skill keeps it named, because a fresh look at the candidate is the gate that most often gets skipped.
-- Name the stage you are in before you act, and say why you chose it.
+- Review is named separately so the next owner can distinguish implementation checks from a fresh assessment of the candidate.
+- Name the starting stage and chosen depth once, with the reason. Explain later changes of direction when they matter.
 - Start in the current stage. Do not recreate completed work.
 - A stage ends when the next session could continue from what you left behind. See [Handoffs](#handoffs).
-- Scale the ceremony to the change, not to the number of stages. A one-line fix still passes through every stage; most of them take a sentence.
+- Stages are responsibilities to consider, not mandatory actions. A review-only request ends with review; a local fix does not authorize deployment. Scale the record to the change without narrating every stage.
 
 ## Choose the starting point
 
@@ -74,15 +74,25 @@ When initializing documentation, locating change records, or choosing an artifac
 - Reuse the repository's existing artifacts rather than introducing parallel ones.
 - Keep proposed decisions distinct from accepted ones.
 - A Markdown status, an environment variable, or a self-written ledger is not authenticated approval.
+- Before a feature or dependency changes the design, inspect its interactions with existing behavior, data, and interfaces. Prefer the smallest useful slice; flag a consequential architectural choice rather than silently widening the product.
+
+## Establish useful feedback
+
+- Identify how to exercise the affected behavior, what result to observe, and the acceptance example that distinguishes success from failure. Reuse the repository's commands, tests, browser path, and diagnostics before adding tooling.
+- Check that the necessary capabilities are available. Missing browser, service, or data access limits what can be verified; it is not permission to bypass controls or install another system. Continue useful in-scope work and identify the remaining gap.
+- Keep correctness and product usefulness distinct. Tests check specified behavior; using the result can reveal a different product need. Seek owner judgment when that discovery materially changes the design, and keep existing acceptance criteria until an authorized change replaces them.
+
+For feedback gaps or stalled repairs, read the examples in [common cases](references/common-cases.md#feedback-gaps-and-stalled-work).
 
 ## Build and test
 
-- Make scoped changes and test the behavior at risk.
+- Build a small slice, exercise it, inspect the actual result, and repair within scope. Repeat affected checks as the candidate changes rather than deferring feedback until the feature is finished.
 - A bug reproduction should fail before the fix, for the intended reason.
 - Do not add tests that merely mirror implementation text.
 - Update the plan when material scope or assumptions change.
 - Run the repository's required checks. Missing tools, timeouts, skipped required checks, and failed agent runs are incomplete verification.
 - Never reuse a passing result from an older candidate. Never silently weaken a check to obtain green CI.
+- When attempts repeat without new evidence, stop that attempt pattern. Narrow the reproduction, inspect a different supported hypothesis, or report the blocker and the specific decision or capability needed. Honor the task's time and attempt limits; do not invent a universal retry quota or leave an unbounded repair loop running.
 - Read and respect the repository's existing hooks and permission configuration. When a control is genuinely required, propose it at the action boundary where it can be enforced, not as prose in a document. This skill installs none.
 
 For a committed candidate, the optional helper in `scripts/verify.py` runs a reviewed JSON list of argument arrays and prints a report containing the exact revision and configuration digest. Read [adoption.md](references/adoption.md) before configuring or running it. It does not review commands for safety, authenticate results, invoke reviewers, merge, or deploy. During iteration, run ordinary targeted checks directly; use the helper once the candidate is committed and clean.
