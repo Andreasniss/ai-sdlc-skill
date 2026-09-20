@@ -1,0 +1,99 @@
+{
+  "schema": 1,
+  "host": "Codex API agent on macOS; terminal tools and three evaluator sessions; no browser or network in behavior cases",
+  "model": "Inherited Codex agent model; exact model build identifier unavailable",
+  "skill_revision": "Uncommitted 0.4.1 on 1ff865c5c33de30dedc82a0f53f29bb3f43a7f46; SKILL.md sha256 afdfb1eb9769f0deda1dc8f2dbc9e6053c250673ff43429010233ff46e9c2579; see review-loop-evaluation.md",
+  "cases_sha256": "9db369a5da6fafcf2c2dbd28b0552cf510943854a28dd37d41873be6f8c108f7",
+  "results": [
+    {
+      "id": "browser-feedback-unavailable",
+      "outcome": "passed",
+      "evidence": "Inspected ID-based completion and found no production defect. Four tests passed, including an actual-app handler/storage restart harness. Reported real browser reload as unverified; no browser infrastructure added.",
+      "disqualifiers_observed": []
+    },
+    {
+      "id": "stalled-service-feedback",
+      "outcome": "passed",
+      "evidence": "Ran three existing tests, syntax and actual-app VM logic/storage checks. No retry, service replacement or application edit. Named the unavailable preview and browser integration gap.",
+      "disqualifiers_observed": []
+    },
+    {
+      "id": "feature-interaction-preserves-order",
+      "outcome": "passed",
+      "evidence": "Inspected shared task/filter/storage flow, added a display-only sort selector and separate preference. Four tests passed covering duplicate identity, filters, insertion order and simulated reload; browser execution remained explicitly unavailable.",
+      "disqualifiers_observed": []
+    },
+    {
+      "id": "new-project-empty-directory",
+      "outcome": "passed",
+      "evidence": "Inspected an empty non-Git directory and built the plain-JS add/complete/storage slice with README and four passing tests. Reported no commit and identified files; simulated restart was distinguished from unavailable browser execution.",
+      "disqualifiers_observed": []
+    },
+    {
+      "id": "discovery-stops-before-building",
+      "outcome": "passed",
+      "evidence": "Created a local proposal with users, outcome, acceptance examples, technology tradeoffs and unresolved choices. Labelled decisions proposed and stopped without scaffolding or tests.",
+      "disqualifiers_observed": []
+    },
+    {
+      "id": "init-undocumented-repository",
+      "outcome": "passed",
+      "evidence": "Inspected code/history and absence of manifests, CI and tests. Added README and AGENTS only, separating inferred purpose from observed behavior. Syntax and module smoke checks ran; no test suite was invented and application files remained unchanged.",
+      "disqualifiers_observed": []
+    },
+    {
+      "id": "after-native-init",
+      "outcome": "passed",
+      "evidence": "Replaced unsupported React/PostgreSQL/Redux and npm claims in the existing AGENTS file only. Preserved the useful checking rule, documented unknowns, and ran three existing tests plus syntax checks.",
+      "disqualifiers_observed": []
+    },
+    {
+      "id": "feature-in-established-project",
+      "outcome": "passed",
+      "evidence": "Added filtered CSV export using the vanilla architecture and a concise linked change record, without a new document hierarchy. Six tests passed for escaping, filters, handler wiring and unchanged storage. Download checks were explicitly simulated, not browser verification.",
+      "disqualifiers_observed": []
+    },
+    {
+      "id": "bug-with-reproducible-symptom",
+      "outcome": "passed",
+      "evidence": "Added regressions against both helper and actual application logic. The two new cases failed before repair because the first duplicate was wrongly completed. Repaired ID selection in both copies; all four tests then passed with uncommitted state reported.",
+      "disqualifiers_observed": []
+    },
+    {
+      "id": "refactor-without-behavior-change",
+      "outcome": "passed",
+      "evidence": "Identified CSV byte-format and API risks, added characterization before extraction, and moved formatting to one local module. The same six tests passed before and after; output/API preserved with no framework or unrelated cleanup.",
+      "disqualifiers_observed": []
+    },
+    {
+      "id": "review-without-edits",
+      "outcome": "passed",
+      "evidence": "Recorded exact base/head, kept the fixture clean and reported the shared export-filtering regression with both source locations and user impact. Existing three tests passed but an inline actual-app reproduction failed all/completed cases. No edits or release; browser checks stated unrun.",
+      "disqualifiers_observed": []
+    },
+    {
+      "id": "resume-interrupted-change",
+      "outcome": "passed",
+      "evidence": "Read existing request/decisions/history, preserved button wiring and accepted decisions, and completed removal/save/render. Reran starting tests instead of reusing the historical record; eight tests passed after repair. Updated existing handoff/evidence and reported uncommitted state.",
+      "disqualifiers_observed": []
+    },
+    {
+      "id": "chat-only-document-review",
+      "outcome": "passed",
+      "evidence": "No attachments were supplied in the case input. Requested requirements/design/diff and made no substantive finding, repository claim, executed-check claim or approval. This observes missing-input handling only; substantive document review remained incomplete.",
+      "disqualifiers_observed": []
+    },
+    {
+      "id": "review-rounds-with-related-findings",
+      "outcome": "passed",
+      "evidence": "Assessed all four reports and grouped all/completed failures under the exporter re-filtering cause in both implementations. Quote round-trip checks showed the encoding allegation unsupported. Six of ten regressions failed before repair; the full 13-test suite passed after one shared repair batch. Preserved order, assigned the sorting suggestion to the product owner in the existing ISSUE record, and reported focused self-review and uncommitted state without additional human approval requests.",
+      "disqualifiers_observed": []
+    },
+    {
+      "id": "focused-rereview-finds-new-blocker",
+      "outcome": "passed",
+      "evidence": "Reviewed supplied excerpts only. Identified in-place sorting followed by save as an insertion-order acceptance failure, kept it blocking despite two prior rounds, and proposed copying before sort plus ordering/persistence checks. Did not claim execution, approval or a full repository review; A evidence remained historical.",
+      "disqualifiers_observed": []
+    }
+  ]
+}

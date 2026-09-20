@@ -73,3 +73,13 @@ If an integration check repeatedly reports an unavailable service, rereading the
 For a change that passes its direct checks, inspect the interactions it could disturb. Sorting the displayed task list can be correct while accidentally changing the saved order or CSV export. Check the existing contract before changing either. If hands-on use suggests a different ordering rule, that is a product decision to propose, not a test failure to redefine.
 
 Routine implementation can continue without repeated product approvals. Escalate when the intended behavior, architecture, scope, or acceptable risk needs a consequential new decision. A review request still ends with findings even if the skill describes later lifecycle stages.
+
+## Review rounds that keep growing
+
+> Use AI SDLC Skill to address the current CSV export review. Earlier rounds repaired individual symptoms; this round contains related failures, an unsupported report, and a suggestion to change the ordering contract. Inspect the reports against the current code and requirements, make the necessary repair, and prepare the changed revision for review.
+
+Expect findings to be assessed together before another repair batch. Failures in sibling paths can share one cause; reproduce the relevant acceptance failures and check the shared repair. Explain dismissals and record a durable owner for valid nonblocking work. Do not treat an optional product suggestion as an accepted requirement or build a general validation system to resolve a bounded defect. If rounds keep growing, reconsider the scope or approach even when every round produces new evidence. Continue authorized repairs without asking for the same permission again.
+
+> Review the repaired revision and its affected interactions. The preceding review covered the rest of the change. Report any remaining blocker and which checks establish the current result.
+
+Expect focused review of the repair and the behavior it can disturb, with wider review when the evidence or repository rules justify it. Reusing earlier review context does not make earlier test results current. A newly introduced acceptance failure still blocks release, regardless of how many repair rounds have already happened. Keep unsupported reports, valid nonblocking follow-ups, and release blockers distinct.
