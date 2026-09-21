@@ -121,13 +121,15 @@ For a committed candidate, the optional helper in `scripts/verify.py` runs a rev
 - Do not supply the author's preferred conclusion. Keep reviewer write and external-action permissions restricted.
 - Different model names alone do not prove independent review.
 - Require findings to identify the failure, the evidence, the impact, and the affected location.
-- Resolve material findings, rerun affected checks, and obtain review of the changed revision.
+- Triage the available findings together against the accepted scope and concrete impact. Group related failures, inspect affected sibling paths, and batch repairs before requesting another review. Dismiss unsupported or duplicate reports with reasons; give valid nonblocking follow-ups a durable owner in the existing change record. A suggestion does not become a new requirement merely by appearing in review.
+- Resolve blocking findings and rerun affected checks. Re-review the repaired revision, including interactions affected by the repair; unchanged areas do not need a fresh full review unless new evidence, base movement, or repository rules warrant it. Earlier review can supply context, but passing checks for an older candidate are not current verification.
+- If review rounds keep adding scope or rediscovering a failure class, reassess the approach and acceptance criteria before another repair batch, even when each round adds evidence. Continue justified in-scope repairs, separate nonblocking work, or surface the consequential decision needed. A retry limit never makes a blocking defect releasable.
 - If no independent reviewer is available, disclose self-review. Do not invent a reviewer or an approval. AI review provides evidence, not human accountability.
 
 ## Deploy — deliver within the authorization you have
 
 - Check the current PR head, required CI, review threads, and existing merge authorization immediately before merging. Use the expected head revision where supported.
-- Stop on unresolved findings or failed required checks.
+- Stop on unresolved blocking findings or failed required checks. Acceptance failures, incorrect claims of verification, and material security or privacy defects block release; apply stricter repository rules where present. A reasoned dismissal or a recorded nonblocking follow-up is not an unresolved blocker.
 - Deployment authorization is separate unless the user's scope and repository rules already cover it. Use the host's protected release mechanism.
 - Report what changed, the exact tested revision, observed results, and remaining limits.
 - Before a first commit, report explicitly that no commit exists, and identify the files and checks observed. For dirty work, distinguish the base commit from the uncommitted changes.
