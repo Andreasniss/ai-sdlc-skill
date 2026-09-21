@@ -4,7 +4,7 @@
 
 A reusable, experimental skill that helps a coding agent turn a requested change into working code, relevant checks, and a reviewable delivery record. Start with the smallest process that preserves the decisions and evidence the next session needs. Humans retain product, architecture, risk, and release judgment.
 
-Independently built from selected [Anthropic AI-native SDLC guidance](https://claude.com/blog/the-ai-native-sdlc-playbook) and [Peter Steinberger's feedback-driven development practices](skills/ai-sdlc-skill/references/sources.md). This is the canonical source for the `ai-sdlc-skill` identifier, version 0.4.0.
+Independently built from selected [Anthropic AI-native SDLC guidance](https://claude.com/blog/the-ai-native-sdlc-playbook) and [Peter Steinberger's feedback-driven development practices](skills/ai-sdlc-skill/references/sources.md). This is the canonical source for the `ai-sdlc-skill` identifier, version 0.4.1.
 
 Read the [project article](https://andreasnissen.dev/projects/ai-sdlc-skill/) for three explanatory diagrams, a detailed file walkthrough, and the 7DayFocus worked example.
 
@@ -121,7 +121,9 @@ The articles explain the decisions and trade-offs. The installed [SKILL.md](skil
 
 ## Evidence and limits
 
-Verification snapshot: 13 September 2026, for version 0.4.0 in [PR 15](https://github.com/Andreasniss/ai-sdlc-skill/pull/15). The bundle has 53 passing deterministic tests: the verification helper's coverage of success, failures, timeouts, invalid configuration, and candidate changes; the evaluation reporter's schema and disqualifier handling; and bundle version, link, and licensing consistency. The PR's checks identify the exact tested revision. A [partial matched behavior pilot](skills/ai-sdlc-skill/evals/feedback-pilot.md) found no regression in three cases and no demonstrated advantage over the 0.3.0 baseline; the remaining ten behavior cases were not rerun. The earlier repository integration pilots include routing, CI integration, and application checks:
+Current observation, 20 September 2026: the [review-loop evaluation](skills/ai-sdlc-skill/evals/review-loop-evaluation.md) records all 15 behavior cases on one Codex host, with no observed disqualifier. The 53 deterministic bundle tests and five repository documentation checks also pass. Browser execution, cross-host compatibility and comparative productivity remain unverified. The record identifies the uncommitted instruction bytes under test and its case-set digest.
+
+Verification snapshot: 13 September 2026, for the 0.4.0 release in [PR 15](https://github.com/Andreasniss/ai-sdlc-skill/pull/15). The bundle has 53 passing deterministic tests: the verification helper's coverage of success, failures, timeouts, invalid configuration, and candidate changes; the evaluation reporter's schema and disqualifier handling; and bundle version, link, and licensing consistency. The PR's checks identify the exact tested revision. A [partial matched behavior pilot](skills/ai-sdlc-skill/evals/feedback-pilot.md) found no regression in three cases and no demonstrated advantage over the 0.3.0 baseline; the remaining ten behavior cases were not rerun. The earlier repository integration pilots include routing, CI integration, and application checks:
 
 | Pilot | Reviewed identifier migration | Evidence |
 | --- | --- | --- |
