@@ -121,7 +121,7 @@ The articles explain the decisions and trade-offs. The installed [SKILL.md](skil
 
 ## Evidence and limits
 
-Verification snapshot: 21 September 2026, for version 0.5.0. The bundle has 53 passing deterministic tests: the verification helper's coverage of success, failures, timeouts, invalid configuration, and candidate changes; the evaluation reporter's schema and disqualifier handling; and bundle version, link, and licensing consistency. The pull request's checks identify the exact tested revision.
+Verification snapshot: 21 September 2026, for version 0.5.0. The bundle has 53 passing deterministic tests: the verification helper's coverage of success, failures, timeouts, invalid configuration, and candidate changes; the evaluation reporter's schema and disqualifier handling; and bundle version, link, and licensing consistency. Its checks in [PR 17](https://github.com/Andreasniss/ai-sdlc-skill/pull/17) identify the exact tested revision.
 
 No behavior case has been run for 0.5.0. That release changes `SKILL.md` and two references, which is exactly the change that requires a rerun, and it adds a case, so the case set digest moved and the earlier recorded run no longer validates against it. The [partial matched behavior pilot](skills/ai-sdlc-skill/evals/feedback-pilot.md) remains a historical record of 0.3.0 against 0.4.0: it found no regression in three cases and no demonstrated advantage, and the remaining behavior cases were not rerun then either. Treat 0.5.0's instruction behavior as unevaluated until someone records a run.
 
