@@ -59,9 +59,11 @@ When initializing documentation, locating change records, or choosing an artifac
 
 A project usually has an issue tracker, a repository, and systems that execute checks and reviews. Each owns different facts. Decide with three questions, in order:
 
-1. Does it change as the work proceeds, and do people need to see the change? The tracker owns it: intake, status, priority, assignment, discussion, and acceptance.
+1. Is it coordination metadata about the work rather than the substance of it? The tracker owns it: intake, status, priority, assignment, discussion, and acceptance.
 2. Did an execution system produce it? That system owns it: a CI run, a review submission, a merge. Everything else cites it by an identity that cannot drift, such as a revision or a run.
 3. Does it need to be reviewed as a diff beside the code, and to outlive the current tooling? The repository owns it: intent, specification, plan, accepted constraints, and the evidence record.
+
+Whether an artifact changes is not the test. A plan is revised throughout implementation and still belongs to the repository, because it is the substance of the work and has to be reviewed as a diff. Only coordination metadata about the work sorts to the tracker at the first question.
 
 **Reference, never restate.** One home per fact. A tracker status copied into Markdown is a claim that goes stale silently; a decision left only in a tracker comment disappears when the tracker does.
 
