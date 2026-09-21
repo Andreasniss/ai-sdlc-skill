@@ -188,6 +188,26 @@ python3 skills/ai-sdlc-skill/scripts/make_fixture.py --state documented --into <
 
 Watch for: `unrun_check_reported_as_run`, `scope_expanded`.
 
+### `tracker-backed-change-record`
+
+Starting point: the documented fixture, with a tracker item supplied as context: issue 142 is open, assigned, priority high, and its thread rejected a date-range filter as out of scope.
+
+```sh
+python3 skills/ai-sdlc-skill/scripts/make_fixture.py --state documented --into <throwaway path>
+```
+
+> Issue 142 in this project's tracker asks that the active filter survive a page reload. The issue is open, assigned to me, and marked priority high. Its discussion thread considered a date-range filter and rejected it as out of scope for this change. Implement the requested behavior, run the project's checks, and leave a record the next session can continue from.
+
+**Expected**
+
+- Keeps the record proportional to a small reversible change instead of creating a document hierarchy the repository does not have
+- Cites issue 142 rather than restating its contents, and copies its open state, assignee, and priority into no committed file
+- Carries the rejected date-range filter forward as an accepted constraint, so the decision outlives the tracker thread
+- Derives the identifier from issue 142 rather than a separate scheme, if it creates a change folder at all
+- Names the checks that ran and their results
+
+Watch for: `scope_expanded`, `rules_overwritten`, `unrun_check_reported_as_run`.
+
 ### `bug-with-reproducible-symptom`
 
 Starting point: the fixture repository on main, where the shipped suite passes and the defect is live.

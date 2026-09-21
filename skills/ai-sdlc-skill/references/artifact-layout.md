@@ -5,6 +5,21 @@
 
 Use this reference when initializing repository documentation, locating a change's records, or choosing where new artifacts belong. Preserve an established layout and link to its canonical records. Do not relocate files merely to match this example.
 
+## Which system owns which artifact
+
+`SKILL.md` gives the three-question test. This is what it resolves to.
+
+| Artifact | Owner | Why |
+| --- | --- | --- |
+| Intake, status, priority, assignment, acceptance | The issue tracker | Mutable coordination state that people watch, and that stays queryable across many changes |
+| Intent, specification, plan, accepted constraints | The repository | Has to be reviewable as a diff beside the code, and to survive a tracker migration |
+| Review threads, check results, the merge event | The system that produced them | It is the authority for its own result; a copy elsewhere is a claim that can go stale |
+| The evidence record | The repository, citing revision, command, result, and link | Binds the durable record to results it does not own |
+
+Two failure modes follow from getting this wrong. Restating tracker status inside committed Markdown produces a second answer to a question the tracker already answers, and the copy is wrong from the first status change nobody mirrored. Leaving intent, an accepted constraint, or a rejected alternative only in tracker comments loses the reasoning when the project changes tools, or simply when the thread grows past what anyone rereads.
+
+This is about which system is the record, whether the artifact needs diff review, and whether it must outlive the tooling. It is not about which tracker a project uses. GitHub Issues, Linear, GitLab, and Jira hold different fields and enforce different workflows, and the same three questions apply to each.
+
 ## Two homes: reusable skill and project records
 
 The reusable instructions in this repository live at `skills/ai-sdlc-skill/SKILL.md`; this guide is `skills/ai-sdlc-skill/references/artifact-layout.md`. Runtime installation may place the bundle elsewhere, as explained in the [installation guide](https://github.com/Andreasniss/ai-sdlc-skill/blob/main/INSTALLATION.md).
@@ -14,6 +29,8 @@ The adopting project's intent, specification, plan, and evidence belong in that 
 ## One folder per scoped change, developed over time
 
 When material work needs a packet and the repository has no existing convention, use `docs/ai-dlc/changes/<change-id>-<short-name>/`. The identifier groups one feature, correction, or other accepted scope across its planning, implementation, review, and release sessions. It is not a new folder per prompt, agent, test run, or review correction.
+
+Where a tracker already owns the work item, take the identifier from it for a new packet, for example `142-csv-export` for issue 142. A separate scheme is a second name for one thing, and someone then has to maintain the mapping. Mint a local identifier only when no tracker item owns the work. Existing packets keep the identifiers they were published under; renaming them breaks links that other repositories and published pages already point at.
 
 | File in the change folder | Create or update when | Content |
 | --- | --- | --- |
