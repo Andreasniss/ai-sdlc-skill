@@ -4,7 +4,7 @@
 
 A reusable, experimental skill that helps a coding agent turn a requested change into working code, relevant checks, and a reviewable delivery record. Start with the smallest process that preserves the decisions and evidence the next session needs. Humans retain product, architecture, risk, and release judgment.
 
-Independently built from selected [Anthropic AI-native SDLC guidance](https://claude.com/blog/the-ai-native-sdlc-playbook) and [Peter Steinberger's feedback-driven development practices](skills/ai-sdlc-skill/references/sources.md). This is the canonical source for the `ai-sdlc-skill` identifier, version 0.4.1.
+Independently built from selected [Anthropic AI-native SDLC guidance](https://claude.com/blog/the-ai-native-sdlc-playbook) and [Peter Steinberger's feedback-driven development practices](skills/ai-sdlc-skill/references/sources.md). This is the canonical source for the `ai-sdlc-skill` identifier, version 0.5.0.
 
 Read the [project article](https://andreasnissen.dev/projects/ai-sdlc-skill/) for three explanatory diagrams, a detailed file walkthrough, and the 7DayFocus worked example.
 
@@ -121,9 +121,11 @@ The articles explain the decisions and trade-offs. The installed [SKILL.md](skil
 
 ## Evidence and limits
 
-Current observation, 20 September 2026: the [review-loop evaluation](skills/ai-sdlc-skill/evals/review-loop-evaluation.md) records all 15 behavior cases on one Codex host, with no observed disqualifier. The 53 deterministic bundle tests and five repository documentation checks also pass. Browser execution, cross-host compatibility and comparative productivity remain unverified. The record identifies the uncommitted instruction bytes under test and its case-set digest.
+Deterministic state, 21 September 2026, for version 0.5.0: the bundle has 53 passing deterministic tests, and the five repository documentation checks pass alongside them. They cover the verification helper's handling of success, failures, timeouts, invalid configuration, and candidate changes; the evaluation reporter's schema and disqualifier handling; and bundle version, link, and licensing consistency. The checks in [PR 17](https://github.com/Andreasniss/ai-sdlc-skill/pull/17) identify the exact tested revision.
 
-Verification snapshot: 13 September 2026, for the 0.4.0 release in [PR 15](https://github.com/Andreasniss/ai-sdlc-skill/pull/15). The bundle has 53 passing deterministic tests: the verification helper's coverage of success, failures, timeouts, invalid configuration, and candidate changes; the evaluation reporter's schema and disqualifier handling; and bundle version, link, and licensing consistency. The PR's checks identify the exact tested revision. A [partial matched behavior pilot](skills/ai-sdlc-skill/evals/feedback-pilot.md) found no regression in three cases and no demonstrated advantage over the 0.3.0 baseline; the remaining ten behavior cases were not rerun. The earlier repository integration pilots include routing, CI integration, and application checks:
+No behavior case has been run for 0.5.0. It changes `SKILL.md` and two references, which is exactly what requires a rerun, and it adds a sixteenth case, so the case-set digest moved. The [review-loop evaluation](skills/ai-sdlc-skill/evals/review-loop-evaluation.md) of 20 September recorded all 15 cases on one Codex host with no observed disqualifier, but it was recorded against the 0.4.1 case set and no longer validates against the current one. The [partial matched behavior pilot](skills/ai-sdlc-skill/evals/feedback-pilot.md) is the older record of 0.3.0 against 0.4.0. Treat 0.5.0's instruction behavior as unevaluated until someone records a run against the current set.
+
+Verification snapshot: 13 September 2026, for the 0.4.0 release in [PR 15](https://github.com/Andreasniss/ai-sdlc-skill/pull/15), whose checks identify that tested revision. Browser execution, cross-host compatibility and comparative productivity remain unverified throughout. The earlier repository integration pilots include routing, CI integration, and application checks:
 
 | Pilot | Reviewed identifier migration | Evidence |
 | --- | --- | --- |
