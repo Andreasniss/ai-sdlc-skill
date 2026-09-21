@@ -61,7 +61,9 @@ A project usually has an issue tracker, a repository, and systems that execute c
 
 1. Is it coordination metadata about the work rather than the substance of it? The tracker owns it: intake, status, priority, assignment, discussion, and acceptance.
 2. Did an execution system produce it? That system owns it: a CI run, a review submission, a merge. Everything else cites it by an identity that cannot drift, such as a revision or a run.
-3. Does it need to be reviewed as a diff beside the code, and to outlive the current tooling? The repository owns it: intent, specification, plan, accepted constraints, and the evidence record.
+3. Does it need to be reviewed as a diff beside the code, and to outlive the current tooling? The repository owns it, once the change warrants a durable record: intent, specification, plan, accepted constraints, and the evidence record.
+
+These questions decide who owns a fact, not how much record to produce. [Design](#design--choose-depth-and-state-why) owns depth, and it is what lets a small reversible change keep its outcome, scope, checks, and result in the existing issue or PR. Answering question 3 never turns a one-line fix into a document packet; it says where a fact belongs once the change needs to record it at all.
 
 Whether an artifact changes is not the test. A plan is revised throughout implementation and still belongs to the repository, because it is the substance of the work and has to be reviewed as a diff. Only coordination metadata about the work sorts to the tracker at the first question.
 
