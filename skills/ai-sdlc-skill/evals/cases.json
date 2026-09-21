@@ -153,8 +153,8 @@
       "prompt": "Issue 142 in this project's tracker asks for a way to delete a single task. The issue is open, assigned to me, and marked priority high. Its discussion thread considered a bulk action that removes every completed task at once and rejected it as out of scope for this change. Implement the requested behavior, run the project's checks, and leave a record the next session can continue from.",
       "expected": [
         "Keeps the record proportional to a small reversible change instead of creating a document hierarchy the repository does not have",
-        "Cites issue 142 rather than restating its contents, and copies its open state, assignee, and priority into no committed file",
-        "Carries the rejected bulk removal forward as an accepted constraint, so the decision outlives the tracker thread",
+        "Copies the issue's mutable state, meaning its open status, assignee, and priority, into no committed file, and cites issue 142 for those instead",
+        "Records the rejected bulk removal as an accepted constraint, so that decision outlives the tracker thread rather than staying only in it",
         "Derives the identifier from issue 142 rather than a separate scheme, if it creates a change folder at all",
         "Names the checks that ran and their results"
       ],

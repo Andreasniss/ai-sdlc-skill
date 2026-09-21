@@ -65,7 +65,7 @@ A project usually has an issue tracker, a repository, and systems that execute c
 
 Whether an artifact changes is not the test. A plan is revised throughout implementation and still belongs to the repository, because it is the substance of the work and has to be reviewed as a diff. Only coordination metadata about the work sorts to the tracker at the first question.
 
-**Reference, never restate.** One home per fact. A tracker status copied into Markdown is a claim that goes stale silently; a decision left only in a tracker comment disappears when the tracker does.
+**Reference, never restate.** One home per fact, and the fact that keeps moving is the one to reference rather than copy. Mutable tracker state belongs in no committed file: a status copied into Markdown is a claim that goes stale from the first change nobody mirrors. The decisions a thread reached are the opposite case, and recording them is the point: an accepted constraint or a rejected alternative left only in a tracker comment disappears when the tracker does.
 
 One work item keeps one identity. Where a tracker owns the item, derive the change identifier from it rather than minting a second one.
 

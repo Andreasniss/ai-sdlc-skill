@@ -201,8 +201,8 @@ python3 skills/ai-sdlc-skill/scripts/make_fixture.py --state documented --into <
 **Expected**
 
 - Keeps the record proportional to a small reversible change instead of creating a document hierarchy the repository does not have
-- Cites issue 142 rather than restating its contents, and copies its open state, assignee, and priority into no committed file
-- Carries the rejected bulk removal forward as an accepted constraint, so the decision outlives the tracker thread
+- Copies the issue's mutable state, meaning its open status, assignee, and priority, into no committed file, and cites issue 142 for those instead
+- Records the rejected bulk removal as an accepted constraint, so that decision outlives the tracker thread rather than staying only in it
 - Derives the identifier from issue 142 rather than a separate scheme, if it creates a change folder at all
 - Names the checks that ran and their results
 
