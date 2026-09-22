@@ -4,7 +4,7 @@
 
 A reusable, experimental skill that helps a coding agent turn a requested change into working code, relevant checks, and a reviewable delivery record. Start with the smallest process that preserves the decisions and evidence the next session needs. Humans retain product, architecture, risk, and release judgment.
 
-Independently built from selected [Anthropic AI-native SDLC guidance](https://claude.com/blog/the-ai-native-sdlc-playbook) and [Peter Steinberger's feedback-driven development practices](skills/ai-sdlc-skill/references/sources.md). This is the canonical source for the `ai-sdlc-skill` identifier, version 0.5.0.
+Independently built from selected [Anthropic AI-native SDLC guidance](https://claude.com/blog/the-ai-native-sdlc-playbook) and [Peter Steinberger's feedback-driven development practices](skills/ai-sdlc-skill/references/sources.md). This is the canonical source for the `ai-sdlc-skill` identifier, version 0.5.1.
 
 Read the [project article](https://andreasnissen.dev/projects/ai-sdlc-skill/) for three explanatory diagrams, a detailed file walkthrough, and the 7DayFocus worked example.
 
@@ -121,9 +121,9 @@ The articles explain the decisions and trade-offs. The installed [SKILL.md](skil
 
 ## Evidence and limits
 
-Deterministic state, 21 September 2026, for version 0.5.0: the bundle has 53 passing deterministic tests, and the five repository documentation checks pass alongside them. They cover the verification helper's handling of success, failures, timeouts, invalid configuration, and candidate changes; the evaluation reporter's schema and disqualifier handling; and bundle version, link, and licensing consistency. The checks in [PR 17](https://github.com/Andreasniss/ai-sdlc-skill/pull/17) identify the exact tested revision.
+Deterministic state, 22 September 2026, for version 0.5.1: the bundle has 53 passing deterministic tests, and the five repository documentation checks pass alongside them. They cover the verification helper's handling of success, failures, timeouts, invalid configuration, and candidate changes; the evaluation reporter's schema and disqualifier handling; and bundle version, link, and licensing consistency. The release pull request checks identify the exact tested revision.
 
-No behavior case has been run for 0.5.0. It changes `SKILL.md` and two references, which is exactly what requires a rerun, and it adds a sixteenth case, so the case-set digest moved. The [review-loop evaluation](skills/ai-sdlc-skill/evals/review-loop-evaluation.md) of 20 September recorded all 15 cases on one Codex host with no observed disqualifier, but it was recorded against the 0.4.1 case set and no longer validates against the current one. The [partial matched behavior pilot](skills/ai-sdlc-skill/evals/feedback-pilot.md) is the older record of 0.3.0 against 0.4.0. Treat 0.5.0's instruction behavior as unevaluated until someone records a run against the current set.
+No behavior case has been run for 0.5.1. It changes `SKILL.md` and two references, which is exactly what requires a rerun, and it adds a seventeenth case, so the case-set digest moved. The [review-loop evaluation](skills/ai-sdlc-skill/evals/review-loop-evaluation.md) of 20 September recorded all 15 cases on one Codex host with no observed disqualifier, but it was recorded against the 0.4.1 case set and no longer validates against the current one. The [partial matched behavior pilot](skills/ai-sdlc-skill/evals/feedback-pilot.md) is the older record of 0.3.0 against 0.4.0. Treat 0.5.1's instruction behavior as unevaluated until someone records a run against the current set.
 
 Verification snapshot: 13 September 2026, for the 0.4.0 release in [PR 15](https://github.com/Andreasniss/ai-sdlc-skill/pull/15), whose checks identify that tested revision. Browser execution, cross-host compatibility and comparative productivity remain unverified throughout. The earlier repository integration pilots include routing, CI integration, and application checks:
 
