@@ -3,7 +3,7 @@ name: ai-sdlc-skill
 license: Apache-2.0
 description: Carry a software change from intent through verification and review, preserving repository rules and evidence for the exact revision. Use for starting new software projects, initializing delivery guidance in undocumented repositories, implementing or reviewing changes, and adopting an AI-assisted delivery workflow.
 metadata:
-  version: 0.5.0
+  version: 0.5.1
 ---
 
 <!-- SPDX-FileCopyrightText: 2026 Andreas Nissen -->
@@ -72,6 +72,35 @@ Whether an artifact changes is not the test. A plan is revised throughout implem
 One work item keeps one identity. Where a tracker owns the item, derive the change identifier from it rather than minting a second one.
 
 The test is about ownership, not tool brand. Issues, Linear, GitLab, and Jira differ in what they can hold, but the questions are the same. See [artifact locations](references/artifact-layout.md) for the table and the per-artifact homes.
+
+## Scale from queue to supervision
+
+Build the repeatable delivery path before adding a general orchestrator:
+
+1. Make one bounded agent run complete a representative item with an inspectable handoff.
+2. Put repeated work in one durable queue. Give triage, implementation,
+   verification, review, and release explicit eligibility rules and
+   postconditions; use only the stages the workload needs.
+3. Let narrowly scoped workers pull eligible items and coordinate through the
+   queue, repository, CI, and review systems rather than shared hidden context.
+4. Add supervisory decomposition, dispatch, patrol, acceptance, or replanning
+   only after observed human coordination work becomes the bottleneck. Automate
+   the limiting duty first; do not start with an omniscient manager.
+
+Keep one identity from accepted intent through the canonical branch or change
+package and release result. A supervisor reuses that state; it does not create a
+second tracker, broaden worker authority, or turn its own judgment into approval.
+Scope reusable memory to the declared project and owner. Enforce permissions at
+the host or service boundary, not in prompt text. Preserve consequential actions,
+approvals, denials, and verification evidence in a service the acting worker
+cannot rewrite under the same authority.
+
+Session, issue, commit, pull-request, and merge counts are throughput signals,
+not success measures. Evaluate accepted useful outcomes, escaped defects and
+rollbacks, review and repair burden, lead time, human attention, inference or
+service cost, and observed product or business benefit where available. Do not
+add schedules, dashboards, agent roles, or orchestration solely to increase
+activity.
 
 ## Plan — establish the contract
 
