@@ -92,8 +92,9 @@ package and release result. A supervisor reuses that state; it does not create a
 second tracker, broaden worker authority, or turn its own judgment into approval.
 Scope reusable memory to the declared project and owner. Enforce permissions at
 the host or service boundary, not in prompt text. Preserve consequential actions,
-approvals, denials, and verification evidence in a service the acting worker
-cannot rewrite under the same authority.
+approvals, denials, and verification evidence under distinct acting identities
+or equivalent authenticated per-actor attribution, in a service the acting
+worker cannot rewrite under the same authority.
 
 Session, issue, commit, pull-request, and merge counts are throughput signals,
 not success measures. Evaluate accepted useful outcomes, escaped defects and
