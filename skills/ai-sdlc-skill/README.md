@@ -4,7 +4,7 @@ For file locations, start with [artifact layout and repository documents](refere
 
 An experimental delivery skill that preserves repository rules, scales planning to the change, and records verification for the candidate revision. Independently implemented by Andreas Nissen from selected [Anthropic AI-native SDLC guidance](https://claude.com/blog/the-ai-native-sdlc-playbook).
 
-Version 0.5.0. Skill identifier and invocation: `ai-sdlc-skill` and `$ai-sdlc-skill`.
+Version 0.5.1. Skill identifier and invocation: `ai-sdlc-skill` and `$ai-sdlc-skill`.
 
 ## Start here
 
