@@ -169,6 +169,28 @@ class ReportTests(unittest.TestCase):
         self.assertEqual(code, 2)
         self.assertEqual(report["status"], "invalid")
 
+    def test_duplicate_json_keys_cannot_hide_failed_results(self):
+        cases = self.write("cases.json", MINIMAL)
+        results = self.write("run.json", self.run_for(cases))
+        raw = results.read_text().replace(
+            '"outcome": "passed"', '"outcome": "failed", "outcome": "passed"')
+        results.write_text(raw)
+        code, report = self.report(cases, results)
+        self.assertEqual(code, 2)
+        self.assertEqual(report["status"], "invalid")
+
+    def test_duplicate_json_keys_in_cases_are_rejected_before_digest(self):
+        for original, replacement in (
+            ('"schema": 1', '"schema": 2, "schema": 1'),
+            ('"fixture": null', '"fixture": "undefined", "fixture": null'),
+        ):
+            with self.subTest(original=original):
+                cases = self.write("cases.json", MINIMAL)
+                cases.write_text(cases.read_text().replace(original, replacement))
+                code, report = self.digest_of(cases)
+                self.assertEqual(code, 2)
+                self.assertEqual(report["status"], "invalid")
+
     def test_a_change_to_the_builder_or_the_renderer_invalidates_a_run(self):
         # A run's outcomes depend on the repositories the builder writes and the instructions
         # the renderer produces, so a run recorded before either changed is not current.

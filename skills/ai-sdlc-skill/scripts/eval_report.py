@@ -19,9 +19,18 @@ def label(value, limit=200):
     return isinstance(value, str) and value.strip() and len(value) <= limit
 
 
+def unique_object(pairs):
+    document = {}
+    for key, value in pairs:
+        if key in document:
+            raise ValueError("duplicate JSON object key")
+        document[key] = value
+    return document
+
+
 def load(path):
     raw = Path(path).read_bytes()
-    return json.loads(raw), hashlib.sha256(raw).hexdigest()
+    return json.loads(raw, object_pairs_hook=unique_object), hashlib.sha256(raw).hexdigest()
 
 
 def evaluated_digest(case_digest, builder, renderer):
