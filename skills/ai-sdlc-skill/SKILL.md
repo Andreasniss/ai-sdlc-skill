@@ -3,7 +3,7 @@ name: ai-sdlc-skill
 license: Apache-2.0
 description: Carry a software change from intent through verification and review, preserving repository rules and evidence for the exact revision. Use for starting new software projects, initializing delivery guidance in undocumented repositories, implementing or reviewing changes, and adopting an AI-assisted delivery workflow.
 metadata:
-  version: 0.5.1
+  version: 0.5.2
 ---
 
 <!-- SPDX-FileCopyrightText: 2026 Andreas Nissen -->
@@ -140,7 +140,7 @@ For feedback gaps or stalled repairs, read the examples in [common cases](refere
 - Do not add tests that merely mirror implementation text.
 - Update the plan when material scope or assumptions change.
 - Run the repository's required checks. Missing tools, timeouts, skipped required checks, and failed agent runs are incomplete verification.
-- Never reuse a passing result from an older candidate. Never silently weaken a check to obtain green CI.
+- Do not report an earlier check as a pass for the current candidate. After a repair, rerun checks for the changed behavior and affected interactions, plus every current-candidate gate required by the repository. Earlier observations may support unchanged scope only when that scope, its dependencies and assumptions still apply; retain their original revision and limits. Never silently weaken a check to obtain green CI.
 - When attempts repeat without new evidence, stop that attempt pattern. Narrow the reproduction, inspect a different supported hypothesis, or report the blocker and the specific decision or capability needed. Honor the task's time and attempt limits; do not invent a universal retry quota or leave an unbounded repair loop running.
 - Read and respect the repository's existing hooks and permission configuration. When a control is genuinely required, propose it at the action boundary where it can be enforced, not as prose in a document. This skill installs none.
 
@@ -156,6 +156,7 @@ For a committed candidate, the optional helper in `scripts/verify.py` runs a rev
 - Triage the available findings together against the accepted scope and concrete impact. Group related failures, inspect affected sibling paths, and batch repairs before requesting another review. Dismiss unsupported or duplicate reports with reasons; give valid nonblocking follow-ups a durable owner in the existing change record. A suggestion does not become a new requirement merely by appearing in review.
 - Resolve blocking findings and rerun affected checks. Re-review the repaired revision, including interactions affected by the repair; unchanged areas do not need a fresh full review unless new evidence, base movement, or repository rules warrant it. Earlier review can supply context, but passing checks for an older candidate are not current verification.
 - If review rounds keep adding scope or rediscovering a failure class, reassess the approach and acceptance criteria before another repair batch, even when each round adds evidence. Continue justified in-scope repairs, separate nonblocking work, or surface the consequential decision needed. A retry limit never makes a blocking defect releasable.
+- Check whether the requested review actually completed and covered the candidate. A quota message, acknowledgment, skipped or neutral integration, or unavailable service is not a review verdict. If a required reviewer is unavailable, use an authorized alternative only when repository policy permits it; otherwise report the missing gate and keep dependent release work blocked. A denied external review request must not be retried through another channel. Continue independent in-scope work without treating the denial as authorization.
 - If no independent reviewer is available, disclose self-review. Do not invent a reviewer or an approval. AI review provides evidence, not human accountability.
 
 ## Deploy — deliver within the authorization you have
