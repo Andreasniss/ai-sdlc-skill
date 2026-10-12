@@ -36,6 +36,35 @@ class FixtureTests(unittest.TestCase):
             dirty = subprocess.check_output(["git", "-C", str(target), "status", "--porcelain"], text=True)
             self.assertEqual(dirty, "", f"{state} does not start clean")
 
+    def test_customer_export_smoke_passes_but_independent_oracle_rejects_output(self):
+        _, _, target = self.build("customer-export")
+        smoke = subprocess.run([sys.executable, "-m", "unittest", "discover", "-s", "test", "-v"],
+                               cwd=target, capture_output=True, text=True)
+        self.assertEqual(smoke.returncode, 0, smoke.stderr)
+        actual = subprocess.check_output([sys.executable, "-c",
+            "import json; from exporter import export_customers; "
+            "print(export_customers(json.load(open('customers.json'))), end='')"], cwd=target, text=True)
+        import csv
+        import io
+        from collections import Counter
+        expected = Counter({"c1": 1, "c3": 1})  # Requirement, not exporter output.
+        ids = Counter(row["id"] for row in csv.DictReader(io.StringIO(actual)))
+        self.assertNotEqual(ids, expected)
+        self.assertEqual(ids, Counter({"c1": 2}))
+        for rows, accepted in ((["c1", "c3"], True), (["c1"], False),
+                               (["c1", "c3", "c3"], False), (["c1", "c1"], False)):
+            self.assertEqual(Counter(rows) == expected, accepted)
+
+    def test_privacy_resume_preserves_files_and_branch_with_only_owner_answer_changed(self):
+        _, _, blocked = self.build("privacy-blocked")
+        _, _, answered = self.build("privacy-answered")
+        for name in ("WORK.md", "exporter.py", "customers.json", "REQUIREMENT.md", "test/test_download.py"):
+            self.assertEqual((blocked / name).read_bytes(), (answered / name).read_bytes())
+        self.assertNotEqual((blocked / "DECISION.md").read_bytes(), (answered / "DECISION.md").read_bytes())
+        for target in (blocked, answered):
+            branch = subprocess.check_output(["git", "-C", str(target), "branch", "--show-current"], text=True)
+            self.assertEqual(branch.strip(), "export-customers")
+
     def test_the_init_state_genuinely_has_no_checks_to_find(self):
         _, _, target = self.build("undocumented")
         self.assertFalse((target / "test").exists(),

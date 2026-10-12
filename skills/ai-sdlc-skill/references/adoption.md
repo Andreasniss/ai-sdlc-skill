@@ -30,3 +30,7 @@ If a check invokes a model, that wrapper must explicitly fail when the model is 
 ## Pilot measures
 
 Record the selected workflow depth and its reason; required versus unnecessary interruptions; requirement misses; failed or unavailable checks; fresh-review findings and fixes; and exact candidate revisions. Separate measured outcomes from planned measurements. Two repository adaptations alone cannot establish faster delivery or lower defect rates.
+
+## Relevant environment and release evidence
+
+When runtime, dependency or generator differences can affect acceptance, reuse the adopter's existing environment definitions in local, agent and CI execution. Record the relevant inputs and differences; Nix is optional, not a prerequisite. The helper does not compare environments, bases or artifacts. For integration or release work, cite existing system records linking candidate/tested base, landed revision, build inputs, artifact digest and deployment. Ignored generated output may change while `candidate_unchanged` stays true; that field cannot establish deployed-artifact identity.

@@ -104,6 +104,17 @@ class ReportTests(unittest.TestCase):
         _, report = self.report(cases, self.write("run.json", self.run_for(cases)))
         self.assertEqual(printed["cases_sha256"], report["cases_sha256"])
 
+    def test_embedded_review_material_changes_invalidate_recorded_run(self):
+        document = json.loads(SHIPPED_CASES.read_text())
+        case = next(c for c in document["cases"] if c["id"] == "chat-only-document-review")
+        original = self.write("embedded.json", document)
+        results = self.write("run.json", self.run_for(original))
+        self.assertEqual(self.report(original, results)[0], 0)
+        # Change the supplied diff, leaving the rubric untouched.
+        case["prompt"] = case["prompt"].replace("tasks.filter(t => !t.done)", "filterTasks(tasks, selection)")
+        self.write("embedded.json", document)
+        self.assertEqual(self.report(original, results)[0], 2)
+
     def test_failed_case_reports_failure(self):
         run = self.run_for(self.write("cases.json", MINIMAL))
         run["results"][0]["outcome"] = "failed"
