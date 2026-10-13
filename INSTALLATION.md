@@ -1,6 +1,6 @@
 # Use AI SDLC Skill with your assistant
 
-Choose the assistant you already use. The same workflow can guide Codex, Claude, and other agents; installation and available tools belong to the host. This repository ships a skill folder, not a marketplace plugin or an MCP server.
+Choose the assistant you already use. The same workflow can guide Codex, Claude, and other agents; installation and available tools belong to the host. This repository ships one canonical skill folder and an optional [cross-harness plugin packaging pilot](PLUGIN.md). It has no published marketplace listing or MCP server. The existing installation routes below remain recommended.
 
 ## Recommended: Skills CLI
 

@@ -12,6 +12,10 @@ Read the [project article](https://andreasnissen.dev/projects/ai-sdlc-skill/) fo
 
 ## Install
 
+An optional [plugin packaging pilot](PLUGIN.md) wraps the same canonical skill
+for Codex and Claude Code. It adds no hooks or permissions and has no public
+marketplace listing. The installation route below remains recommended.
+
 From the project where you want to use the skill, run:
 
 ```sh
