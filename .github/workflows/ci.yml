@@ -17,3 +17,5 @@ jobs:
         run: python3 -m unittest discover -s skills/ai-sdlc-skill/tests -v
       - name: Check documentation, version and licensing consistency
         run: python3 scripts/test_docs_consistency.py
+      - name: Check plugin layout and synthetic hook payloads
+        run: python3 scripts/test_plugin_packaging.py

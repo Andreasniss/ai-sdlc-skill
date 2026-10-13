@@ -12,6 +12,7 @@ Run from the repository root with the documented runtime:
 ```sh
 python3 -m unittest discover -s skills/ai-sdlc-skill/tests -v
 python3 scripts/test_docs_consistency.py
+python3 scripts/test_plugin_packaging.py
 python3 scripts/check_privacy.py --staged
 python3 scripts/check_privacy.py --range origin/main HEAD
 ```
