@@ -17,5 +17,5 @@ Use a focused PR, verify its current revision and required checks, resolve findi
   the behavioral cases required before claiming host behavior.
 - Public upload: [PRIVACY.md](PRIVACY.md).
 
-Keep application checks in adopters; bundle tests and documentation checks prove
-different things. Use the contributor commands for the surface being changed.
+Keep application checks in adopters; bundled-document and repository-wide checks cover
+different surfaces. Use the contributor commands for the surface being changed.
