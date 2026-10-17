@@ -78,7 +78,7 @@ The test is about ownership, not tool brand. Issues, Linear, GitLab, and Jira di
 Build the repeatable delivery path before adding a general orchestrator:
 
 1. Make one bounded agent run complete a representative item with an inspectable handoff.
-2. Put repeated work in one durable queue. Give triage, implementation,
+2. Put repeated work in one durable queue. Count blocked items against its work-in-progress limit; a blocker does not free capacity for more unfinished work. Give triage, implementation,
    verification, review, and release explicit eligibility rules and
    postconditions; use only the stages the workload needs.
 3. Let narrowly scoped workers pull eligible items and coordinate through the
@@ -128,6 +128,8 @@ activity.
 ## Establish useful feedback
 
 - Identify how to exercise the affected behavior, what result to observe, and the acceptance example that distinguishes success from failure. Reuse the repository's commands, tests, browser path, and diagnostics before adding tooling.
+- Derive acceptance expectations from the requirement, owner-approved examples, or another independent source, not from the implementation being checked. Exercise a plausible wrong result: a successful download can still omit an allowed customer or duplicate rows. Check membership and multiplicity, not only transport success.
+- When environment differences can affect the result, reuse the repository's existing runtime pins, lockfiles, containers or other environment definitions across local work, agents and CI. Record relevant differences; no particular environment tool is required.
 - Check that the necessary capabilities are available. Missing browser, service, or data access limits what can be verified; it is not permission to bypass controls or install another system. Continue useful in-scope work and identify the remaining gap.
 - Keep correctness and product usefulness distinct. Tests check specified behavior; using the result can reveal a different product need. Seek owner judgment when that discovery materially changes the design, and keep existing acceptance criteria until an authorized change replaces them.
 
@@ -164,6 +166,7 @@ For a committed candidate, the optional helper in `scripts/verify.py` runs a rev
 - Check the current PR head, required CI, review threads, and existing merge authorization immediately before merging. Use the expected head revision where supported.
 - Stop on unresolved blocking findings or failed required checks. Acceptance failures, incorrect claims of verification, and material security or privacy defects block release; apply stricter repository rules where present. A reasoned dismissal or a recorded nonblocking follow-up is not an unresolved blocker.
 - Deployment authorization is separate unless the user's scope and repository rules already cover it. Use the host's protected release mechanism.
+- When integration or deployment is in scope, connect the tested candidate and base to the actual landed changes and deployed artifact using existing CI/build/deployment identities and artifact digests where available. A changed dependent base requires affected integration checks and review even if the PR head is unchanged; unchanged source does not prove generated output is identical. Verify the artifact actually delivered, or state the missing evidence and keep dependent release work conditional. Do not require deployment evidence for a local-only change.
 - Report what changed, the exact tested revision, observed results, and remaining limits.
 - Before a first commit, report explicitly that no commit exists, and identify the files and checks observed. For dirty work, distinguish the base commit from the uncommitted changes.
 - Never invent a revision. Never use the committed-candidate helper as a prerequisite for starting a project.
@@ -178,7 +181,9 @@ For a committed candidate, the optional helper in `scripts/verify.py` runs a rev
 
 ## Handoffs
 
-Each stage leaves what the next session needs. Keep it inspectable and versioned with the code.
+Each stage leaves what the next session needs. Keep substantive decisions and evidence inspectable with the code; keep live coordination in its existing tracker.
+
+For blocked work, record the unresolved question, who can answer, where the answer belongs, the existing item and branch, completed work, the precise continuation point and required rechecks. Link the canonical record rather than copying mutable status. A fresh session reads the recorded answer and resumes that item without competing workers or repeating an already answered approval request.
 
 | Handoff | What the next session receives | Judgment the owner keeps |
 | --- | --- | --- |
