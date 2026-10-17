@@ -48,3 +48,37 @@ inclusion follow [Apache-2.0](LICENSE), unless explicitly agreed otherwise. Pres
 third-party license and copyright notices; identify copied material and its source.
 Report sensitive vulnerabilities through [SECURITY.md](SECURITY.md), not a public
 issue. Ordinary bugs and improvements can use this repository's GitHub issues.
+
+## Maintain guides
+
+Use this standard for repository instructions, contributor documentation and
+workflow references. It governs guide quality, not the receiving project's
+authority or release process. Keep local constraints with their existing owner.
+
+- Give each rule one canonical home. Route readers there by task; say when to
+  load specialist context instead of repeating its procedure in every entry file.
+- Make consequential instructions actionable: trigger, prerequisites, action,
+  expected result, and relevant exception. Separate requirements from optional
+  techniques and examples. Verify commands against the actual configuration.
+- Preserve user steering, existing authorization and receiving-repository gates.
+  References and historical plans do not authorize new work. Do not copy private
+  source material or impose another project's workflow.
+- Distinguish planned, attempted, passed and blocked checks. Name the revision and
+  surfaces covered; a file check is not runtime verification, and source retrieval
+  is not a complete factual review. Keep current execution status in its existing
+  PR or check system rather than in standing instructions.
+- Review the motivating failure and an ordinary case that should stay simple.
+  If a rule was present but missed, improve its entry route or execution check
+  before adding prose. Search consumers for obsolete duplicates and preserve
+  historical evidence as historical. Report observed improvements, not assumed
+  productivity gains.
+
+For example, correcting a setup command should let a new contributor run it from
+the stated directory while leaving a documentation-only change free of unrelated
+service calls. Keep deterministic requirements in existing checks where practical;
+judgment still needs review. Use the repository's ordinary contribution path, not
+a separate guide approval packet.
+
+These practices are informed by [OpenAI's AGENTS.md guidance](https://developers.openai.com/codex/guides/agents-md/)
+and [Anthropic's Claude Code best practices](https://code.claude.com/docs/en/best-practices).
+They are authoring guidance, not a claim of measured agent performance.

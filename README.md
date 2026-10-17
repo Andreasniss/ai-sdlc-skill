@@ -150,7 +150,7 @@ If you are changing or evaluating the helper itself, run this from a checkout of
 python3 -m unittest discover -s skills/ai-sdlc-skill/tests -v
 ```
 
-This runs the bundle's own regression tests, including command failures, timeouts, and the version, link, and licensing consistency of the documentation. It does not test your application, install the skill, or verify that an agent loaded it.
+This runs the bundle's regression tests, including command failures and timeouts. Documentation consistency and plugin packaging use separate commands in [CONTRIBUTING.md](CONTRIBUTING.md). None of these checks tests your application, installs the skill, or verifies that an agent loaded it. Use its [guide-maintenance standard](CONTRIBUTING.md#maintain-guides) when improving instructions.
 
 Changing the instructions is changing agent configuration. When `SKILL.md` or its references change, rerun the [behavior cases](skills/ai-sdlc-skill/evals/cases.md) against the host you actually use and record the run; see [evaluating this skill](skills/ai-sdlc-skill/references/evaluation.md). Those runs are self-reported observations of one host, not authenticated evidence.
 
