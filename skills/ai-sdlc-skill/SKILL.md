@@ -3,7 +3,7 @@ name: ai-sdlc-skill
 license: Apache-2.0
 description: Carry a software change from intent through verification and review, preserving repository rules and evidence for the exact revision. Use for starting new software projects, initializing delivery guidance in undocumented repositories, implementing or reviewing changes, and adopting an AI-assisted delivery workflow.
 metadata:
-  version: 0.5.2
+  version: 0.5.3
 ---
 
 <!-- SPDX-FileCopyrightText: 2026 Andreas Nissen -->
@@ -173,6 +173,7 @@ For a committed candidate, the optional helper in `scripts/verify.py` runs a rev
 
 ## Maintain — close the loop
 
+- For an explicitly requested harness experiment or recurring execution failure, use [bounded harness learning](references/harness-learning.md) to compare instruction or tool-guidance changes. Ordinary delivery does not require an experiment. This optional method adapts Harness²; it neither installs its runner nor trains the model.
 - Preserve concise decisions and reproducible evidence. Exclude private conversations, secrets, and raw model sessions.
 - After a failure or incident, add a regression case and a narrowly relevant lesson.
 - When a lesson recurs, encode it where it changes future behavior: the repository's instruction file, its checks, or its skill. Put it in one place only. Never leave a duplicate or competing rule set behind.
@@ -211,3 +212,4 @@ Anthropic names `intent.md`, `spec.md`, and `plan.md`. This skill does not requi
 - [Evaluating this skill after a change](references/evaluation.md)
 - [Adoption, execution boundaries, and the optional helper](references/adoption.md)
 - [Sources and the boundary between Anthropic's guidance and this implementation](references/sources.md)
+

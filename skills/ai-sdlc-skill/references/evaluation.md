@@ -104,3 +104,4 @@ Keep elapsed time, retries, human interventions, and tool or token cost as separ
 Anthropic's playbook suggests building an eval set from roughly 20 to 50 real tasks before trusting an agent configuration in an enterprise rollout. This bundle ships far fewer, and they are run by hand. A small hand-run set produces behavior signals and catches regressions in the obvious failure modes. It does not establish statistical validity, model quality, or that another host behaves the same way.
 
 Evaluation results and delivery outcomes are different measurements. For the second, see the pilot measures in [adoption.md](adoption.md).
+

@@ -1,5 +1,19 @@
 # Sources and implementation choices
 
+## Harness learning
+
+[Harness²: Recursive Agent Harnessing for an Open World](https://arxiv.org/abs/2610.14224)
+and its [implementation](https://github.com/google-research/harness2), reviewed
+2026-10-18, motivate comparing execution harnesses with fixed model weights and
+retaining evidence-supported lessons. The optional [bounded experiment](harness-learning.md)
+adds this project's conservative baseline, transfer and promotion conditions.
+It does not reproduce the paper's algorithm or reported benchmark gains. No
+upstream code is bundled. The upstream experiment guide documents unrestricted
+network access, disabled Codex sandboxing and a validation run that retrieved a
+public grading rubric; its runner defaults are not adopted here.
+
+## Lifecycle sources
+
 Anthropic references reviewed 2026-09-06; practitioner references reviewed 2026-09-22. Source pages may change.
 
 - [Anthropic: The AI-native SDLC playbook](https://claude.com/blog/the-ai-native-sdlc-playbook): selected ideas include versioned handoffs, modular adoption, continuous evaluation, focused human judgment, and incident learning.

@@ -1,0 +1,9 @@
+{
+  "session_id": "synthetic-session",
+  "transcript_path": null,
+  "cwd": "/synthetic/project",
+  "hook_event_name": "SessionStart",
+  "source": "startup",
+  "permission_mode": "default",
+  "model": "synthetic-model"
+}

@@ -4,13 +4,17 @@
 
 A reusable, experimental skill that helps a coding agent turn a requested change into working code, relevant checks, and a reviewable delivery record. Start with the smallest process that preserves the decisions and evidence the next session needs. Humans retain product, architecture, risk, and release judgment.
 
-Independently built from selected [Anthropic AI-native SDLC guidance](https://claude.com/blog/the-ai-native-sdlc-playbook) and [Peter Steinberger's feedback-driven development practices](skills/ai-sdlc-skill/references/sources.md). This is the canonical source for the `ai-sdlc-skill` identifier, version 0.5.2.
+Independently built from selected [Anthropic AI-native SDLC guidance](https://claude.com/blog/the-ai-native-sdlc-playbook) and [Peter Steinberger's feedback-driven development practices](skills/ai-sdlc-skill/references/sources.md). This is the canonical source for the `ai-sdlc-skill` identifier, version 0.5.3.
 
 Read the [project article](https://andreasnissen.dev/projects/ai-sdlc-skill/) for three explanatory diagrams, a detailed file walkthrough, and the 7DayFocus worked example.
 
 **Recommended starting point:** use Auto for clear, authorized work; use Plan mode when you want to settle the approach before implementation. Keep durable change records in either mode. The [FAQ](#faq) explains the distinction.
 
 ## Install
+
+An optional [plugin packaging pilot](PLUGIN.md) wraps the same canonical skill
+for Codex and Claude Code. It adds no hooks or permissions and has no public
+marketplace listing. The installation route below remains recommended.
 
 From the project where you want to use the skill, run:
 
@@ -121,9 +125,13 @@ The articles explain the decisions and trade-offs. The installed [SKILL.md](skil
 
 ## Evidence and limits
 
-Deterministic checks for this focused update, 12 October 2026: 58 passing deterministic tests cover the helper, reporter, embedded review-material digest, fixture defects and bundle consistency. Five repository documentation checks cover the surrounding documentation. These are static/helper checks, not behavior-run coverage. The pull request identifies the exact checked candidate.
+The focused update in [PR 21](https://github.com/Andreasniss/ai-sdlc-skill/pull/21) adds independent acceptance checks, resumable blockers and release evidence. The current set has 27 cases. Its [12 October partial pilot](skills/ai-sdlc-skill/evals/focused-evidence-pilot.md) exercised the earlier candidate against the then-25-case set; it does not validate the reconciled instructions or current digest. Current candidate checks are recorded in the PR. No full behavior or cross-host pass is claimed.
 
-The evaluation set now has 25 cases. The [focused evidence pilot](skills/ai-sdlc-skill/evals/focused-evidence-pilot.md) compares selected cases against the reviewed 0.5.2 baseline under matching conditions; it is partial evidence, not a full evaluation pass. Historical coverage remains distinct: on 11 October, five of the then-20 cases were rerun for 0.5.2 (scoped evidence, unavailable review, rendered documentation, focused repair review and interrupted-change resumption), with no observed disqualifier; the other 15 were not rerun. The older [15-case review-loop evaluation](skills/ai-sdlc-skill/evals/review-loop-evaluation.md) and [September matched pilot](skills/ai-sdlc-skill/evals/feedback-pilot.md) remain historical observations. Their digests do not validate against the amended fixtures and case set.
+Release 0.5.3 adds an optional [bounded harness experiment](skills/ai-sdlc-skill/references/harness-learning.md), inspired by Harness². It compares execution evidence and tests transfer before promoting reusable guidance. It adds no runner, scheduler, dependency or automatic learning service. Its pull request records the checks and selected behavior cases actually exercised; earlier release observations below do not validate these new instructions. The release introduced two cases; the current set contains 27 cases.
+
+Deterministic state, 20 October 2026, for this untagged update: the bundle has 58 passing deterministic tests, and the five repository documentation checks pass alongside them. They cover the verification helper's handling of success, failures, timeouts, invalid configuration, and candidate changes; the evaluation reporter's schema, duplicate JSON key rejection, and disqualifier handling; and bundle version, link, and licensing consistency. The pull request checks identify the exact tested revision.
+
+A selected-case behavior pilot for 0.5.2 exercised scoped evidence, unavailable review, rendered documentation, focused repair review, and interrupted-change resumption in five fresh Codex Work Mode agent sessions. All five met their case criteria with no observed disqualifier. The other 15 cases were not rerun; this is partial evidence, not a passing full evaluation. The pull request records the instruction revision, case digest, observations, and runtime limits. This revision clarifies scoped evidence and unavailable review handling and adds three cases, bringing that historical set to 20. Earlier recorded runs do not validate against the current case-set digest. The [review-loop evaluation](skills/ai-sdlc-skill/evals/review-loop-evaluation.md) and [partial matched behavior pilot](skills/ai-sdlc-skill/evals/feedback-pilot.md) remain historical observations, not current instruction verification.
 
 Verification snapshot: 13 September 2026, for the 0.4.0 release in [PR 15](https://github.com/Andreasniss/ai-sdlc-skill/pull/15), whose checks identify that tested revision. Browser execution, cross-host compatibility and comparative productivity remain unverified throughout. The earlier repository integration pilots include routing, CI integration, and application checks:
 
@@ -146,7 +154,7 @@ If you are changing or evaluating the helper itself, run this from a checkout of
 python3 -m unittest discover -s skills/ai-sdlc-skill/tests -v
 ```
 
-This runs the bundle's own regression tests, including command failures, timeouts, and the version, link, and licensing consistency of the documentation. It does not test your application, install the skill, or verify that an agent loaded it.
+This runs the bundle's regression tests, including command failures, timeouts, and consistency checks for bundled documentation versions, links and licensing. Broader repository documentation and plugin packaging use separate commands in [CONTRIBUTING.md](CONTRIBUTING.md). None of these checks tests your application, installs the skill, or verifies that an agent loaded it. Use its [guide-maintenance standard](CONTRIBUTING.md#maintain-guides) when improving instructions.
 
 Changing the instructions is changing agent configuration. When `SKILL.md` or its references change, rerun the [behavior cases](skills/ai-sdlc-skill/evals/cases.md) against the host you actually use and record the run; see [evaluating this skill](skills/ai-sdlc-skill/references/evaluation.md). Those runs are self-reported observations of one host, not authenticated evidence.
 
@@ -159,3 +167,4 @@ Andreas owns intent, architecture, requirements, evaluation criteria, risk, and 
 A personal project by Andreas Nissen. Views are his own; no employer or Anthropic affiliation, endorsement, or certification is implied.
 
 Copyright 2026 Andreas Nissen. Original project code and accompanying technical documentation are licensed under [Apache-2.0](LICENSE), except where separately indicated. See [NOTICE](NOTICE). Third-party dependencies and bundled material retain their own terms. Read [CONTRIBUTING.md](CONTRIBUTING.md) for setup, verification, and contribution expectations.
+
