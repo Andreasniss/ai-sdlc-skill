@@ -70,3 +70,9 @@ Reference standing documents from the packet; update their canonical files when 
 GitHub recognizes specific [community health files](https://docs.github.com/en/communities/setting-up-your-project-for-healthy-contributions/creating-a-default-community-health-file), including `SECURITY.md` and `CONTRIBUTING.md`, in `.github/`, root, or `docs/`, with that precedence. Root is this guide's discoverability recommendation, not the only valid location. `PRIVACY.md`, `PROVENANCE.md`, and `REVIEW.md` have no equivalent universal GitHub role; describe their purpose and link them explicitly. Match existing filename case, since links can be case-sensitive.
 
 The [ADR community](https://adr.github.io/) explains architecture decision records. [SLSA provenance](https://slsa.dev/spec/v1.2/provenance) concerns machine-verifiable build origin and process; a human-authored `PROVENANCE.md` is a different kind of record. Markdown supplies readable versioned text, not policy enforcement.
+
+## Blockers and delivery evidence
+
+Keep a live blocked item's owner, question and answer location in its existing tracker; link its branch, continuation point and required rechecks. Preserve the accepted answer with the project's substantive decisions when it changes the contract. A session handoff cites those homes rather than creating a second queue. Without a tracker, use the existing work record.
+
+For release work, the evidence record cites the systems that observed the tested candidate/base, actual landed changes, build and deployed artifact identity. Record gaps explicitly. These references connect observations; neither a Markdown claim nor a source commit alone authenticates the deployed bytes.

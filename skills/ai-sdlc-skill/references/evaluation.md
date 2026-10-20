@@ -24,7 +24,7 @@ A case that needs a repository names a fixture state. Build it before running th
 python3 skills/ai-sdlc-skill/scripts/make_fixture.py --state bug --into ../eval-run
 ```
 
-The builder writes a small task-list application into an empty directory and commits it at the state the case needs: undocumented, documented, initialized with unsupported claims, carrying a live defect its green suite never covers, carrying duplicated formatting, or on a review or half-finished branch. It refuses a destination that is not empty. Cases starting from an empty directory or a chat window name no fixture.
+The builder writes a small task-list application into an empty directory and commits it at the state the case needs: undocumented, documented, initialized with unsupported claims, carrying a live defect its green suite never covers, carrying duplicated formatting, or on a review or half-finished branch. It refuses a destination that is not empty. Customer-export states instead contain a small Python CSV exporter, synthetic inputs and a smoke check. Cases starting from an empty directory or a chat window name no fixture; all chat review material is embedded verbatim in the case prompt. Paste the complete prompt, including the requirement, proposed change and unanswered question. No attachments need to be invented.
 
 `evals/cases.md` is rendered from `cases.json` by `scripts/render_cases.py`; the reporter digests the JSON, so edit the JSON and render again rather than editing the Markdown, and `--check` verifies the two agree.
 
@@ -57,7 +57,7 @@ python3 skills/ai-sdlc-skill/scripts/eval_report.py \
   --cases skills/ai-sdlc-skill/evals/cases.json --digest
 ```
 
-Put that value in the run as `cases_sha256`, then validate the completed run against the same case set. The digest covers `cases.json`, `scripts/make_fixture.py` and `scripts/render_cases.py`: the cases, the repositories the builder writes, and the renderer whose own prose is part of the instructions people read. Change any of them and an earlier run stops validating, because it says nothing about what an evaluator would face now.
+Put that value in the run as `cases_sha256`, then validate the completed run against the same case set. The digest covers `cases.json`, `scripts/make_fixture.py` and `scripts/render_cases.py`: the cases, the repositories the builder writes, and the renderer whose own prose is part of the instructions people read. Embedded review material is part of the JSON prompt, so changing it also changes the digest. Change any of them and an earlier run stops validating, because it says nothing about what an evaluator would face now.
 
 ```sh
 python3 skills/ai-sdlc-skill/scripts/eval_report.py \
@@ -65,7 +65,7 @@ python3 skills/ai-sdlc-skill/scripts/eval_report.py \
   --results run.json
 ```
 
-The report names both component digests, so a reader can see what went into it. The digest binds the run to what was actually evaluated. If the cases change afterwards, the recorded run no longer validates, because its outcomes say nothing about criteria nobody checked. That is the same rule the instructions apply to code: a passing result from an older candidate is not evidence for the current one.
+The report names the component digests, so a reader can see what went into it. The digest binds the run to what was actually evaluated. If the cases change afterwards, the recorded run no longer validates, because its outcomes say nothing about criteria nobody checked. That is the same rule the instructions apply to code: a passing result from an older candidate is not evidence for the current one.
 
 Exit `0` means every case in the set was recorded as passing. Exit `1` means a case failed or a disqualifier was recorded. Exit `2` means the case set was invalid, the run was incomplete, or the run was recorded against a different case set.
 
@@ -104,3 +104,4 @@ Keep elapsed time, retries, human interventions, and tool or token cost as separ
 Anthropic's playbook suggests building an eval set from roughly 20 to 50 real tasks before trusting an agent configuration in an enterprise rollout. This bundle ships far fewer, and they are run by hand. A small hand-run set produces behavior signals and catches regressions in the obvious failure modes. It does not establish statistical validity, model quality, or that another host behaves the same way.
 
 Evaluation results and delivery outcomes are different measurements. For the second, see the pilot measures in [adoption.md](adoption.md).
+
