@@ -19,3 +19,7 @@ jobs:
         run: python3 scripts/test_docs_consistency.py
       - name: Check plugin layout and synthetic hook payloads
         run: python3 scripts/test_plugin_packaging.py
+      - name: Check the generated plugin evals (no model calls)
+        run: |
+          python3 scripts/render_plugin_evals.py --check
+          python3 scripts/test_render_plugin_evals.py
