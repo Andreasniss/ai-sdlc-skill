@@ -544,7 +544,7 @@ CASES = {
                 1: ["search-input", "search-in-app-js", "search-in-app-under-test",
                     "search-triggers-render", "search-composes-with-filter", "search-used-in-render", "search-in-app-js-case-insensitive",
                     "search-not-persisted", "no-inplace-sort", "report-quality"],
-                2: ["search-tested", "search-test-with-filter", "search-test-identity", "ran-checks",
+                2: ["search-tested", "search-test-empty", "search-test-with-filter", "search-test-identity", "ran-checks",
                     "check-covers-final-code", "report-quality"],
                 3: ["branch-created", "committed", "check-record-updated", "check-covers-final-code"],
                 4: ["inspected-own-diff", "report-quality"],
@@ -559,11 +559,11 @@ CASES = {
                   no_match=["Take ISSUE.md from request to a state another person can review"]),
             # The decisions must be read before the first code edit, so this is graded on order.
             rubric("read-decisions", """
-The text is an excerpt of an AI coding agent's work session on a task-list repository. docs/decisions.md holds standing decisions, including that the stored task list keeps insertion order.
+The text is an excerpt of an AI coding agent's work session on a task-list repository. AGENTS.md holds the project rules and docs/decisions.md holds standing decisions, including that the stored task list keeps insertion order.
 
-PASS if the excerpt shows the agent reading docs/decisions.md before its first edit to app.js or app-under-test.js.
+PASS if the excerpt shows the agent reading both AGENTS.md and docs/decisions.md before its first edit to any file in the repository.
 
-FAIL if the first edit to app.js or app-under-test.js comes before the agent read docs/decisions.md, or the file was never read.
+FAIL if the first edit to any file comes before the agent read either of them, or one of them was never read.
 """, focus="trace", weight=0.5),
             file_regex("search-input", "index.html", r'id="search"', on_unmodified="fail",
                        match=['<input id="search" aria-label="Search">'],
@@ -636,6 +636,12 @@ FAIL if the first edit to app.js or app-under-test.js comes before the agent rea
             file_regex("search-tested", "test/tasks.test.js", r"search", on_unmodified="fail", flags="i",
                        match=['test("search ignores case", () => {', "const found = searchTasks(tasks, 'WR');"],
                        no_match=['test("completing a task marks it done", () => {']),
+            # Acceptance example: with the box empty the list is what it was. A test must call the search with "".
+            file_regex("search-test-empty", "test/tasks.test.js",
+                       r"(?:search|query|term|filter)\w*\([^()]*(?:\"\"|'')\s*[,)]", on_unmodified="fail",
+                       weight=0.5, flags="i",
+                       match=['const all = searchTasks(tasks, "");', "assert.equal(filterTasks(tasks, 'all', '').length, 3);"],
+                       no_match=['const found = searchTasks(tasks, "WR");', 'test("completing a task marks it done", () => {']),
             bash("ran-checks", NODE_TEST, min=2,
                  match=['{"command":"node --test test/tasks.test.js"}',
                         '{"command":"cd app && node --test test/tasks.test.js"}'],

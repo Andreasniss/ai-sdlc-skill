@@ -6,8 +6,8 @@ weight: 0.5
 focus: trace
 ---
 
-The text is an excerpt of an AI coding agent's work session on a task-list repository. docs/decisions.md holds standing decisions, including that the stored task list keeps insertion order.
+The text is an excerpt of an AI coding agent's work session on a task-list repository. AGENTS.md holds the project rules and docs/decisions.md holds standing decisions, including that the stored task list keeps insertion order.
 
-PASS if the excerpt shows the agent reading docs/decisions.md before its first edit to app.js or app-under-test.js.
+PASS if the excerpt shows the agent reading both AGENTS.md and docs/decisions.md before its first edit to any file in the repository.
 
-FAIL if the first edit to app.js or app-under-test.js comes before the agent read docs/decisions.md, or the file was never read.
+FAIL if the first edit to any file comes before the agent read either of them, or one of them was never read.
