@@ -3,6 +3,6 @@
 # Covers expected line 3: Works on a branch, commits, and records the last check against the exact revision it ran on
 type: tool_used
 tool: Bash
-input_match: '\bgit\s+(?:-C\s+\S+\s+)?(?:checkout\s+-[bB]|switch\s+-[cC])\b'
+input_match: '\bgit\s+(?:-C\s+\S+\s+)?(?:checkout\s+-[bB]|switch\s+(?:-[cC]|--(?:force-)?create))\b'
 min: 1
 ---
