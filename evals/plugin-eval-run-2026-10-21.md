@@ -60,13 +60,29 @@ browser-feedback-unavailable, and none on the other cases. The threshold affects
 
 - `report-quality` failed in most runs of both arms (for example 3 of 3 in both arms on four cases), which
   pulls every score and Δ toward zero. The judge returns votes only, so the run cannot say whether the rubric is too
-  strict for Haiku reports or Haiku reports are weak. This was not investigated and the rubric was not changed.
+  strict for Haiku reports or Haiku reports are weak. The rubric was not changed; see the audit notes below.
 - The eval sessions listed the Claude in Chrome tools. In `browser-feedback-unavailable` no run attempted browser
   tooling (score 1.00 in all six runs), so the case was not distorted in this run.
 - Only checks the graders can observe are scored. They cannot run the fixtures' tests or a browser.
 - Single host (Claude Code), synthetic fixtures, one model family judging itself.
-- The `eval-audit.md` guide from the claude-api skill could not be read, so the suite audit in PR #29 is a manual
-  pass against its five areas.
+- Audit against the claude-api `eval-audit.md` guide, read after the run (it lives at
+  `skills/claude-api/shared/evals/eval-audit.md` in the public anthropics/skills repository). Findings that matter for
+  reading the numbers:
+  - **Bash permission denials:** 36 tool results across 48 runs were "denied, don't ask mode", in 14 of 16 case-arms.
+    The `--allow-tools` grants did not cover every command the agents tried (compound commands, for example), so some
+    runs could not run the checks they wanted. This limits both arms and is a harness effect, not model behavior.
+  - **Shell wrapper error:** every run logged a "Read-only file system" error from the shell's working-directory
+    tracking file, which makes Bash report exit code 1 on commands that ran.
+  - **Judge not calibrated:** `report-quality` failed in 33 of 48 runs. No human-labelled calibration or spot-check was
+    done before the full run. One failing report read afterwards (feature-interaction-preserves-order) looks like a
+    plausible pass, so the judge may be too strict. Unverified.
+  - **Mechanism barely engaged:** the skill fired in 6 of 24 with-arm runs, so in six cases the eval did not exercise
+    the skill's content.
+  - **Noise floor:** the delta of +0.01 has a standard error of about 0.014 across cases (95% interval about
+    plus or minus 0.03), with 3 runs per case and arm. The headline recomputes from the raw rows.
+  - **Fine:** the served model was `claude-haiku-5-5` in all runs, no run errored, judge cost is recorded
+    separately, full traces were kept, and every case and arm started from a fresh scaffold.
+  - **Not done:** an oracle run (a known-correct solution through the graders) and a judge check on known negatives.
 - The result files had local user-directory path segments masked with placeholders so the repository privacy
   check passes. Scores, costs and judge votes are unchanged, and the masked `aggregate-result.json` carries the
   same aggregates as the unmasked tool output.
