@@ -3,6 +3,6 @@
 # Covers expected line 2: Implements undo while keeping the clear action working
 type: regex
 weight: 0.5
-pattern: 'getElementById\("clear-completed"\)\s*\.addEventListener[\s\S]{0,300}?clearCompleted\(|(?:const|let|var)\s+(\w+)\s*=\s*document\.getElementById\("clear-completed"\)[\s\S]*?\1\.addEventListener[\s\S]{0,300}?clearCompleted\('
+pattern: 'getElementById\(\s*[\"'']clear-completed[\"'']\s*\)\s*\.addEventListener\(\s*[\"''](?:click)[\"'']\s*,\s*(?:(?:\([^)]*\)|\w+)\s*=>\s*(?:\{[^}]{0,300}?|[^{};]{0,300}?)|function(?:\s+\w+)?\s*\([^)]*\)\s*\{[^}]{0,300}?)clearCompleted\(|(?:const|let|var)\s+(\w+)\s*=\s*document\.getElementById\(\s*[\"'']clear-completed[\"'']\s*\);[\s\S]*?\b\1\s*\.addEventListener\(\s*[\"''](?:click)[\"'']\s*,\s*(?:(?:\([^)]*\)|\w+)\s*=>\s*(?:\{[^}]{0,300}?|[^{};]{0,300}?)|function(?:\s+\w+)?\s*\([^)]*\)\s*\{[^}]{0,300}?)clearCompleted\('
 target: {source: file, path: app.js}
 ---

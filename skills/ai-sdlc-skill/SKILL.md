@@ -1,7 +1,7 @@
 ---
 name: ai-sdlc-skill
 license: Apache-2.0
-description: Carry a software change from intent through verification and review, preserving repository rules and evidence for the exact revision. Use for starting new software projects, initializing delivery guidance in undocumented repositories, implementing or reviewing changes, and adopting an AI-assisted delivery workflow.
+description: Implement nontrivial software changes, fix defects across code and tests, address code review feedback, or adapt in-progress work when requirements change. Use when the task needs repository rules, verification, and a reviewable handoff, including new project setup or adopting a delivery workflow. Skip isolated mechanical edits, code explanations, and standalone README writing.
 metadata:
   version: 0.5.3
 ---

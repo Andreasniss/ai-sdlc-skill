@@ -1,0 +1,93 @@
+{
+  "SPDX-FileCopyrightText": "2026 Andreas Nissen",
+  "SPDX-License-Identifier": "Apache-2.0",
+  "schema_version": 1,
+  "purpose": "Held-out discovery-only prompts, authored from independent task categories without reusing the outcome case prompts. Freeze before measuring; do not optimize on this set.",
+  "selected_variant": "action-led",
+  "variants": [
+    {
+      "id": "action-led",
+      "description": "Implement nontrivial software changes, fix defects across code and tests, address code review feedback, or adapt in-progress work when requirements change. Use when the task needs repository rules, verification, and a reviewable handoff, including new project setup or adopting a delivery workflow. Skip isolated mechanical edits, code explanations, and standalone README writing."
+    },
+    {
+      "id": "outcome-led",
+      "description": "Use for software work that must be made reviewable: building a feature, repairing a defect, resolving review findings, or revising an implementation after scope changes. Preserve repository decisions and verify the resulting code. Also use for project setup and delivery-workflow adoption. Do not use for isolated renames, explanatory questions, or standalone documentation edits."
+    },
+    {
+      "id": "continuation-led",
+      "description": "Use when continuing a software change through implementation, testing, and review: finish a feature, resolve actionable review comments, fix a behavior regression, or reconcile changed requirements with existing code and decisions. Also supports new project setup and delivery guidance. Skip trivial mechanical changes, code explanations, and standalone README tasks."
+    }
+  ],
+  "prompts": [
+    {
+      "id": "retry-budget",
+      "prompt": "Implement bounded retries for the event consumer. Cover transient errors and exhausted retries, and leave the patch ready for review.",
+      "should_trigger": true
+    },
+    {
+      "id": "timezone-bug",
+      "prompt": "Our calendar export shifts recurring appointments across daylight-saving time. Reproduce it, repair the conversion and test the boundary dates.",
+      "should_trigger": true
+    },
+    {
+      "id": "api-pagination",
+      "prompt": "Add cursor pagination to the audit endpoint while keeping existing clients working. Check ordering and duplicate events.",
+      "should_trigger": true
+    },
+    {
+      "id": "review-leak",
+      "prompt": "The reviewer found a socket leak and an untested timeout path in the streaming client. Fix valid findings and explain any you disagree with.",
+      "should_trigger": true
+    },
+    {
+      "id": "review-migration",
+      "prompt": "Work through the database migration review comments. Preserve the rollback guarantee and update the verification evidence.",
+      "should_trigger": true
+    },
+    {
+      "id": "scope-offline",
+      "prompt": "The sync implementation is halfway done. Product now needs offline edits to survive reconnects. Revisit the design and finish the behavior with tests.",
+      "should_trigger": true
+    },
+    {
+      "id": "scope-auth",
+      "prompt": "We started with one account per workspace, but the approved requirement now allows multiple accounts. Adapt the permission checks and migration plan.",
+      "should_trigger": true
+    },
+    {
+      "id": "cross-layer",
+      "prompt": "Deliver account deactivation across the API and background jobs. Existing retention rules still apply; show what was verified.",
+      "should_trigger": true
+    },
+    {
+      "id": "new-service",
+      "prompt": "Start a small local webhook receiver with signature validation, setup instructions and tests for accepted and rejected requests.",
+      "should_trigger": true
+    },
+    {
+      "id": "regression-fix",
+      "prompt": "The last cache change serves stale inventory after an update. Trace the invalidation path, fix the regression, and check concurrent requests.",
+      "should_trigger": true
+    },
+    {
+      "id": "rename",
+      "prompt": "Rename the local variable tmp to total in this function; make no other changes.",
+      "should_trigger": false
+    },
+    {
+      "id": "regex",
+      "prompt": "Explain what the regular expression ^[a-z]+[0-9]*$ matches.",
+      "should_trigger": false
+    },
+    {
+      "id": "readme",
+      "prompt": "Write a short README describing these existing command-line options. Do not change code.",
+      "should_trigger": false
+    },
+    {
+      "id": "format",
+      "prompt": "Format this JSON with two-space indentation without changing its values.",
+      "should_trigger": false
+    }
+  ]
+}

@@ -5,3 +5,4 @@
 set -euo pipefail
 here="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 python3 "$here/../../skills/ai-sdlc-skill/scripts/make_fixture.py" --state rules-feature --into . > /dev/null
+python3 "$here/../../scripts/check_eval_workspace.py"

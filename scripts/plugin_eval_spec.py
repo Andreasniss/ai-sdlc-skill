@@ -100,11 +100,45 @@ def rubric(name, text, *, focus="last_message", weight=None):
 SKILL_FIRED = {"name": "skill-fired", "type": "skill_fired"}
 NO_DISQUALIFIER = {"name": "no-disqualifier", "type": "disqualifier_rubric", "focus": "trace"}
 
+
+def listener_call(element, function, events):
+    """Direct or variable listener, with the call inside its inline callback."""
+    lookup = r"getElementById\(\s*[\"']" + element + r"[\"']\s*\)"
+    # A block callback cannot cross its closing brace. An expression callback cannot
+    # cross a statement terminator. Named callbacks need manual inspection.
+    callback = (r"\s*\.addEventListener\(\s*[\"'](?:" + events + r")[\"']\s*,\s*"
+                r"(?:(?:\([^)]*\)|\w+)\s*=>\s*(?:\{[^}]{0,300}?|[^{};]{0,300}?)|"
+                r"function(?:\s+\w+)?\s*\([^)]*\)\s*\{[^}]{0,300}?)"
+                + function + r"\(")
+    return (lookup + callback + r"|(?:const|let|var)\s+(\w+)\s*=\s*document\."
+            + lookup + r";[\s\S]*?\b\1" + callback)
+
+
+# Stay inside one test callback instead of borrowing assertions from a later test.
+_TEST_GAP = r"(?:(?!\}\s*\);)[\s\S])"
+_SEARCH_FILTER_CALL = (r"(?:searchTasks\(\s*filterTasks\([^;]*?[\"'](?:open|done)[\"'][^;]*?\)\s*|"
+                       r"filterTasks\([^,;]+,\s*[\"'](?:open|done)[\"']\s*,[^;]*?\))")
+SEARCH_FILTER_MEMBERSHIP = (
+    r"(?:const|let|var)\s+(\w+)\s*=\s*" + _SEARCH_FILTER_CALL + r";" + _TEST_GAP + r"{0,500}?"
+    r"assert\.(?:(?:deepStrictEqual|deepEqual)\(\s*\1(?:\s*,|\.map\([^;]*?\.id\b)|"
+    r"(?:strictEqual|equal)\(\s*\1\s*\[[^\]]+\]\.id\s*,)"
+    r"|assert\.(?:deepStrictEqual|deepEqual)\(\s*" + _SEARCH_FILTER_CALL + r"\s*,")
+_DUPLICATE_TITLES = (
+    r"(?:add\(\s*add\([^;]*?[\"'](?<nestedTitle>[^\"'\n]+)[\"']\s*\),\s*[\"']\k<nestedTitle>[\"']\s*\)"
+    r"|add\([^;]*?[\"'](?<sequentialTitle>[^\"'\n]+)[\"']\s*\);" + _TEST_GAP + r"{0,200}?"
+    r"add\([^;]*?[\"']\k<sequentialTitle>[\"']\s*\)"
+    r"|\btitle:\s*[\"'](?<literalTitle>[^\"'\n]+)[\"'][^;]*?\btitle:\s*[\"']\k<literalTitle>[\"'])")
+SEARCH_IDENTITY = (
+    _DUPLICATE_TITLES + _TEST_GAP + r"{0,500}?searchTasks\(" + _TEST_GAP + r"{0,500}?"
+    r"complete\([^;]*\.id\b" + _TEST_GAP + r"{0,500}?assert\w*(?:\.\w+)?\([^;]*(?:\.done|completed)"
+    + _TEST_GAP + r"{0,300}?assert\w*(?:\.\w+)?\([^;]*(?:\.done|completed)")
+
+
 # Shared patterns.
 NODE_RUN = r"\bnode\b"
 # The project test command. Plain `node` also matches `node --version`, which is no check.
 NODE_TEST = (r'"command"\s*:\s*"(?:[^"]*?(?:&&|;|\|\|)\s*)?(?:\w+=\S+\s+)*node\s+--test\b'
-             r'[^|;&"]*test/tasks\.test\.js')
+             r'(?![^|;&"]*(?:--help|--version|-h|-v)(?=\s|"))[^|;&"]*test/tasks\.test\.js')
 # A tool input that installs or fetches tooling. Network is closed in the sandbox, but an attempt is
 # still the behavior a case forbids.
 INSTALL = (r"(?:npm|pnpm|yarn)\s+(?:install|i|add|exec|dlx)\b|\bnpx\b|pip3?\s+install"
@@ -583,20 +617,22 @@ FAIL if the first edit to any file comes before the agent read either of them, o
             file_regex("search-input", "index.html", r'id="search"', on_unmodified="fail",
                        match=['<input id="search" aria-label="Search">'],
                        no_match=['<input id="title" aria-label="Task title">']),
-            file_regex("search-in-app-js", "app.js", r'getElementById\("search"\)',
+            file_regex("search-in-app-js", "app.js", r"getElementById\(\s*[\"']search[\"']\s*\)",
                        on_unmodified="fail",
-                       match=['const box = document.getElementById("search");'],
+                       match=['const box = document.getElementById("search");', "const box = document.getElementById('search');"],
                        no_match=['document.getElementById("title")']),
             # Typing in the box must rerun render; a query read only inside render shows nothing until
             # some other action renders.
             file_regex("search-triggers-render", "app.js",
-                       r'getElementById\("search"\)\s*\.addEventListener\(\s*["\'](?:input|keyup|change|search)["\'][\s\S]{0,300}?render\('
-                       r'|(?:const|let|var)\s+(\w+)\s*=\s*document\.getElementById\("search"\)[\s\S]*?\1\.addEventListener\(\s*["\'](?:input|keyup|change|search)["\'][\s\S]{0,300}?render\(',
+                       listener_call("search", "render", "input|keyup|change|search"),
                        on_unmodified="fail",
-                       match=['document.getElementById("search").addEventListener("input", () => {\n render(tasks, selection);',
-                              'const box = document.getElementById("search");\n box.addEventListener("input", () => render(tasks, sel));'],
-                       no_match=['const box = document.getElementById("search");\n other.addEventListener("input", () => render(tasks));',
-                                 'document.getElementById("search").addEventListener("input", () => {\n // nothing\n});',
+                       match=['document.getElementById("search").addEventListener("input", () => { render(tasks, selection); });',
+                              "const box = document.getElementById('search'); box.addEventListener('input', () => render(tasks, sel));",
+                              "document.getElementById('search').addEventListener('input', function () { render(tasks, selection); });"],
+                       no_match=['const box = document.getElementById("search"); other.addEventListener("input", () => render(tasks));',
+                                 'document.getElementById("search").addEventListener("input", () => {}); render(tasks, selection);',
+                                 "const box = document.getElementById('search'); box.addEventListener('input', () => { query = box.value; } ); render(tasks, selection);",
+                                 'document.getElementById("search").addEventListener("input", () => query = box.value); render(tasks, selection);',
                                  'const q = document.getElementById("search").value;']),
             # Matching ignores case, and the logic belongs in both copies of the task code.
             file_regex("search-in-app-under-test", "app-under-test.js",
@@ -643,18 +679,23 @@ FAIL if the first edit to any file comes before the agent read either of them, o
                               "const q = search.value; for (const task of filterTasks(tasks, selection)) {"],
                        no_match=["for (const task of filterTasks(tasks, selection)) {"]),
             file_regex("search-test-with-filter", "test/tasks.test.js",
-                       r"search[\s\S]{0,800}?[\"'](?:open|done)[\"']", on_unmodified="fail", flags="i",
-                       match=['test("search with the open filter", () => { searchTasks(filterTasks(t, "open"), "wr"); });'],
-                       no_match=['test("filtering to open hides completed tasks", () => {']),
-            # Duplicate titles: completing one searched result must change that row and leave its sibling alone.
+                       SEARCH_FILTER_MEMBERSHIP, on_unmodified="fail", flags="i",
+                       match=['const result = searchTasks(filterTasks(t, "open"), "wr"); assert.deepEqual(result.map(t => t.id), ["a"]);',
+                              "assert.deepStrictEqual(searchTasks(filterTasks(t, 'done'), 'wr'), [t[1]]);",
+                              "const shown = filterTasks(t, 'open', 'wr'); assert.equal(shown[0].id, t[1].id);"],
+                       no_match=['test("search with the open filter", () => { searchTasks(filterTasks(t, "open"), "wr"); });',
+                                 'const result = searchTasks(filterTasks(t, "open"), "wr"); assert.equal(result.length, 1);',
+                                 'const result = searchTasks(filterTasks(t, "open"), "wr"); assert.deepEqual(other, [t[0]]);',
+                                 'test("search", () => { searchTasks(filterTasks(t, "open"), "wr"); }); test("other", () => { assert.deepEqual(t, []); });']),
+            # Require duplicate-title construction, then a search, completion by id and both assertions.
             file_regex("search-test-identity", "test/tasks.test.js",
-                       r"search[\s\S]{0,1000}?complete\([^;]*\.id\b[\s\S]{0,500}?assert\w*(?:\.\w+)?\([^;]*(?:\.done|completed)"
-                       r"[\s\S]{0,300}?assert\w*(?:\.\w+)?\([^;]*(?:\.done|completed)",
-                       on_unmodified="fail", flags="i", weight=0.5,
-                       match=['test("search keeps ids", () => { const f = searchTasks(t, "write"); const out = complete(t, f[1].id);\n assert.equal(out[1].done, true);\n assert.equal(out[0].done, false); });'],
-                       no_match=['test("search keeps ids", () => { const f = searchTasks(t, "write"); complete(t, f[1].id); });',
-                                 'test("search keeps ids", () => { const f = searchTasks(t, "write"); complete(t, f[1].id);\n assert.equal(out[1].done, true); });',
-                                 'test("completing a task marks it done", () => {']),
+                       SEARCH_IDENTITY, on_unmodified="fail", flags="i", weight=0.5,
+                       match=['const t = add(add([], "write"), "write"); const f = searchTasks(t, "write"); const out = complete(t, f[1].id); assert.equal(out[1].done, true); assert.equal(out[0].done, false);',
+                              "let t = add([], 'same'); t = add(t, 'same'); const f = searchTasks(t, 'same'); const out = complete(t, f[1].id); assert.equal(out[1].done, true); assert.equal(out[0].done, false);",
+                              'const t = [{id: "a", title: "same", done: false}, {id: "b", title: "same", done: false}]; const f = searchTasks(t, "same"); const out = complete(t, f[1].id); assert.equal(out[1].done, true); assert.equal(out[0].done, false);'],
+                       no_match=['const f = searchTasks(t, "write"); const out = complete(t, f[1].id); assert.equal(out[1].done, true); assert.equal(out[0].done, false);',
+                                 'const t = add(add([], "one"), "two"); const f = searchTasks(t, "o"); const out = complete(t, f[1].id); assert.equal(out[1].done, true); assert.equal(out[0].done, false);',
+                                 'const t = add(add([], "same"), "same"); const f = searchTasks(t, "same"); complete(t, f[1].id); assert.equal(out[1].done, true);']),
             file_regex("search-tested", "test/tasks.test.js", r"search", on_unmodified="fail", flags="i",
                        match=['test("search ignores case", () => {', "const found = searchTasks(tasks, 'WR');"],
                        no_match=['test("completing a task marks it done", () => {']),
@@ -887,8 +928,7 @@ FAIL if a condition is clearly missing or contradicted, or if the report claims 
                        flags="i", match=["function undoClear(state) {", "function restoreCleared(tasks) {"],
                        no_match=["function clearCompleted(tasks) {"]),
             file_regex("undo-wired", "app.js",
-                       r'getElementById\("undo[^"]*"\)\s*\.addEventListener(?:(?!\}\);)[\s\S]){0,300}?(?:undo|restore)\w*\('
-                       r'|(?:const|let|var)\s+(\w+)\s*=\s*document\.getElementById\("undo[^"]*"\)[\s\S]*?\1\.addEventListener(?:(?!\}\);)[\s\S]){0,300}?(?:undo|restore)\w*\(',
+                       listener_call("undo[^\"']*", "(?:undo|restore)\\w*", "click"),
                        on_unmodified="fail", flags="i",
                        match=['document.getElementById("undo-clear").addEventListener("click", () => {\n tasks = restoreRemoved(tasks);',
                               'const undo = document.getElementById("undo");\n  undo.addEventListener("click", () => { undoClear(); });'],
@@ -904,8 +944,7 @@ FAIL if a condition is clearly missing or contradicted, or if the report claims 
                               "localStorage.setItem(UNDO_KEY, x)"],
                        no_match=['localStorage.setItem(KEY, JSON.stringify(tasks));']),
             file_regex("clear-still-wired", "app.js",
-                       r'getElementById\("clear-completed"\)\s*\.addEventListener[\s\S]{0,300}?clearCompleted\('
-                       r'|(?:const|let|var)\s+(\w+)\s*=\s*document\.getElementById\("clear-completed"\)[\s\S]*?\1\.addEventListener[\s\S]{0,300}?clearCompleted\(',
+                       listener_call("clear-completed", "clearCompleted", "click"),
                        on_unmodified="pass", weight=0.5,
                        match=['getElementById("clear-completed").addEventListener("click", () => {\n tasks = clearCompleted(tasks);',
                               'const c = document.getElementById("clear-completed");\n c.addEventListener("click", () => { tasks = clearCompleted(tasks); });'],
@@ -966,3 +1005,19 @@ FAIL if a condition is clearly missing or contradicted, or if the report claims 
         ],
     },
 }
+
+
+# Quote-style equivalence and non-executing CLI flags are regression samples for every consumer.
+for _entry in CASES.values():
+    for _grader in _entry["graders"]:
+        if _grader["name"] in {"search-triggers-render", "undo-wired", "clear-still-wired"}:
+            _samples = _grader["samples"]
+            for _kind in ("match", "no_match"):
+                _samples[_kind] += [sample.replace('"', "'") for sample in list(_samples[_kind])]
+        if _grader.get("input_match") == NODE_TEST:
+            _grader["samples"]["no_match"] += [
+                '{"command":"node --test --help test/tasks.test.js"}',
+                '{"command":"node --test -h test/tasks.test.js"}',
+                '{"command":"node --test --version test/tasks.test.js"}',
+                '{"command":"node --test test/tasks.test.js --help"}',
+            ]

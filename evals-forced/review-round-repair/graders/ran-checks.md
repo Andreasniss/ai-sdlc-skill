@@ -3,6 +3,6 @@
 # Covers expected line 3: Reruns the checks on the updated code and does not cite the earlier record as evidence for it
 type: tool_used
 tool: Bash
-input_match: '"command"\s*:\s*"(?:[^"]*?(?:&&|;|\|\|)\s*)?(?:\w+=\S+\s+)*node\s+--test\b[^|;&"]*test/tasks\.test\.js'
+input_match: '"command"\s*:\s*"(?:[^"]*?(?:&&|;|\|\|)\s*)?(?:\w+=\S+\s+)*node\s+--test\b(?![^|;&"]*(?:--help|--version|-h|-v)(?=\s|"))[^|;&"]*test/tasks\.test\.js'
 min: 1
 ---
