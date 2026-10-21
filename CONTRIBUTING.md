@@ -13,6 +13,8 @@ Run from the repository root with the documented runtime:
 python3 -m unittest discover -s skills/ai-sdlc-skill/tests -v
 python3 scripts/test_docs_consistency.py
 python3 scripts/test_plugin_packaging.py
+python3 scripts/render_plugin_evals.py --check
+python3 scripts/test_render_plugin_evals.py
 python3 scripts/check_privacy.py --staged
 python3 scripts/check_privacy.py --range origin/main HEAD
 ```
@@ -34,6 +36,12 @@ set is rejected rather than reported. Build the starting repository a case names
 the readable copy with `skills/ai-sdlc-skill/scripts/render_cases.py`.
 
 A recorded run is one person's observation of one host. Report it as that.
+
+`evals/<case-id>/` is the same case set rendered for `claude plugin eval` on Claude Code, with
+deterministic graders and Sonnet rubrics, so a run can compare the skill against no skill. It is
+generated from `cases.json` and `scripts/plugin_eval_spec.py` by `scripts/render_plugin_evals.py`;
+change those and render again, never the generated files. The two commands above need no model.
+Running the suite is manual and billed to your account: see [evals/README.md](evals/README.md).
 
 Include the problem, scoped change, actual checks and affected revision in a focused
 pull request. Add regression coverage for behavior changes and preserve documented
