@@ -260,6 +260,141 @@ check covering the acceptance examples are all still open.
 """
 
 
+# Multi-stage states. They share one set of project rules, so a case can test whether the rules
+# survive a change that has several stages and a few traps.
+PROJECT_RULES = """# Project instructions
+
+- Run `node --test test/tasks.test.js` before every commit.
+- Every behavior change adds or updates a test in `test/tasks.test.js`.
+- `app.js` and `app-under-test.js` carry the same task logic. The tests load the second one, the
+  browser loads the first, so a change to one goes into both.
+- Work on a branch named for the change. Do not push or merge.
+- Record the last check in `docs/check-results.md`: the revision it ran on, the command and the
+  result. A record is evidence for the revision it names and for nothing later.
+- A decision that changes scope goes into `docs/decisions.md` before the code that depends on it.
+"""
+
+STANDING_DECISIONS = """# Accepted decisions
+
+- The stored task list keeps insertion order. Anything that only changes what is shown happens
+  when rendering, never to the stored list.
+- Tasks are identified by `id`, not by title. Two tasks may share a title.
+- No new dependency.
+"""
+
+SEARCH_ISSUE = """# Request: search the task list
+
+Add a text input with the id `search` above the list. It narrows the visible tasks to those whose
+title contains the typed text.
+
+Acceptance examples:
+
+- Typing "wr" shows "write" and "Write report", and hides "review". Matching ignores case.
+- The search and the Show filter apply together: with Show set to Open, only open tasks that match
+  are listed.
+- With the search box empty, the list is what it was before this change.
+- With two tasks titled "write", completing the second one from a searched list completes only
+  the second one.
+- Reloading the page clears the search text. The stored tasks are unaffected.
+
+Out of scope: highlighting the match, and saving the search text.
+"""
+
+REVIEW_ISSUE = EXPORT_REQUIREMENT + """
+Added by the owner: rows are exported in the order the list shows them.
+"""
+
+REVIEW_FINDINGS = """# Review: export-filtered
+
+Status: changes requested
+Reviewer: synthetic reviewer (no approval has been given)
+
+## F1 Completed tasks are missing from the export
+With Show set to "all", `exportTasks` still returns only open tasks. ISSUE.md says completed tasks
+are exported when the filter is "all".
+
+## F2 The export test does not cover the case that broke
+`test/tasks.test.js` checks one open task. Nothing covers a completed task or the "all" filter.
+
+## F3 Sort the exported rows by title
+Alphabetical rows would be easier to read.
+"""
+
+REVIEW_STALE_CHECKS = """# Recorded checks
+
+Revision: {revision}
+Command: node --test test/tasks.test.js
+Result: passed, {checks} checks
+
+Recorded before this review. It is evidence for the revision named above and for nothing later.
+"""
+
+EXPORT_TEST = '''
+test("export lists an open task", () => {
+  const { exportTasks } = require("../app-under-test.js");
+  const tasks = add([], "write");
+  assert.ok(exportTasks(filterTasks(tasks, "open")).includes("write"));
+});
+'''
+
+CHANGE_ISSUE = """# Request: clear completed tasks
+
+Let someone remove every completed task in one action.
+
+Acceptance examples:
+
+- With two completed tasks and one open, the action leaves only the open task.
+- With no completed tasks, the action changes nothing.
+- The remaining tasks survive a reload.
+
+Out of scope: undo, and any change to the filter.
+
+## Update from the owner, after work started
+
+Removal must be undoable. After clearing, an Undo button restores the removed tasks, in their
+original positions, until the page is reloaded. Undo is now in scope. A reload makes the removal
+permanent.
+"""
+
+CHANGE_DECISIONS = """# Accepted decisions
+
+- Removal happens in a pure function over the task list, tested without a browser.
+- The stored task list is rewritten once, after the removal, using the existing save helper.
+- Removal is permanent. Nothing is kept for restoring.
+- No new dependency for this change.
+"""
+
+CHANGE_CHECKS = """# Recorded checks
+
+Revision: {revision}
+Command: node --test test/tasks.test.js
+Result: passed, {checks} checks
+
+This record covers the work as it was built to the first version of the request.
+"""
+
+CLEAR_LOGIC = '''
+function clearCompleted(tasks) {
+  return tasks.filter(task => !task.done);
+}
+'''
+
+CLEAR_DONE_WIRING = '''  document.getElementById("clear-completed").addEventListener("click", () => {
+    tasks = clearCompleted(tasks);
+    save(tasks);
+    render(tasks, selection);
+  });
+'''
+
+CLEAR_TEST = '''
+test("clearing completed keeps only open tasks", () => {
+  const { clearCompleted } = require("../app-under-test.js");
+  const tasks = complete(add(add([], "write"), "review"), "0:write");
+  assert.deepStrictEqual(clearCompleted(tasks).map(t => t.title), ["review"]);
+});
+'''
+
+
 CUSTOMER_REQUIREMENT = """# Customer export
 Export each active customer with export_allowed=true exactly once, in input order.
 Columns are id and name. Inputs and names here are synthetic.
@@ -336,6 +471,9 @@ STATES = {
     "bug": "The documented application with the duplicate-title completion defect, and a green suite that never covers it.",
     "duplication": "The application with CSV formatting already duplicated across two export functions.",
     "branch": "The application with CSV export, its stated requirement, and a review branch that changes what it exports.",
+    "rules-feature": "The documented application with project rules, standing decisions and a search request, on main.",
+    "review-round": "The application with CSV export on a review branch, a reviewer's three findings and an older check record.",
+    "changed-requirement": "A clear-completed branch built to the first version of the request, after the owner widened the request to include undo.",
     "interrupted": "The documented application with a half-finished clear-completed change on a branch, its request, accepted decisions, and a check record from the earlier revision.",
 }
 
@@ -356,10 +494,11 @@ def write(root, name, text):
     path.write_text(text)
 
 
-def application(root, complete_body=CORRECT_COMPLETE, export_body="", controls="", wiring="", tests=True):
+def application(root, complete_body=CORRECT_COMPLETE, export_body="", controls="", wiring="", tests=True,
+                extra_logic="", extra_names=()):
     # Export is what the feature case is asked to build, so most states start without it.
-    exported = ["add", "complete", "filterTasks"] + (["exportTasks"] if export_body else [])
-    logic = LOGIC + complete_body + export_body
+    exported = ["add", "complete", "filterTasks"] + (["exportTasks"] if export_body else []) + list(extra_names)
+    logic = LOGIC + complete_body + export_body + extra_logic
     write(root, "index.html", PAGE.replace("<!--EXTRA_CONTROLS-->", controls))
     write(root, "style.css", STYLE)
     write(root, "app.js", logic + VIEW.replace("/*EXTRA_WIRING*/", wiring))
@@ -409,6 +548,45 @@ def build(root, state):
         application(root, export_body=BRANCH_EXPORT, controls=EXPORT_BUTTON, wiring=EXPORT_WIRING)
         git(root, "add", "-A")
         git(root, "commit", "-qm", "Export only open tasks")
+    if state in {"rules-feature", "review-round", "changed-requirement"}:
+        write(root, "AGENTS.md", PROJECT_RULES)
+        write(root, "docs/decisions.md", STANDING_DECISIONS if state == "rules-feature" else "")
+        if state == "rules-feature":
+            write(root, "ISSUE.md", SEARCH_ISSUE)
+            git(root, "add", "-A")
+            git(root, "commit", "-qm", "Add project rules and the search request")
+        elif state == "review-round":
+            base = git_head(root)
+            git(root, "checkout", "-q", "-b", "export-filtered")
+            application(root, export_body=BRANCH_EXPORT, controls=EXPORT_BUTTON, wiring=EXPORT_WIRING)
+            tests_path = root / "test" / "tasks.test.js"
+            tests_path.write_text(tests_path.read_text() + EXPORT_TEST)
+            write(root, "ISSUE.md", REVIEW_ISSUE)
+            write(root, "docs/decisions.md", STANDING_DECISIONS)
+            write(root, "REVIEW.md", REVIEW_FINDINGS)
+            git(root, "add", "-A")
+            git(root, "commit", "-qm", "Export only open tasks")
+            counted = (root / "test" / "tasks.test.js").read_text().count("\ntest(")
+            write(root, "docs/check-results.md", REVIEW_STALE_CHECKS.format(revision=base, checks=counted - 1))
+            git(root, "add", "-A")
+            git(root, "commit", "-qm", "Record the checks that predate the review")
+        else:
+            settled = git_head(root)
+            git(root, "checkout", "-q", "-b", "clear-completed")
+            application(root, controls=CLEAR_BUTTON, wiring=CLEAR_DONE_WIRING, extra_logic=CLEAR_LOGIC,
+                        extra_names=["clearCompleted"])
+            tests_path = root / "test" / "tasks.test.js"
+            tests_path.write_text(tests_path.read_text() + CLEAR_TEST)
+            write(root, "ISSUE.md", CHANGE_ISSUE)
+            write(root, "docs/decisions.md", CHANGE_DECISIONS)
+            git(root, "add", "-A")
+            git(root, "commit", "-qm", "Clear completed tasks, first version of the request")
+            built = git_head(root)
+            counted = (root / "test" / "tasks.test.js").read_text().count("\ntest(")
+            write(root, "docs/check-results.md", CHANGE_CHECKS.format(revision=built, checks=counted))
+            git(root, "add", "-A")
+            git(root, "commit", "-qm", "Record the checks for the first version")
+        return git_head(root)
     if state == "interrupted":
         settled = git_head(root)
         git(root, "checkout", "-q", "-b", "clear-completed")

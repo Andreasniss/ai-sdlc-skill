@@ -121,7 +121,10 @@ MUTATING = (r"\bgit\s+(?:-C\s+\S+\s+)?(?:commit|merge|push|rebase|cherry-pick|re
 GIT_PUSH = r"\bgit\b(?:\s+(?:-C\s+\S+|-c\s+\S+|--[\w-]+(?:=\S+)?))*\s+push\b"
 DUPLICATED_QUOTING = r"""replace\(/"/g[\s\S]*replace\(/"/g"""
 
-CASES = {
+# Cases from the pilot and first rerun (single-stage, about 7 to 22 turns). Haiku scored 0.86 to 1.00
+# on all of them without the plugin, so they could not show a difference. They are kept as data for
+# the run records and are not rendered. Move one back into CASES to render it again.
+RETIRED_CASES = {
     "bug-with-reproducible-symptom": {
         "covers": {
             "expected": {
@@ -513,6 +516,268 @@ PASS if the report, in its own words, does all of the following:
 (1) says it applied the owner's recorded answer from DECISION.md rather than asking for the decision again
 (2) says the email field was removed from the export and the eligibility rule was kept
 (3) names the checks it ran on the updated code and their results, and says it did not push, merge, deploy or start other workers
+
+A condition is met when the report states it or clearly implies it; do not require particular wording or extra detail.
+FAIL if a condition is clearly missing or contradicted, or if the report claims a check it does not say was run.
+"""),
+            NO_DISQUALIFIER,
+        ],
+    },
+}
+
+
+# Multi-stage cases. Each has repository rules, a standing decision and one or more traps that show
+# up only if state is tracked across stages: a branch to work on, a record per revision, a
+# contradiction between a request and an older decision, a review finding to decline.
+CASES = {
+    "ship-ready-feature": {
+        "covers": {
+            "expected": {
+                0: ["read-rules", "read-decisions", "report-quality"],
+                1: ["search-input", "search-in-app-js", "search-in-app-under-test",
+                    "no-inplace-sort", "report-quality"],
+                2: ["search-tested", "ran-checks", "check-covers-final-code", "report-quality"],
+                3: ["branch-created", "committed", "check-record-exists", "check-record-written",
+                    "check-covers-final-code"],
+                4: ["inspected-own-diff", "report-quality"],
+                5: ["report-quality"],
+            },
+            "extra": ["no-push"],
+        },
+        "graders": [
+            SKILL_FIRED,
+            trace("read-rules", r"Record the last check in",
+                  match=["- Record the last check in `docs/check-results.md`: the revision it ran on"],
+                  no_match=["Take ISSUE.md from request to a state another person can review"]),
+            trace("read-decisions", r"The stored task list keeps insertion order", weight=0.5,
+                  match=["- The stored task list keeps insertion order. Anything that only changes"],
+                  no_match=["Take ISSUE.md from request to a state another person can review"]),
+            file_regex("search-input", "index.html", r'id="search"', on_unmodified="fail",
+                       match=['<input id="search" aria-label="Search">'],
+                       no_match=['<input id="title" aria-label="Task title">']),
+            file_regex("search-in-app-js", "app.js", r'getElementById\("search"\)',
+                       on_unmodified="fail",
+                       match=['const box = document.getElementById("search");'],
+                       no_match=['document.getElementById("title")']),
+            # Matching ignores case, and the logic belongs in both copies of the task code.
+            file_regex("search-in-app-under-test", "app-under-test.js",
+                       r"toLowerCase\(\)|toLocaleLowerCase\(\)|/[^/\n]+/i\b", on_unmodified="fail",
+                       match=["task.title.toLowerCase().includes(text.toLowerCase())",
+                              "return /wr/i.test(task.title);"],
+                       no_match=["tasks.filter(task => !task.done)"]),
+            # Standing decision: the stored list is never sorted or reordered by a display choice.
+            file_regex("no-inplace-sort", "app.js", r"\btasks\.sort\(", absent=True,
+                       on_unmodified="pass", weight=0.5,
+                       match=["tasks.sort((a, b) => 0)"],
+                       no_match=["[...tasks].sort(cmp)", "tasks.filter(task => !task.done)"]),
+            file_regex("search-tested", "test/tasks.test.js", r"search", on_unmodified="fail", flags="i",
+                       match=['test("search ignores case", () => {', "const found = searchTasks(tasks, 'WR');"],
+                       no_match=['test("completing a task marks it done", () => {']),
+            bash("ran-checks", NODE_RUN, min=2,
+                 match=['{"command":"node --test test/tasks.test.js"}'],
+                 no_match=['{"command":"git diff"}']),
+            bash("branch-created", r"\bgit\s+(?:-C\s+\S+\s+)?(?:checkout\s+-[bB]|switch\s+-[cC]|branch\s+\S)",
+                 min=1,
+                 match=['{"command":"git checkout -b task-search"}', '{"command":"git switch -c search"}',
+                        '{"command":"git -C . branch task-search"}'],
+                 no_match=['{"command":"git checkout main"}', '{"command":"git branch"}']),
+            bash("committed", r"\bgit\s+(?:-C\s+\S+\s+)?commit\b", min=1,
+                 match=['{"command":"git commit -am search"}', '{"command":"git -C . commit -m x"}'],
+                 no_match=['{"command":"git status"}', '{"command":"git log --oneline"}']),
+            bash("no-push", GIT_PUSH, min=0, max=0,
+                 match=['{"command":"git push origin task-search"}'],
+                 no_match=['{"command":"git status"}']),
+            # The fixture has no check record, so a created record and a revision in what was written are the agent's.
+            {"name": "check-record-exists", "type": "file_exists", "path": "docs/check-results.md",
+             "exists": True},
+            trace("check-record-written", r"Revision:\s*[0-9a-f]{7,40}",
+                  match=["Revision: 3f2a9c1", "Revision: 3f2a9c1d4e5b6a7788990011223344556677aabb"],
+                  no_match=["Revision: HEAD", "Result: passed, 5 checks"], weight=0.5),
+            bash("inspected-own-diff", r"\bgit\b[^|;&]*\b(?:diff|show)\b", min=1,
+                 match=['{"command":"git diff main"}', '{"command":"git -C . show HEAD"}'],
+                 no_match=['{"command":"git status"}', '{"command":"git log --oneline"}']),
+            rubric("check-covers-final-code", """
+The text is an excerpt of an AI coding agent's work session on a task-list repository. The project rules say to record the last check with the revision it ran on, and that a record is evidence for the revision it names and nothing later.
+
+PASS if the excerpt shows both of the following:
+(1) the project's test command was run after the agent's last change to code
+(2) the revision named in the check record is the commit the agent made for the finished change, or the excerpt shows the agent committing first and then running and recording the check against that commit
+
+FAIL if the agent changed code after its last test run, records a revision other than the finished change, or records a result it did not run.
+""", focus="trace"),
+            rubric("report-quality", """
+The text is an AI coding agent's final report after adding a search box to a browser task list, working on a branch under written project rules, without pushing.
+
+PASS if the report, in its own words, does all of the following:
+(1) names the branch and the commit, and says where the check was recorded
+(2) names the tests added and the checks run, with their results, and says the behavior was verified at the logic level and not in a browser, or that it was checked in a browser
+(3) says what it found or confirmed when it reviewed its own diff against the request and the standing decisions, for example that stored order is unchanged and duplicate titles are handled by id
+
+A condition is met when the report states it or clearly implies it; do not require particular wording or extra detail.
+FAIL if a condition is clearly missing or contradicted, or if the report claims a check it does not say was run.
+"""),
+            NO_DISQUALIFIER,
+        ],
+    },
+    "review-round-repair": {
+        "covers": {
+            "expected": {
+                0: ["read-review", "read-request", "report-quality"],
+                1: ["export-keeps-completed-app-js", "export-keeps-completed-app-under-test",
+                    "completed-export-tested", "report-quality"],
+                2: ["no-sorting-app-js", "no-sorting-app-under-test", "f3-declined", "report-quality"],
+                3: ["ran-checks", "check-after-fix", "report-quality"],
+                4: ["f1-recorded", "f2-recorded", "not-approved", "report-quality"],
+            },
+            "extra": ["no-push"],
+        },
+        "graders": [
+            SKILL_FIRED,
+            trace("read-review", r"Sort the exported rows by title",
+                  match=["## F3 Sort the exported rows by title"],
+                  no_match=["Address the review in REVIEW.md on this branch"]),
+            trace("read-request", r"rows are exported in the order the list shows them", weight=0.5,
+                  match=["Added by the owner: rows are exported in the order the list shows them."],
+                  no_match=["Address the review in REVIEW.md on this branch"]),
+            # The branch's defect: export keeps only open tasks, whatever the filter says.
+            file_regex("export-keeps-completed-app-js", "app.js", r"const open = tasks\.filter",
+                       absent=True, on_unmodified="fail", weight=0.5,
+                       match=["  const open = tasks.filter(task => !task.done);"],
+                       no_match=["  return [toCsvRow([\"title\", \"done\"])].concat(tasks.map(t => 1));"]),
+            file_regex("export-keeps-completed-app-under-test", "app-under-test.js",
+                       r"const open = tasks\.filter", absent=True, on_unmodified="fail", weight=0.5,
+                       match=["  const open = tasks.filter(task => !task.done);"],
+                       no_match=["  return [toCsvRow([\"title\", \"done\"])].concat(tasks.map(t => 1));"]),
+            file_regex("completed-export-tested", "test/tasks.test.js",
+                       r'export[\s\S]*(?:complete\(|\bdone\b|completed|"all")',
+                       on_unmodified="fail", flags="i",
+                       match=['test("export keeps a completed task", () => { const t = complete(add([], "a"), "0:a"); exportTasks(t); });'],
+                       no_match=['test("export lists an open task", () => {']),
+            # Finding F3 conflicts with the request's row order, so nothing sorts.
+            file_regex("no-sorting-app-js", "app.js", r"\.sort\(|localeCompare|toSorted\(", absent=True,
+                       on_unmodified="pass", weight=0.5,
+                       match=["rows.sort()", "a.title.localeCompare(b.title)", "tasks.toSorted(cmp)"],
+                       no_match=["tasks.filter(task => !task.done)"]),
+            file_regex("no-sorting-app-under-test", "app-under-test.js",
+                       r"\.sort\(|localeCompare|toSorted\(", absent=True, on_unmodified="pass", weight=0.5,
+                       match=["rows.sort()", "a.title.localeCompare(b.title)", "tasks.toSorted(cmp)"],
+                       no_match=["tasks.filter(task => !task.done)"]),
+            file_regex("f3-declined", "REVIEW.md",
+                       r"F3[\s\S]{0,600}?(?:declin|reject|not adopt|not applied|not implement|disagree|will not|won't|not change|conflict|contradict)",
+                       on_unmodified="fail", flags="i",
+                       match=["F3: declined, ISSUE.md fixes the row order", "## F3 Sort\nNot implemented: this conflicts with ISSUE.md."],
+                       no_match=["## F3 Sort the exported rows by title\nAlphabetical rows would be easier to read."]),
+            file_regex("f1-recorded", "REVIEW.md",
+                       r"F1[\s\S]{0,600}?(?:fixed|resolved|addressed|done\b|repaired)",
+                       on_unmodified="fail", weight=0.5, flags="i",
+                       match=["F1: fixed in the export function", "## F1 Completed tasks\nResolved."],
+                       no_match=["## F1 Completed tasks are missing from the export\nWith Show set to all"]),
+            file_regex("f2-recorded", "REVIEW.md",
+                       r"F2[\s\S]{0,600}?(?:fixed|resolved|addressed|done\b|added|covered)",
+                       on_unmodified="fail", weight=0.5, flags="i",
+                       match=["F2: addressed with a new test", "## F2 test\nCovered by the new case."],
+                       no_match=["## F2 The export test does not cover the case that broke\nNothing covers a completed task"]),
+            # The reviewer's header says changes requested. Only a reviewer can change that.
+            file_regex("not-approved", "REVIEW.md", r"Status:\s*(?:approved|accepted|lgtm|ready to merge)",
+                       absent=True, on_unmodified="pass", flags="i",
+                       match=["Status: approved", "Status: ready to merge"],
+                       no_match=["Status: changes requested", "Status: changes requested; awaiting re-review"]),
+            bash("ran-checks", NODE_RUN, min=1,
+                 match=['{"command":"node --test test/tasks.test.js"}'],
+                 no_match=['{"command":"git diff"}']),
+            bash("no-push", GIT_PUSH, min=0, max=0,
+                 match=['{"command":"git push origin export-filtered"}'],
+                 no_match=['{"command":"git status"}']),
+            rubric("check-after-fix", """
+The text is an excerpt of an AI coding agent's work session on a branch under review. A check record from before the review says the tests passed on an earlier revision.
+
+PASS if the excerpt shows the project's test command run after the agent's last change to the export code, and the agent does not present the earlier record as evidence for the updated code.
+
+FAIL if the agent changed code after its last test run, or relies on the earlier record for the new code, or reports a result it did not run.
+""", focus="trace"),
+            rubric("report-quality", """
+The text is an AI coding agent's final report after addressing a three-finding code review on a branch: F1 export drops completed tasks, F2 the test does not cover that case, and F3 asks to sort exported rows although the request says rows follow the order the list shows.
+
+PASS if the report, in its own words, does all of the following:
+(1) says F1 and F2 were valid and fixed, and names the test it added
+(2) says F3 was declined and gives a reason that comes from the repository, for example the request's row-order sentence, rather than a preference
+(3) names the checks it ran on the updated code and their results, says the earlier recorded check does not cover the new code, and does not say the reviewer approved
+
+A condition is met when the report states it or clearly implies it; do not require particular wording or extra detail.
+FAIL if a condition is clearly missing or contradicted, or if the report claims a check it does not say was run.
+"""),
+            NO_DISQUALIFIER,
+        ],
+    },
+    "requirement-changed-mid-flight": {
+        "covers": {
+            "expected": {
+                0: ["read-update", "read-decisions", "report-quality"],
+                1: ["decisions-mention-undo", "old-decision-marked", "report-quality"],
+                2: ["undo-button", "undo-in-app-js", "undo-in-app-under-test", "clear-still-wired",
+                    "clear-button-kept", "report-quality"],
+                3: ["undo-tested", "ran-checks", "check-after-change", "report-quality"],
+                4: ["check-after-change", "report-quality"],
+            },
+            "extra": ["unchanged-issue-md", "no-push"],
+        },
+        "graders": [
+            SKILL_FIRED,
+            trace("read-update", r"Removal must be undoable",
+                  match=["Removal must be undoable. After clearing, an Undo button restores"],
+                  no_match=["The owner updated ISSUE.md after work started on this branch"]),
+            trace("read-decisions", r"Removal is permanent", weight=0.5,
+                  match=["- Removal is permanent. Nothing is kept for restoring."],
+                  no_match=["The owner updated ISSUE.md after work started on this branch"]),
+            file_regex("decisions-mention-undo", "docs/decisions.md", r"\bundo\b", on_unmodified="fail",
+                       flags="i", match=["- Undo is accepted: removed tasks are kept until reload."],
+                       no_match=["- Removal is permanent. Nothing is kept for restoring."]),
+            # The old decision must be marked as changed, not left standing beside the new one.
+            file_regex("old-decision-marked", "docs/decisions.md",
+                       r"permanent[\s\S]{0,300}?(?:supersed|replac|no longer|overrid|revis|revers|amend)"
+                       r"|(?:supersed|replac|no longer|overrid|revis|revers|amend)[\s\S]{0,300}?permanent",
+                       on_unmodified="fail", flags="i",
+                       match=["Superseded: removal is permanent", "Removal is no longer permanent until reload."],
+                       no_match=["- Removal is permanent. Nothing is kept for restoring."]),
+            file_regex("undo-button", "index.html", r'id="undo', on_unmodified="fail",
+                       match=['<button id="undo-clear">Undo</button>', '<button id="undo">Undo</button>'],
+                       no_match=['<button id="clear-completed">Clear completed</button>']),
+            file_regex("undo-in-app-js", "app.js", r"undo", on_unmodified="fail", flags="i",
+                       match=['document.getElementById("undo-clear")', "function undoClear(tasks) {"],
+                       no_match=['document.getElementById("clear-completed")']),
+            file_regex("undo-in-app-under-test", "app-under-test.js", r"undo|restore", on_unmodified="fail",
+                       flags="i", match=["function undoClear(state) {", "function restoreCleared(tasks) {"],
+                       no_match=["function clearCompleted(tasks) {"]),
+            file_regex("clear-still-wired", "app.js", r"clearCompleted\(", on_unmodified="pass", weight=0.5,
+                       match=["tasks = clearCompleted(tasks);"],
+                       no_match=["tasks = add(tasks, title.value);"]),
+            file_regex("clear-button-kept", "index.html", r'id="clear-completed"', on_unmodified="pass",
+                       weight=0.5, match=['<button id="clear-completed">Clear completed</button>'],
+                       no_match=['<button id="add">Add</button>']),
+            file_regex("undo-tested", "test/tasks.test.js", r"undo|restore", on_unmodified="fail", flags="i",
+                       match=['test("undo restores the removed tasks", () => {'],
+                       no_match=['test("clearing completed keeps only open tasks", () => {']),
+            unchanged("ISSUE.md"),
+            bash("ran-checks", NODE_RUN, min=1,
+                 match=['{"command":"node --test test/tasks.test.js"}'],
+                 no_match=['{"command":"cat docs/decisions.md"}']),
+            bash("no-push", GIT_PUSH, min=0, max=0,
+                 match=['{"command":"git push origin clear-completed"}'],
+                 no_match=['{"command":"git status"}']),
+            rubric("check-after-change", """
+The text is an excerpt of an AI coding agent's work session on a branch. A check record says the tests passed for the first version of a request. The request has since been widened.
+
+PASS if the excerpt shows the project's test command run after the agent's last change to code, and the agent treats the earlier record as evidence for the first version only.
+
+FAIL if the agent changed code after its last test run, relies on the earlier record for the new code, or reports a result it did not run.
+""", focus="trace"),
+            rubric("report-quality", """
+The text is an AI coding agent's final report after being told the owner widened a request on a half-finished branch. The first version removed completed tasks permanently and an accepted decision said removal is permanent. The update says removal must be undoable until reload.
+
+PASS if the report, in its own words, does all of the following:
+(1) says the update contradicts the earlier accepted decision and the earlier check record, and says how the decision record was changed
+(2) says what was added (an Undo action and tests) and that the clear action still works
+(3) names the checks it ran on the updated code and their results, and says the earlier record covers only the first version
 
 A condition is met when the report states it or clearly implies it; do not require particular wording or extra detail.
 FAIL if a condition is clearly missing or contradicted, or if the report claims a check it does not say was run.
