@@ -23,11 +23,16 @@ python3 scripts/test_render_plugin_evals.py       # no model calls
 
 ## What is rendered
 
-Eight of the 27 cases, the ones with a fixture and an outcome a grader can observe: the bug
-reproduction, a review that must not edit, a feature whose interactions must keep order, a feature
-added in an established project, resuming an interrupted change, resuming an export after the owner's
-answer, a plausible-but-wrong CSV export, and a blocked export handoff. The other cases have no
-rendered form yet; the generator refuses a case the spec does not grade.
+Three of the 30 cases, each needing several stages and carrying a trap that shows up only if state is
+tracked across them: `ship-ready-feature` (request to a reviewable branch under written project rules),
+`review-round-repair` (three review findings, one to decline with a reason from the repository, and a
+stale check record) and `requirement-changed-mid-flight` (the owner widens a request after work started,
+contradicting an accepted decision and an earlier check record). The generator refuses a case the spec
+does not grade.
+
+The first eight rendered cases (single stage, 7 to 22 turns) are kept as `RETIRED_CASES` in the spec and
+are not rendered. Haiku scored 0.86 to 1.00 on them without the plugin, so they could not show a difference;
+see [the rerun record](plugin-eval-run-2026-10-21-rerun.md). Move one back into `CASES` to render it again.
 
 `evals-forced/` is the same set with one difference: each prompt appends "Use the ai-sdlc-skill skill
 (AI SDLC Skill) for this task." to the agent's system prompt. Run `evals/` to see whether the model finds
@@ -86,7 +91,7 @@ Code version, the models, the actual cost and the limits. Results belong under
 - One host: Claude Code. Nothing here says another host behaves the same way.
 - A Claude model judges Claude runs. Deterministic graders carry most of the score for that reason.
 - Fixtures are synthetic, small and public.
-- Three runs per arm is a small sample; a Δ of a few points is within run-to-run noise.
+- A few runs per arm is a small sample; a Δ of a few points is within run-to-run noise.
 - A case whose graders pass in both arms shows where the skill adds nothing for this host, and is
   reported that way. Guards that pass in both arms also pull every score and every Δ toward zero.
 - The judge sees an excerpt of long transcripts, so the disqualifier rubric can miss what happened
@@ -97,6 +102,13 @@ Code version, the models, the actual cost and the limits. Results belong under
   edit made some other way through Bash, for example `cat > file` or a `python3 -c` write, is not caught by the
   tool-count graders, and the case has no end-state check because switching branches legitimately changes files.
   In the recorded run no review run made such an edit; that was checked by reading the traces.
+- The multi-stage cases check that undo is wired, not persisted and asserted in a test, but no grader runs the
+  code. Whether undo restores tasks to their original positions rests on the agent's report and the judge.
+- The search case rejects writing the query to storage under an obvious name. It does not inspect stored values, so
+  a query folded into the stored task data would not be caught. Automated review kept finding another way a regex can be
+  fooled, so the remaining gaps are accepted and the judge reads the final session. Known ones: the case-insensitive
+  check can be met by lowercasing two unrelated strings, and the render and empty-search checks follow data flow
+  by pattern only, so an unusual code shape can pass or fail them wrongly.
 - Cost figures are list-price estimates from the tool.
 
 These files carry the repository's [Apache-2.0](../LICENSE) license and [NOTICE](../NOTICE).

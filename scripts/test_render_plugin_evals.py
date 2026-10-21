@@ -146,7 +146,7 @@ class Suite(unittest.TestCase):
 
     def test_only_cases_named_by_the_spec_are_rendered(self):
         self.assertEqual({p.split("/")[0] for p in self.rendered}, set(self.spec.CASES))
-        self.assertEqual(len(self.spec.CASES), 8)
+        self.assertEqual(len(self.spec.CASES), 3)
 
     # ------------------------------------------------------------ single source
 
@@ -243,24 +243,24 @@ class Suite(unittest.TestCase):
     # ------------------------------------------------------------ the validator refuses bad specs
 
     def test_validator_refuses_an_unaccounted_expected_line(self):
-        problems = self.variant(lambda s: s.CASES["bug-with-reproducible-symptom"]["covers"]["expected"]
+        problems = self.variant(lambda s: s.CASES["ship-ready-feature"]["covers"]["expected"]
                                 .__setitem__(1, []))
         self.assertTrue(any("expected[1] names no grader" in p for p in problems), problems)
 
     def test_validator_accepts_a_stated_reason_and_refuses_an_empty_one(self):
-        ok = self.variant(lambda s: s.CASES["bug-with-reproducible-symptom"]["covers"]["expected"]
+        ok = self.variant(lambda s: s.CASES["ship-ready-feature"]["covers"]["expected"]
                           .__setitem__(2, "not_graded: needs a person"))
         self.assertEqual([p for p in ok if "expected[2]" in p], [])
-        bad = self.variant(lambda s: s.CASES["bug-with-reproducible-symptom"]["covers"]["expected"]
+        bad = self.variant(lambda s: s.CASES["ship-ready-feature"]["covers"]["expected"]
                            .__setitem__(2, "not_graded:"))
         self.assertTrue(any("expected[2]" in p for p in bad), bad)
 
     def test_generator_refuses_an_exact_check_on_a_file_that_embeds_a_revision(self):
         def mutate(spec):
-            spec.CASES["resume-interrupted-change"]["graders"].append(
+            spec.CASES["requirement-changed-mid-flight"]["graders"].append(
                 {"name": "unchanged-check-results", "type": "unchanged_file",
                  "file": "docs/check-results.md", "weight": 0.5})
-            spec.CASES["resume-interrupted-change"]["covers"]["extra"].append("unchanged-check-results")
+            spec.CASES["requirement-changed-mid-flight"]["covers"]["extra"].append("unchanged-check-results")
         spec = types.SimpleNamespace(SCHEMA=self.spec.SCHEMA, RUN=self.spec.RUN,
                                      SKILL_INPUT_MATCH=self.spec.SKILL_INPUT_MATCH,
                                      CASES=copy.deepcopy(self.spec.CASES))
@@ -271,30 +271,30 @@ class Suite(unittest.TestCase):
 
     def test_validator_refuses_a_rubric_that_names_the_skill(self):
         def mutate(spec):
-            for grader in spec.CASES["review-without-edits"]["graders"]:
+            for grader in spec.CASES["review-round-repair"]["graders"]:
                 if grader["name"] == "report-quality":
                     grader["rubric"] += "\nPASS if it followed the skill."
         self.assertTrue(any("blind to the arm" in p for p in self.variant(mutate)))
 
     def test_validator_refuses_a_pattern_without_samples(self):
         def mutate(spec):
-            for grader in spec.CASES["review-without-edits"]["graders"]:
-                if grader["name"] == "read-requirement":
+            for grader in spec.CASES["review-round-repair"]["graders"]:
+                if grader["name"] == "read-review":
                     grader["samples"] = {"match": [], "no_match": []}
         self.assertTrue(any("needs samples" in p for p in self.variant(mutate)))
 
     def test_validator_refuses_a_grader_missing_from_covers(self):
         def mutate(spec):
-            spec.CASES["review-without-edits"]["graders"].append(
+            spec.CASES["review-round-repair"]["graders"].append(
                 {"name": "extra-grader", "type": "file_exists", "path": "x", "exists": False})
         self.assertTrue(any("extra-grader is not listed in covers" in p for p in self.variant(mutate)))
 
     def test_validator_refuses_an_unknown_case_and_a_missing_indicator(self):
         self.assertTrue(any("not a case" in p for p in self.variant(
-            lambda s: s.CASES.__setitem__("no-such-case", s.CASES["review-without-edits"]))))
+            lambda s: s.CASES.__setitem__("no-such-case", s.CASES["review-round-repair"]))))
         self.assertTrue(any("missing the generated grader skill-fired" in p for p in self.variant(
-            lambda s: s.CASES["review-without-edits"].__setitem__(
-                "graders", [g for g in s.CASES["review-without-edits"]["graders"]
+            lambda s: s.CASES["review-round-repair"].__setitem__(
+                "graders", [g for g in s.CASES["review-round-repair"]["graders"]
                             if g["name"] != "skill-fired"]))))
 
 
@@ -426,9 +426,13 @@ class GraderBehavior(unittest.TestCase):
 
     def test_every_task_outcome_check_fails_on_the_unmodified_fixture(self):
         # A check that already passes on the starting state cannot detect that the work was done.
-        outcome = {"app-under-test-matches-by-identity", "app-js-matches-by-identity", "app-js-sorts",
-                   "csv-in-app-js", "csv-in-app-under-test", "escaping-tested", "email-excluded",
-                   "todo-resolved", "handler-saves"}
+        outcome = {"search-input", "search-in-app-js", "search-in-app-under-test", "search-tested",
+                   "export-keeps-completed-app-js", "export-keeps-completed-app-under-test",
+                   "completed-export-tested", "f3-declined", "f1-recorded", "f2-recorded",
+                   "decisions-mention-undo", "old-decision-marked", "undo-button", "undo-in-app-js",
+                   "undo-in-app-under-test", "undo-tested", "undo-wired", "undo-test-asserts",
+                   "check-record-updated", "search-triggers-render", "search-test-empty", "search-composes-with-filter", "search-test-with-filter",
+                   "search-test-identity"}
         seen = set()
         for entry in self.spec.CASES.values():
             for grader in entry["graders"]:
@@ -452,7 +456,7 @@ class GraderBehavior(unittest.TestCase):
                                      (original + "\n", False), (original.rstrip("\n") + "\n\n", False)):
                     items.append({"pattern": pairs["pattern"], "flags": "", "text": text})
                     expectations.append((case_id, grader["name"], wanted))
-        self.assertGreater(len(items), 30)
+        self.assertGreater(len(items), 5)
         for (case_id, name, wanted), got in zip(expectations, js_regex(items)):
             self.assertEqual(got, wanted, "%s/%s" % (case_id, name))
 
