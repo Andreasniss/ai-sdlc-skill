@@ -3,7 +3,7 @@
 # Checks the task outcome itself, outside the numbered expected lines.
 type: tool_used
 tool: Bash
-input_match: '\bgit\s+push\b'
+input_match: '\bgit\b(?:\s+(?:-C\s+\S+|-c\s+\S+|--[\w-]+(?:=\S+)?))*\s+push\b'
 min: 0
 max: 0
 ---

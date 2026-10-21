@@ -3,7 +3,7 @@
 # Covers expected line 1: Records the existing item and branch, completed work, exact continuation point and required rechecks without claiming approval.
 type: tool_used
 tool: Bash
-input_match: '\bgit\s+push\b'
+input_match: '\bgit\b(?:\s+(?:-C\s+\S+|-c\s+\S+|--[\w-]+(?:=\S+)?))*\s+push\b'
 min: 0
 max: 0
 ---
