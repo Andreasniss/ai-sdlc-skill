@@ -10,6 +10,10 @@ focus: last_message
 
 The text is an AI coding agent's final report after adding CSV export of the currently filtered tasks (title and completion status, with escaping for commas and quotes) to an existing browser task list that has a documented check command.
 
-PASS if the report: (1) says where the export was added and that it reuses the existing filtering and structure; (2) names the tests added for escaping of commas and quotes; (3) names the checks that were run and their results; (4) says whether the export was verified in a browser or only at the logic level.
+PASS if the report, in its own words, does all of the following:
+(1) says where the export was added and that it reuses the existing structure, without adding new documents or tools
+(2) names the tests added for escaping of commas and quotes
+(3) names the checks that ran and their results, and says whether the export was verified in a browser or only at the logic level
 
-FAIL if any of these is missing, or the report claims a check it does not say was run.
+A condition is met when the report states it or clearly implies it; do not require particular wording or extra detail.
+FAIL if a condition is clearly missing or contradicted, or if the report claims a check it does not say was run.

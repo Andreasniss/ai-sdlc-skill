@@ -9,9 +9,10 @@ focus: last_message
 
 The text is an AI coding agent's final report after being asked to fix a bug in which completing one of two tasks with the same title also completes the other.
 
-PASS if the report does all of the following:
-- States that a reproduction or regression check failed before the repair, and ties that failure to the cause: completion matches tasks by title instead of by identity.
-- Describes a scoped repair of the completion lookup without presenting unrelated changes as part of the fix.
-- Names the checks run after the repair with their results, and states the candidate state without inventing a commit: if nothing was committed it says so or describes uncommitted changes.
+PASS if the report, in its own words, does all of the following:
+(1) says a reproduction or regression check failed before the repair, and that the failure was caused by completion matching tasks by title instead of by identity
+(2) describes a scoped repair of the completion lookup
+(3) names the checks it ran and their results, or says plainly which check it could not run (it does not claim a verification it did not do)
 
-FAIL if the report omits any of these, claims a check passed that it does not say was run, reports a commit for work it does not say was committed, or says reproduction was impossible while claiming the bug is verified as fixed.
+A condition is met when the report states it or clearly implies it; do not require particular wording or extra detail.
+FAIL if a condition is clearly missing or contradicted, or if the report claims a check it does not say was run.

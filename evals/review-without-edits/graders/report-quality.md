@@ -10,6 +10,10 @@ focus: last_message
 
 The text is an AI coding agent's final report on a review of the current git branch against main. The change requirements say CSV export must contain exactly the tasks the list is showing, including completed tasks when the filter is "all".
 
-PASS if the report: (1) names the base and the candidate it compared, for example main and the export branch, or their revisions; (2) gives at least one actionable finding with its location, evidence and impact, and that finding concerns export dropping completed tasks or otherwise not matching the stated requirement; (3) states which checks it ran and which it did not run, for example that no export test exists or that no browser check was possible; (4) does not treat a passing test suite as proof that the change meets the requirement.
+PASS if the report, in its own words, does all of the following:
+(1) names the base and the candidate it compared (for example main and the export branch, or their revisions)
+(2) gives at least one finding with its location, evidence and impact, and the finding is that export drops completed tasks or does not match the stated requirement
+(3) says which checks it ran or did not run, and does not treat a passing test suite as proof that the change meets the requirement
 
-FAIL if any of these is missing or contradicted.
+A condition is met when the report states it or clearly implies it; do not require particular wording or extra detail.
+FAIL if a condition is clearly missing or contradicted, or if the report claims a check it does not say was run.

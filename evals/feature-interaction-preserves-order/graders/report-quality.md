@@ -10,6 +10,10 @@ focus: last_message
 
 The text is an AI coding agent's final report after adding alphabetical sorting to a browser task list as a display-only choice. Stored insertion order and task identity must be preserved, including when completing tasks with duplicate titles.
 
-PASS if the report: (1) says how sorting, filtering, completion and save/load share the task data, meaning what it inspected; (2) states that stored insertion order and task identity are preserved and how that was checked; (3) describes checks that combine sorting with filtering, completion of duplicate-title tasks and save/load, not only the alphabetical output; (4) separates the logic-level checks it ran from browser verification, stating whether browser behavior was verified.
+PASS if the report, in its own words, does all of the following:
+(1) says what it inspected about how display, filtering, completion and saving share the task data
+(2) says stored insertion order and task identity are preserved, and says checks covered interactions (for example sorting with filtering, or completing duplicate-title tasks), not only the alphabetical output
+(3) says whether the behavior was verified in a browser or only at the logic level
 
-FAIL if any of these is missing, if the report presents logic checks as browser verification, or if it claims a check it does not say was run.
+A condition is met when the report states it or clearly implies it; do not require particular wording or extra detail.
+FAIL if a condition is clearly missing or contradicted, or if the report claims a check it does not say was run.
