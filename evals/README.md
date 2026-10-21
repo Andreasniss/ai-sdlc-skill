@@ -102,6 +102,8 @@ Code version, the models, the actual cost and the limits. Results belong under
   edit made some other way through Bash, for example `cat > file` or a `python3 -c` write, is not caught by the
   tool-count graders, and the case has no end-state check because switching branches legitimately changes files.
   In the recorded run no review run made such an edit; that was checked by reading the traces.
+- The multi-stage cases check that undo is wired, not persisted and asserted in a test, but no grader runs the
+  code. Whether undo restores tasks to their original positions rests on the agent's report and the judge.
 - Cost figures are list-price estimates from the tool.
 
 These files carry the repository's [Apache-2.0](../LICENSE) license and [NOTICE](../NOTICE).
