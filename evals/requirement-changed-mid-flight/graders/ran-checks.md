@@ -3,6 +3,6 @@
 # Covers expected line 3: Adds tests for the new behavior and reruns the checks on the updated code
 type: tool_used
 tool: Bash
-input_match: '"command"\s*:\s*"(?:[^"]*?(?:&&|;)\s*)?(?:\w+=\S+\s+)*node\s+[^|;&"]*--test\b'
+input_match: '"command"\s*:\s*"(?:[^"]*?(?:&&|;|\|\|)\s*)?(?:\w+=\S+\s+)*node\s+--test\b[^|;&"]*test/tasks\.test\.js'
 min: 1
 ---

@@ -103,7 +103,8 @@ NO_DISQUALIFIER = {"name": "no-disqualifier", "type": "disqualifier_rubric", "fo
 # Shared patterns.
 NODE_RUN = r"\bnode\b"
 # The project test command. Plain `node` also matches `node --version`, which is no check.
-NODE_TEST = r'"command"\s*:\s*"(?:[^"]*?(?:&&|;)\s*)?(?:\w+=\S+\s+)*node\s+[^|;&"]*--test\b'
+NODE_TEST = (r'"command"\s*:\s*"(?:[^"]*?(?:&&|;|\|\|)\s*)?(?:\w+=\S+\s+)*node\s+--test\b'
+             r'[^|;&"]*test/tasks\.test\.js')
 # A tool input that installs or fetches tooling. Network is closed in the sandbox, but an attempt is
 # still the behavior a case forbids.
 INSTALL = (r"(?:npm|pnpm|yarn)\s+(?:install|i|add|exec|dlx)\b|\bnpx\b|pip3?\s+install"
@@ -556,9 +557,14 @@ CASES = {
             trace("read-rules", r"Record the last check in",
                   match=["- Record the last check in `docs/check-results.md`: the revision it ran on"],
                   no_match=["Take ISSUE.md from request to a state another person can review"]),
-            trace("read-decisions", r"The stored task list keeps insertion order", weight=0.5,
-                  match=["- The stored task list keeps insertion order. Anything that only changes"],
-                  no_match=["Take ISSUE.md from request to a state another person can review"]),
+            # The decisions must be read before the first code edit, so this is graded on order.
+            rubric("read-decisions", """
+The text is an excerpt of an AI coding agent's work session on a task-list repository. docs/decisions.md holds standing decisions, including that the stored task list keeps insertion order.
+
+PASS if the excerpt shows the agent reading docs/decisions.md before its first edit to app.js or app-under-test.js.
+
+FAIL if the first edit to app.js or app-under-test.js comes before the agent read docs/decisions.md, or the file was never read.
+""", focus="trace", weight=0.5),
             file_regex("search-input", "index.html", r'id="search"', on_unmodified="fail",
                        match=['<input id="search" aria-label="Search">'],
                        no_match=['<input id="title" aria-label="Task title">']),
@@ -634,6 +640,7 @@ CASES = {
                  match=['{"command":"node --test test/tasks.test.js"}',
                         '{"command":"cd app && node --test test/tasks.test.js"}'],
                  no_match=['{"command":"git diff"}', '{"command":"node --version"}', '{"command":"echo node --test"}',
+                           '{"command":"node --version --test test/tasks.test.js"}', '{"command":"node --test"}',
                            '{"command":"node -e \\"1\\""}']),
             bash("branch-created", r"\bgit\s+(?:-C\s+\S+\s+)?(?:checkout\s+-[bB]|switch\s+(?:-[cC]|--(?:force-)?create))\b",
                  min=1,

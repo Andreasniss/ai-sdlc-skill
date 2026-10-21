@@ -565,6 +565,11 @@ def build(root, state):
         elif state == "review-round":
             base = git_head(root)
             git(root, "checkout", "-q", "-b", "export-filtered")
+            # The older record is committed first, so the history shows it predates the work and the review.
+            base_checks = (root / "test" / "tasks.test.js").read_text().count("\ntest(")
+            write(root, "docs/check-results.md", REVIEW_STALE_CHECKS.format(revision=base, checks=base_checks))
+            git(root, "add", "-A")
+            git(root, "commit", "-qm", "Record the checks before the export work")
             application(root, export_body=BRANCH_EXPORT, controls=EXPORT_BUTTON, wiring=EXPORT_WIRING)
             tests_path = root / "test" / "tasks.test.js"
             tests_path.write_text(tests_path.read_text() + EXPORT_TEST)
@@ -573,10 +578,6 @@ def build(root, state):
             write(root, "REVIEW.md", REVIEW_FINDINGS)
             git(root, "add", "-A")
             git(root, "commit", "-qm", "Export only open tasks")
-            counted = (root / "test" / "tasks.test.js").read_text().count("\ntest(")
-            write(root, "docs/check-results.md", REVIEW_STALE_CHECKS.format(revision=base, checks=counted - 1))
-            git(root, "add", "-A")
-            git(root, "commit", "-qm", "Record the checks that predate the review")
         else:
             settled = git_head(root)
             git(root, "checkout", "-q", "-b", "clear-completed")
