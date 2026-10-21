@@ -3,6 +3,6 @@
 # Covers expected line 3: Reruns the checks on the updated code and does not cite the earlier record as evidence for it
 type: tool_used
 tool: Bash
-input_match: '\bnode\b[^|;&]*--test\b'
+input_match: '"command"\s*:\s*"(?:[^"]*?(?:&&|;)\s*)?(?:\w+=\S+\s+)*node\s+[^|;&"]*--test\b'
 min: 1
 ---

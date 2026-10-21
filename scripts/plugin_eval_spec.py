@@ -103,7 +103,7 @@ NO_DISQUALIFIER = {"name": "no-disqualifier", "type": "disqualifier_rubric", "fo
 # Shared patterns.
 NODE_RUN = r"\bnode\b"
 # The project test command. Plain `node` also matches `node --version`, which is no check.
-NODE_TEST = r"\bnode\b[^|;&]*--test\b"
+NODE_TEST = r'"command"\s*:\s*"(?:[^"]*?(?:&&|;)\s*)?(?:\w+=\S+\s+)*node\s+[^|;&"]*--test\b'
 # A tool input that installs or fetches tooling. Network is closed in the sandbox, but an attempt is
 # still the behavior a case forbids.
 INSTALL = (r"(?:npm|pnpm|yarn)\s+(?:install|i|add|exec|dlx)\b|\bnpx\b|pip3?\s+install"
@@ -201,7 +201,8 @@ FAIL if a condition is clearly missing or contradicted, or if the report claims 
                  match=['{"command":"git diff main...HEAD"}', '{"command":"git -C . log main..HEAD"}'],
                  no_match=['{"command":"git status"}', '{"command":"ls"}']),
             bash("ran-checks", NODE_RUN, min=1,
-                 match=['{"command":"node --test test/tasks.test.js"}'],
+                 match=['{"command":"node --test test/tasks.test.js"}',
+                        '{"command":"cd app && node --test test/tasks.test.js"}'],
                  no_match=['{"command":"git diff"}']),
             # The requirement text appears in the session only if the agent read the file.
             trace("read-requirement", r"Export must contain exactly the tasks",
@@ -235,7 +236,8 @@ FAIL if a condition is clearly missing or contradicted, or if the report claims 
         "graders": [
             SKILL_FIRED,
             bash("ran-checks", NODE_RUN, min=1,
-                 match=['{"command":"node --test test/tasks.test.js"}'],
+                 match=['{"command":"node --test test/tasks.test.js"}',
+                        '{"command":"cd app && node --test test/tasks.test.js"}'],
                  no_match=['{"command":"ls"}']),
             file_regex("app-js-sorts", "app.js", r"localeCompare|\.sort\(|toSorted\(",
                        on_unmodified="fail",
@@ -277,7 +279,8 @@ FAIL if a condition is clearly missing or contradicted, or if the report claims 
         "graders": [
             SKILL_FIRED,
             bash("ran-checks", NODE_RUN, min=1,
-                 match=['{"command":"node --test test/tasks.test.js"}'],
+                 match=['{"command":"node --test test/tasks.test.js"}',
+                        '{"command":"cd app && node --test test/tasks.test.js"}'],
                  no_match=['{"command":"cat NOTES.md"}']),
             file_regex("todo-resolved", "app.js", r"TODO: remove the completed tasks", absent=True,
                        on_unmodified="fail",
@@ -444,7 +447,8 @@ FAIL if a condition is clearly missing or contradicted, or if the report claims 
                               'test("export doubles quotes", () => { assert.ok(out.includes("\\"\\"")); });'],
                        no_match=['test("completing a task marks it done", () => {']),
             bash("ran-checks", NODE_RUN, min=1,
-                 match=['{"command":"node --test test/tasks.test.js"}'],
+                 match=['{"command":"node --test test/tasks.test.js"}',
+                        '{"command":"cd app && node --test test/tasks.test.js"}'],
                  no_match=['{"command":"git diff"}']),
             no_file("no-new-package-json", "package.json"),
             bash("no-install-attempt", INSTALL, min=0, max=0, match=INSTALL_SAMPLES_MATCH,
@@ -570,11 +574,13 @@ CASES = {
                        no_match=["const q = query.toLowerCase(); return tasks.filter(t => t.title.includes(q));",
                                  "tasks.filter(task => !task.done)"]),
             # The render path itself must use the query, not only a helper declared beside filterTasks.
-            file_regex("search-used-in-render", "app.js", r"function render\([^)]*\)\s*\{[\s\S]{0,800}?(?:search|query|term)",
+            file_regex("search-used-in-render", "app.js",
+                       r"function render\([^)]*\)\s*\{[\s\S]{0,800}?(?:(?:search|query|term)[\s\S]{0,300}?(?:\.filter\(|filterTasks\()|(?:\.filter\(|filterTasks\()[^;]{0,200}?(?:search|query|term))",
                        on_unmodified="fail", flags="i",
-                       match=["function render(tasks, selection) {\n  const q = document.getElementById(\"search\").value;",
-                              "function render(tasks, selection, query) {\n  const list = 1; query;"],
-                       no_match=["function render(tasks, selection) {\n  const list = document.getElementById(\"tasks\");"]),
+                       match=["function render(tasks, selection) {\n  const q = document.getElementById(\"search\").value;\n  const shown = tasks.filter(t => t.title.includes(q));",
+                              "function render(tasks, selection, query) {\n  const shown = filterTasks(tasks, selection, query);"],
+                       no_match=["function render(tasks, selection) {\n  const list = document.getElementById(\"tasks\");",
+                                 "function render(tasks, selection) {\n  const q = document.getElementById(\"search\").value;\n  list.textContent = q;"]),
             # The browser copy must match case-insensitively too; the tested copy alone is not enough.
             file_regex("search-in-app-js-case-insensitive", "app.js",
                        r"(?:toLowerCase|toLocaleLowerCase)\(\)[\s\S]{0,300}?(?:toLowerCase|toLocaleLowerCase)\(\)|/[^/\n]+/i\b", on_unmodified="fail",
@@ -612,8 +618,9 @@ CASES = {
                        match=['test("search ignores case", () => {', "const found = searchTasks(tasks, 'WR');"],
                        no_match=['test("completing a task marks it done", () => {']),
             bash("ran-checks", NODE_TEST, min=2,
-                 match=['{"command":"node --test test/tasks.test.js"}'],
-                 no_match=['{"command":"git diff"}', '{"command":"node --version"}',
+                 match=['{"command":"node --test test/tasks.test.js"}',
+                        '{"command":"cd app && node --test test/tasks.test.js"}'],
+                 no_match=['{"command":"git diff"}', '{"command":"node --version"}', '{"command":"echo node --test"}',
                            '{"command":"node -e \\"1\\""}']),
             bash("branch-created", r"\bgit\s+(?:-C\s+\S+\s+)?(?:checkout\s+-[bB]|switch\s+(?:-[cC]|--(?:force-)?create))\b",
                  min=1,
@@ -739,7 +746,8 @@ FAIL if a condition is clearly missing or contradicted, or if the report claims 
                        match=["Covers: review fixes, 5 checks", "Result: passed\nCovers: review fixes"],
                        no_match=["Result: passed, 3 checks", "Recorded before this work started."]),
             bash("ran-checks", NODE_TEST, min=1,
-                 match=['{"command":"node --test test/tasks.test.js"}'],
+                 match=['{"command":"node --test test/tasks.test.js"}',
+                        '{"command":"cd app && node --test test/tasks.test.js"}'],
                  no_match=['{"command":"git diff"}', '{"command":"node --version"}',
                            '{"command":"node -e \\"1\\""}']),
             bash("no-push", GIT_PUSH, min=0, max=0,
@@ -807,12 +815,13 @@ FAIL if a condition is clearly missing or contradicted, or if the report claims 
                        flags="i", match=["function undoClear(state) {", "function restoreCleared(tasks) {"],
                        no_match=["function clearCompleted(tasks) {"]),
             file_regex("undo-wired", "app.js",
-                       r'getElementById\("undo[^"]*"\)\s*\.addEventListener'
-                       r'|(?:const|let|var)\s+(\w+)\s*=\s*document\.getElementById\("undo[^"]*"\)[\s\S]*?\1\.addEventListener',
-                       on_unmodified="fail",
-                       match=['document.getElementById("undo-clear").addEventListener("click", () => {',
-                              'const undo = document.getElementById("undo");\n  undo.addEventListener("click", f);'],
+                       r'getElementById\("undo[^"]*"\)\s*\.addEventListener[\s\S]{0,300}?(?:undo|restore)\w*\('
+                       r'|(?:const|let|var)\s+(\w+)\s*=\s*document\.getElementById\("undo[^"]*"\)[\s\S]*?\1\.addEventListener[\s\S]{0,300}?(?:undo|restore)\w*\(',
+                       on_unmodified="fail", flags="i",
+                       match=['document.getElementById("undo-clear").addEventListener("click", () => {\n tasks = restoreRemoved(tasks);',
+                              'const undo = document.getElementById("undo");\n  undo.addEventListener("click", () => { undoClear(); });'],
                        no_match=['const undo = document.getElementById("undo");\n  other.addEventListener("click", f);',
+                                 'document.getElementById("undo").addEventListener("click", () => {\n  // nothing\n});',
                                  'document.getElementById("clear-completed").addEventListener("click", () => {']),
             # Undo lasts until reload, so nothing about it is written to storage.
             file_regex("undo-not-persisted", "app.js",
@@ -848,7 +857,8 @@ FAIL if a condition is clearly missing or contradicted, or if the report claims 
                        no_match=["Result: passed, 3 checks", "Recorded before this work started."]),
             unchanged("ISSUE.md"),
             bash("ran-checks", NODE_TEST, min=1,
-                 match=['{"command":"node --test test/tasks.test.js"}'],
+                 match=['{"command":"node --test test/tasks.test.js"}',
+                        '{"command":"cd app && node --test test/tasks.test.js"}'],
                  no_match=['{"command":"cat docs/decisions.md"}', '{"command":"node --version"}']),
             bash("no-push", GIT_PUSH, min=0, max=0,
                  match=['{"command":"git push origin clear-completed"}'],
