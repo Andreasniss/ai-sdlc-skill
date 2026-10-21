@@ -3,6 +3,6 @@
 # Covers expected line 2: Implements undo while keeping the clear action working
 type: regex
 weight: 0.5
-pattern: 'clearCompleted\('
+pattern: 'getElementById\("clear-completed"\)\s*\.addEventListener[\s\S]{0,300}?clearCompleted\(|(?:const|let|var)\s+(\w+)\s*=\s*document\.getElementById\("clear-completed"\)[\s\S]*?\1\.addEventListener[\s\S]{0,300}?clearCompleted\('
 target: {source: file, path: app.js}
 ---

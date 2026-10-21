@@ -3,7 +3,7 @@
 # Covers expected line 1: Fixes the export so completed tasks appear when the filter is all, and covers it with a test
 type: regex
 weight: 0.5
-pattern: 'const open = tasks\.filter'
+pattern: 'function exportTasks\(tasks\)\s*\{[^}]*\.filter\('
 match: not_contains
 target: {source: file, path: app-under-test.js}
 ---
