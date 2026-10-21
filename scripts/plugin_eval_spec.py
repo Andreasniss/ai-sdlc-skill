@@ -115,6 +115,21 @@ INSTALL_SAMPLES_MATCH = ['{"command":"npm install playwright"}', '{"command":"np
 INSTALL_SAMPLES_NO = ['{"command":"node --test test/tasks.test.js"}', '{"command":"git diff main"}',
                       '{"command":"ls -la"}']
 BROWSER_TOOLING = INSTALL + r"|playwright|puppeteer|selenium|chrom(?:e|ium)\b"
+# render() must iterate a collection built by a query-dependent filter call (assigned and then walked,
+# or walked directly), not merely mention a filter somewhere inside it.
+_QDEP = r"(?:search|query|term|text|\bq)\b"
+RENDER_USES_QUERY = (
+    r"function render\([^)]*\)\s*\{[\s\S]{0,800}?(?:const|let|var)\s+(\w+)\s*=\s*[^;]*?"
+    r"(?:filterTasks|searchTasks|\.filter)\([^;]*?" + _QDEP + r"[^;]*;[\s\S]{0,500}?(?:\1\.(?:forEach|map)\(|\bof\s+\1\b)"
+    r"|function render\([^)]*\)\s*\{[\s\S]{0,800}?(?:filterTasks|searchTasks)\([^;)]*?" + _QDEP
+    + r"[^;]*?\)\s*\.(?:forEach|map)\("
+    r"|function render\([^)]*\)\s*\{[\s\S]{0,800}?\bof\s+(?:filterTasks|searchTasks)\([^)]*?" + _QDEP)
+# An empty-query search whose result is asserted: a search-named call, or filterTasks with a third
+# (query) argument, called with "" and checked.
+_EMPTY_CALL = (r"(?:\w*search\w*\([^()]*(?:\"\"|'')[^()]*|filterTasks\([^(),]+,[^(),]+,\s*(?:\"\"|'')\s*)\)")
+EMPTY_SEARCH_ASSERTED = (
+    r"(?:const|let|var)\s+(\w+)\s*=\s*" + _EMPTY_CALL + r";?[\s\S]{0,300}?assert\w*(?:\.\w+)?\([^;]*\b\1\b"
+    r"|assert\w*(?:\.\w+)?\(\s*" + _EMPTY_CALL)
 # Git or shell operations that change the repository or its files. `git checkout` is left out on
 # purpose: switching to main to compare is a normal part of a review.
 MUTATING = (r"\bgit\s+(?:-C\s+\S+\s+)?(?:commit|merge|push|rebase|cherry-pick|reset|apply|am|add"
@@ -592,13 +607,16 @@ FAIL if the first edit to any file comes before the agent read either of them, o
                                  "const q = query.toLowerCase(); return tasks.filter(t => t.title.includes(q));",
                                  "tasks.filter(task => !task.done)"]),
             # The render path itself must use the query, not only a helper declared beside filterTasks.
+            # The collection the render loop walks must come from the query-dependent call, not a discarded one.
             file_regex("search-used-in-render", "app.js",
-                       r"function render\([^)]*\)\s*\{[\s\S]{0,800}?(?:(?:search|query|term)[\s\S]{0,300}?(?:\.filter\(|filterTasks\()|(?:\.filter\(|filterTasks\()[^;]{0,200}?(?:search|query|term))",
-                       on_unmodified="fail", flags="i",
-                       match=["function render(tasks, selection) {\n  const q = document.getElementById(\"search\").value;\n  const shown = tasks.filter(t => t.title.includes(q));",
-                              "function render(tasks, selection, query) {\n  const shown = filterTasks(tasks, selection, query);"],
+                       RENDER_USES_QUERY, on_unmodified="fail", flags="i",
+                       match=["function render(tasks, selection, query) {\n  const shown = filterTasks(tasks, selection, query);\n  shown.forEach(task => 1);",
+                              "function render(tasks, selection) {\n  const q = box.value;\n  const shown = tasks.filter(t => t.title.includes(q));\n  for (const task of shown) {}",
+                              "function render(tasks, selection, query) {\n  filterTasks(tasks, selection, query).forEach(task => 1);"],
                        no_match=["function render(tasks, selection) {\n  const list = document.getElementById(\"tasks\");",
-                                 "function render(tasks, selection) {\n  const q = document.getElementById(\"search\").value;\n  list.textContent = q;"]),
+                                 "function render(tasks, selection) {\n  const q = document.getElementById(\"search\").value;\n  list.textContent = q;",
+                                 "function render(tasks, selection, query) {\n  tasks.filter(t => matches(t, query));\n  filterTasks(tasks, selection).forEach(task => 1);",
+                                 "function render(tasks, selection, query) {\n  const unused = tasks.filter(t => matches(t, query));\n  const shown = filterTasks(tasks, selection);\n  shown.forEach(task => 1);"]),
             # The browser copy must match case-insensitively too; the tested copy alone is not enough.
             file_regex("search-in-app-js-case-insensitive", "app.js",
                        r"(?:toLowerCase|toLocaleLowerCase)\(\)[\s\S]{0,300}?(?:toLowerCase|toLocaleLowerCase)\(\)|new RegExp\(\s*[A-Za-z_]\w*[^)]*[\"']i[\"']", on_unmodified="fail",
@@ -638,10 +656,13 @@ FAIL if the first edit to any file comes before the agent read either of them, o
                        no_match=['test("completing a task marks it done", () => {']),
             # Acceptance example: with the box empty the list is what it was. A test must call the search with "".
             file_regex("search-test-empty", "test/tasks.test.js",
-                       r"(?:search|query|term|filter)\w*\([^()]*(?:\"\"|'')\s*[,)]", on_unmodified="fail",
-                       weight=0.5, flags="i",
-                       match=['const all = searchTasks(tasks, "");', "assert.equal(filterTasks(tasks, 'all', '').length, 3);"],
-                       no_match=['const found = searchTasks(tasks, "WR");', 'test("completing a task marks it done", () => {']),
+                       EMPTY_SEARCH_ASSERTED, on_unmodified="fail", weight=0.5, flags="i",
+                       match=['const all = searchTasks(tasks, "");\n  assert.equal(all.length, 3);',
+                              "assert.deepEqual(searchTasks(tasks, '').map(t => t.id), [1, 2, 3]);",
+                              "const r = filterTasks(tasks, 'all', '');\n  assert.equal(r.length, 3);"],
+                       no_match=['const all = searchTasks(tasks, "");', 'const found = searchTasks(tasks, "WR");\n  assert.equal(found.length, 1);',
+                                 "const r = filterTasks(tasks, 'all');\n  assert.equal(r.length, 3);",
+                                 'test("completing a task marks it done", () => {']),
             bash("ran-checks", NODE_TEST, min=2,
                  match=['{"command":"node --test test/tasks.test.js"}',
                         '{"command":"cd app && node --test test/tasks.test.js"}'],

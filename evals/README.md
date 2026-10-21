@@ -105,8 +105,10 @@ Code version, the models, the actual cost and the limits. Results belong under
 - The multi-stage cases check that undo is wired, not persisted and asserted in a test, but no grader runs the
   code. Whether undo restores tasks to their original positions rests on the agent's report and the judge.
 - The search case rejects writing the query to storage under an obvious name. It does not inspect stored values, so
-  a query folded into the stored task data would not be caught. Four review rounds each found another way a regex can be
-  fooled; the remaining gaps are accepted and the judge reads the final session.
+  a query folded into the stored task data would not be caught. Automated review kept finding another way a regex can be
+  fooled, so the remaining gaps are accepted and the judge reads the final session. Known ones: the case-insensitive
+  check can be met by lowercasing two unrelated strings, and the render and empty-search checks follow data flow
+  by pattern only, so an unusual code shape can pass or fail them wrongly.
 - Cost figures are list-price estimates from the tool.
 
 These files carry the repository's [Apache-2.0](../LICENSE) license and [NOTICE](../NOTICE).

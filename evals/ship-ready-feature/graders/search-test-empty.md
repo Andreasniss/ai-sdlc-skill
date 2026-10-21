@@ -3,7 +3,7 @@
 # Covers expected line 2: Adds tests for the acceptance examples and runs them on the final code
 type: regex
 weight: 0.5
-pattern: '(?:search|query|term|filter)\w*\([^()]*(?:\"\"|'''')\s*[,)]'
+pattern: '(?:const|let|var)\s+(\w+)\s*=\s*(?:\w*search\w*\([^()]*(?:\"\"|'''')[^()]*|filterTasks\([^(),]+,[^(),]+,\s*(?:\"\"|'''')\s*)\);?[\s\S]{0,300}?assert\w*(?:\.\w+)?\([^;]*\b\1\b|assert\w*(?:\.\w+)?\(\s*(?:\w*search\w*\([^()]*(?:\"\"|'''')[^()]*|filterTasks\([^(),]+,[^(),]+,\s*(?:\"\"|'''')\s*)\)'
 flags: i
 target: {source: file, path: 'test/tasks.test.js'}
 ---
