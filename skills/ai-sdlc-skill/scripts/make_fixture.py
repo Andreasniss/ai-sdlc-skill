@@ -269,8 +269,10 @@ PROJECT_RULES = """# Project instructions
 - `app.js` and `app-under-test.js` carry the same task logic. The tests load the second one, the
   browser loads the first, so a change to one goes into both.
 - Work on a branch named for the change. Do not push or merge.
-- Record the last check in `docs/check-results.md`: the revision it ran on, the command and the
-  result. A record is evidence for the revision it names and for nothing later.
+- Record the last check in `docs/check-results.md`: `Revision:` it ran on, `Command:`, `Result:`
+  and a `Covers:` line saying which request or change the check covers. A record is evidence for
+  the revision it names and for nothing later. Older records without a `Covers:` line predate
+  this rule.
 - A decision that changes scope goes into `docs/decisions.md` before the code that depends on it.
 """
 
@@ -326,7 +328,7 @@ Revision: {revision}
 Command: node --test test/tasks.test.js
 Result: passed, {checks} checks
 
-Recorded before this review. It is evidence for the revision named above and for nothing later.
+Recorded before this work started. It is evidence for the revision named above and for nothing later.
 """
 
 EXPORT_TEST = '''
@@ -348,7 +350,9 @@ Acceptance examples:
 - The remaining tasks survive a reload.
 
 Out of scope: undo, and any change to the filter.
+"""
 
+CHANGE_UPDATE = """
 ## Update from the owner, after work started
 
 Removal must be undoable. After clearing, an Undo button restores the removed tasks, in their
@@ -552,7 +556,10 @@ def build(root, state):
         write(root, "AGENTS.md", PROJECT_RULES)
         write(root, "docs/decisions.md", STANDING_DECISIONS if state == "rules-feature" else "")
         if state == "rules-feature":
+            base = git_head(root)
             write(root, "ISSUE.md", SEARCH_ISSUE)
+            write(root, "docs/check-results.md", REVIEW_STALE_CHECKS.format(
+                revision=base, checks=(root / "test" / "tasks.test.js").read_text().count("\ntest(")))
             git(root, "add", "-A")
             git(root, "commit", "-qm", "Add project rules and the search request")
         elif state == "review-round":
@@ -586,6 +593,10 @@ def build(root, state):
             write(root, "docs/check-results.md", CHANGE_CHECKS.format(revision=built, checks=counted))
             git(root, "add", "-A")
             git(root, "commit", "-qm", "Record the checks for the first version")
+            # The owner's update comes last, so the revision named above predates it.
+            write(root, "ISSUE.md", CHANGE_ISSUE + CHANGE_UPDATE)
+            git(root, "add", "-A")
+            git(root, "commit", "-qm", "Widen the request: removal must be undoable")
         return git_head(root)
     if state == "interrupted":
         settled = git_head(root)
