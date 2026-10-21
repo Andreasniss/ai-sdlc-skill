@@ -82,6 +82,12 @@ Pass rate at threshold 0.8, per the tool, natural with vs without: 0.2 vs 0 (blo
   runs before the main run, not calibrated against human labels.
 - 5 runs per arm leaves visible noise. A change of 0.03 to 0.06 in one case is one failed check in one run.
 - Cases are small synthetic projects, written for this skill.
+- **Two runs lost the ability to write at all.** In natural bug-with-reproducible-symptom (with arm, run 1, score 0.47)
+  the agent reported its working directory as mounted read-only and wrote nothing. Forced blocked-export-handoff
+  (with arm, run 4) reported the same ("I couldn't make the change"). Both are sandbox failures, not skill behavior,
+  and are scored as observed. Without the first one, the bug case natural Δ would be 0.000 instead of -0.107 and the
+  natural mean Δ about -0.002 instead of -0.015. Many other runs mention that the `.git` directory is read-only
+  (so no commit or branch), which applies to both arms alike.
 - Permission denials were not zero in the full runs: 13 of 80 natural runs and 2 of 40 forced runs had at least one
   (natural: 6 Bash, 3 Write, 4 Chrome MCP tool attempts; forced: 2 Write to paths outside the workspace). The denied
   Bash and Write calls could have cost a run some checks, so scores for those runs may be slightly low in both arms.
