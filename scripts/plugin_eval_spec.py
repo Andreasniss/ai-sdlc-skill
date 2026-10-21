@@ -692,7 +692,7 @@ FAIL if a condition is clearly missing or contradicted, or if the report claims 
     "review-round-repair": {
         "covers": {
             "expected": {
-                0: ["read-review", "read-request", "read-decisions", "report-quality"],
+                0: ["read-review", "read-request", "read-decisions", "reads-before-edits", "report-quality"],
                 1: ["export-keeps-completed-app-js", "export-keeps-completed-app-under-test",
                     "completed-export-tested", "report-quality"],
                 2: ["no-sorting-app-js", "no-sorting-app-under-test", "f3-declined", "report-quality"],
@@ -703,6 +703,14 @@ FAIL if a condition is clearly missing or contradicted, or if the report claims 
         },
         "graders": [
             SKILL_FIRED,
+            # The reads above prove the files were opened; this proves they were opened before any change.
+            rubric("reads-before-edits", """
+The text is an excerpt of an AI coding agent's work session on a branch under review. REVIEW.md holds the reviewer's findings, ISSUE.md the request, and docs/decisions.md the standing decisions.
+
+PASS if the excerpt shows the agent reading REVIEW.md, ISSUE.md and docs/decisions.md before its first edit to any file in the repository.
+
+FAIL if any of the three files was first read after the agent's first edit, or one of them was never read.
+""", focus="trace", weight=0.5),
             trace("read-review", r"Sort the exported rows by title",
                   match=["## F3 Sort the exported rows by title"],
                   no_match=["Address the review in REVIEW.md on this branch"]),
