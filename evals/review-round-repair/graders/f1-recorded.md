@@ -3,7 +3,7 @@
 # Covers expected line 4: Updates the review record for each finding without marking the change approved
 type: regex
 weight: 0.5
-pattern: 'F1[\s\S]{0,600}?(?:fixed|resolved|addressed|done\b|repaired)'
+pattern: 'F1(?:(?!\n[#>*\-\s]*F2\b)[\s\S]){0,600}?(?:fixed|resolved|addressed|done\b|repaired)'
 flags: i
 target: {source: file, path: REVIEW.md}
 ---

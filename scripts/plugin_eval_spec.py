@@ -541,7 +541,7 @@ CASES = {
             "expected": {
                 0: ["read-rules", "read-decisions", "report-quality"],
                 1: ["search-input", "search-in-app-js", "search-in-app-under-test",
-                    "search-composes-with-filter", "search-used-in-render", "search-in-app-js-case-insensitive",
+                    "search-triggers-render", "search-composes-with-filter", "search-used-in-render", "search-in-app-js-case-insensitive",
                     "search-not-persisted", "no-inplace-sort", "report-quality"],
                 2: ["search-tested", "search-test-with-filter", "search-test-identity", "ran-checks",
                     "check-covers-final-code", "report-quality"],
@@ -566,6 +566,17 @@ CASES = {
                        on_unmodified="fail",
                        match=['const box = document.getElementById("search");'],
                        no_match=['document.getElementById("title")']),
+            # Typing in the box must rerun render; a query read only inside render shows nothing until
+            # some other action renders.
+            file_regex("search-triggers-render", "app.js",
+                       r'getElementById\("search"\)\s*\.addEventListener\(\s*["\'](?:input|keyup|change|search)["\'][\s\S]{0,300}?render\('
+                       r'|(?:const|let|var)\s+(\w+)\s*=\s*document\.getElementById\("search"\)[\s\S]*?\1\.addEventListener\(\s*["\'](?:input|keyup|change|search)["\'][\s\S]{0,300}?render\(',
+                       on_unmodified="fail",
+                       match=['document.getElementById("search").addEventListener("input", () => {\n render(tasks, selection);',
+                              'const box = document.getElementById("search");\n box.addEventListener("input", () => render(tasks, sel));'],
+                       no_match=['const box = document.getElementById("search");\n other.addEventListener("input", () => render(tasks));',
+                                 'document.getElementById("search").addEventListener("input", () => {\n // nothing\n});',
+                                 'const q = document.getElementById("search").value;']),
             # Matching ignores case, and the logic belongs in both copies of the task code.
             file_regex("search-in-app-under-test", "app-under-test.js",
                        r"(?:toLowerCase|toLocaleLowerCase)\(\)[\s\S]{0,300}?(?:toLowerCase|toLocaleLowerCase)\(\)|/[^/\n]+/i\b", on_unmodified="fail",
@@ -639,9 +650,13 @@ CASES = {
                        on_unmodified="fail", flags="im",
                        match=["Covers: search request, 5 checks", "Result: passed\nCovers: review fixes"],
                        no_match=["Result: passed, 3 checks", "Recorded before this work started."]),
-            bash("inspected-own-diff", r"\bgit\b[^|;&]*\b(?:diff|show)\b", min=1,
-                 match=['{"command":"git diff main"}', '{"command":"git -C . show HEAD"}'],
-                 no_match=['{"command":"git status"}', '{"command":"git log --oneline"}']),
+            rubric("inspected-own-diff", """
+The text is an excerpt of an AI coding agent's work session on a task-list repository with a written request and standing decisions.
+
+PASS if the excerpt shows the agent running git diff or git show after its last change to code, so the output covers the finished change, and then reading it against the request or the standing decisions.
+
+FAIL if the only diff or show command ran before the change was made (for example on the clean branch), or none ran.
+""", focus="trace"),
             rubric("check-covers-final-code", """
 The text is an excerpt of an AI coding agent's work session on a task-list repository. The project rules say to record the last check with the revision it ran on, and that a record is evidence for the revision it names and nothing later.
 
@@ -721,15 +736,17 @@ FAIL if a condition is clearly missing or contradicted, or if the report claims 
                        match=["F3: declined, ISSUE.md fixes the row order", "## F3 Sort\nNot implemented: this conflicts with ISSUE.md."],
                        no_match=["## F3 Sort the exported rows by title\nAlphabetical rows would be easier to read."]),
             file_regex("f1-recorded", "REVIEW.md",
-                       r"F1[\s\S]{0,600}?(?:fixed|resolved|addressed|done\b|repaired)",
+                       r"F1(?:(?!\n[#>*\-\s]*F2\b)[\s\S]){0,600}?(?:fixed|resolved|addressed|done\b|repaired)",
                        on_unmodified="fail", weight=0.5, flags="i",
                        match=["F1: fixed in the export function", "## F1 Completed tasks\nResolved."],
-                       no_match=["## F1 Completed tasks are missing from the export\nWith Show set to all"]),
+                       no_match=["## F1 Completed tasks are missing from the export\nWith Show set to all",
+                                 "## F1 Completed tasks\nWith Show set to all\n## F2 Test\nFixed with a test"]),
             file_regex("f2-recorded", "REVIEW.md",
-                       r"F2[\s\S]{0,600}?(?:fixed|resolved|addressed|done\b|added|covered)",
+                       r"F2(?:(?!\n[#>*\-\s]*F3\b)[\s\S]){0,600}?(?:fixed|resolved|addressed|done\b|added|covered)",
                        on_unmodified="fail", weight=0.5, flags="i",
                        match=["F2: addressed with a new test", "## F2 test\nCovered by the new case."],
-                       no_match=["## F2 The export test does not cover the case that broke\nNothing covers a completed task"]),
+                       no_match=["## F2 The export test does not cover the case that broke\nNothing covers a completed task",
+                                 "## F2 Test\nNothing covers it\n## F3 Sort\nAddressed: declined"]),
             # The reviewer owns the header. It stays as written; finding notes go elsewhere in the file.
             file_regex("status-kept", "REVIEW.md", r"^Status:\s*changes requested", on_unmodified="pass",
                        flags="im", weight=0.5,

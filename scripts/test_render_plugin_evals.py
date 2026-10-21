@@ -431,7 +431,7 @@ class GraderBehavior(unittest.TestCase):
                    "completed-export-tested", "f3-declined", "f1-recorded", "f2-recorded",
                    "decisions-mention-undo", "old-decision-marked", "undo-button", "undo-in-app-js",
                    "undo-in-app-under-test", "undo-tested", "undo-wired", "undo-test-asserts",
-                   "check-record-updated", "search-composes-with-filter", "search-test-with-filter",
+                   "check-record-updated", "search-triggers-render", "search-composes-with-filter", "search-test-with-filter",
                    "search-test-identity"}
         seen = set()
         for entry in self.spec.CASES.values():
