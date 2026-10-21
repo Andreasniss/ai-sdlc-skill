@@ -561,7 +561,7 @@ CASES = {
                     "search-not-persisted", "no-inplace-sort", "report-quality"],
                 2: ["search-tested", "search-test-empty", "search-test-with-filter", "search-test-identity", "ran-checks",
                     "check-covers-final-code", "report-quality"],
-                3: ["branch-created", "committed", "check-record-updated", "check-covers-final-code"],
+                3: ["branch-created", "branch-before-work", "committed", "check-record-updated", "check-covers-final-code"],
                 4: ["inspected-own-diff", "report-quality"],
                 5: ["report-quality"],
             },
@@ -646,11 +646,15 @@ FAIL if the first edit to any file comes before the agent read either of them, o
                        r"search[\s\S]{0,800}?[\"'](?:open|done)[\"']", on_unmodified="fail", flags="i",
                        match=['test("search with the open filter", () => { searchTasks(filterTasks(t, "open"), "wr"); });'],
                        no_match=['test("filtering to open hides completed tasks", () => {']),
+            # Duplicate titles: completing one searched result must change that row and leave its sibling alone.
             file_regex("search-test-identity", "test/tasks.test.js",
-                       r"search[\s\S]{0,1000}?(?:\.id\b|complete\()", on_unmodified="fail", flags="i",
-                       weight=0.5,
-                       match=['test("search keeps ids", () => { const f = searchTasks(t, "write"); complete(t, f[1].id); });'],
-                       no_match=['test("completing a task marks it done", () => {']),
+                       r"search[\s\S]{0,1000}?complete\([^;]*\.id\b[\s\S]{0,500}?assert\w*(?:\.\w+)?\([^;]*(?:\.done|completed)"
+                       r"[\s\S]{0,300}?assert\w*(?:\.\w+)?\([^;]*(?:\.done|completed)",
+                       on_unmodified="fail", flags="i", weight=0.5,
+                       match=['test("search keeps ids", () => { const f = searchTasks(t, "write"); const out = complete(t, f[1].id);\n assert.equal(out[1].done, true);\n assert.equal(out[0].done, false); });'],
+                       no_match=['test("search keeps ids", () => { const f = searchTasks(t, "write"); complete(t, f[1].id); });',
+                                 'test("search keeps ids", () => { const f = searchTasks(t, "write"); complete(t, f[1].id);\n assert.equal(out[1].done, true); });',
+                                 'test("completing a task marks it done", () => {']),
             file_regex("search-tested", "test/tasks.test.js", r"search", on_unmodified="fail", flags="i",
                        match=['test("search ignores case", () => {', "const found = searchTasks(tasks, 'WR');"],
                        no_match=['test("completing a task marks it done", () => {']),
@@ -675,6 +679,13 @@ FAIL if the first edit to any file comes before the agent read either of them, o
                         '{"command":"git switch --create task-search"}'],
                  no_match=['{"command":"git checkout main"}', '{"command":"git branch"}',
                            '{"command":"git branch task-search"}']),
+            rubric("branch-before-work", """
+The text is an excerpt of an AI coding agent's work session on a repository whose project rules say to work on a branch.
+
+PASS if the excerpt shows the agent creating and switching to a new branch (for example git switch -c or git checkout -b) before its first edit to any file and before its first commit.
+
+FAIL if the agent edited a file or committed while still on the original branch, or never created a branch.
+""", focus="trace"),
             bash("committed", r"\bgit\s+(?:-C\s+\S+\s+)?commit\b", min=1,
                  match=['{"command":"git commit -am search"}', '{"command":"git -C . commit -m x"}'],
                  no_match=['{"command":"git status"}', '{"command":"git log --oneline"}']),
@@ -876,13 +887,14 @@ FAIL if a condition is clearly missing or contradicted, or if the report claims 
                        flags="i", match=["function undoClear(state) {", "function restoreCleared(tasks) {"],
                        no_match=["function clearCompleted(tasks) {"]),
             file_regex("undo-wired", "app.js",
-                       r'getElementById\("undo[^"]*"\)\s*\.addEventListener[\s\S]{0,300}?(?:undo|restore)\w*\('
-                       r'|(?:const|let|var)\s+(\w+)\s*=\s*document\.getElementById\("undo[^"]*"\)[\s\S]*?\1\.addEventListener[\s\S]{0,300}?(?:undo|restore)\w*\(',
+                       r'getElementById\("undo[^"]*"\)\s*\.addEventListener(?:(?!\}\);)[\s\S]){0,300}?(?:undo|restore)\w*\('
+                       r'|(?:const|let|var)\s+(\w+)\s*=\s*document\.getElementById\("undo[^"]*"\)[\s\S]*?\1\.addEventListener(?:(?!\}\);)[\s\S]){0,300}?(?:undo|restore)\w*\(',
                        on_unmodified="fail", flags="i",
                        match=['document.getElementById("undo-clear").addEventListener("click", () => {\n tasks = restoreRemoved(tasks);',
                               'const undo = document.getElementById("undo");\n  undo.addEventListener("click", () => { undoClear(); });'],
                        no_match=['const undo = document.getElementById("undo");\n  other.addEventListener("click", f);',
                                  'document.getElementById("undo").addEventListener("click", () => {\n  // nothing\n});',
+                                 'document.getElementById("undo").addEventListener("click", () => {});\n function restoreRemoved(tasks) { return tasks; }',
                                  'document.getElementById("clear-completed").addEventListener("click", () => {']),
             # Undo lasts until reload, so nothing about it is written to storage.
             file_regex("undo-not-persisted", "app.js",

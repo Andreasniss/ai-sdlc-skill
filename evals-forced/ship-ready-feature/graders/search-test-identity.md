@@ -3,7 +3,7 @@
 # Covers expected line 2: Adds tests for the acceptance examples and runs them on the final code
 type: regex
 weight: 0.5
-pattern: 'search[\s\S]{0,1000}?(?:\.id\b|complete\()'
+pattern: 'search[\s\S]{0,1000}?complete\([^;]*\.id\b[\s\S]{0,500}?assert\w*(?:\.\w+)?\([^;]*(?:\.done|completed)[\s\S]{0,300}?assert\w*(?:\.\w+)?\([^;]*(?:\.done|completed)'
 flags: i
 target: {source: file, path: 'test/tasks.test.js'}
 ---
