@@ -56,10 +56,13 @@ claude plugin eval . --scaffold --trust-plugin \
   --model claude-haiku-5-5 --judge-model claude-sonnet-5-5 \
   --runs 3 --ablation with-without --threshold 0.8 --max-cost-usd <cap> -j 3 \
   --no-publish --output-dir <directory> --json <directory>/run.json \
-  --allow-tools Write Edit "Bash(git:*)" "Bash(node:*)" "Bash(python3:*)" "Bash(ls:*)" "Bash(cat:*)" \
-    "Bash(head:*)" "Bash(tail:*)" "Bash(grep:*)" "Bash(find:*)" "Bash(wc:*)" "Bash(diff:*)" \
-    "Bash(sed:*)" "Bash(mkdir:*)" "Bash(touch:*)" "Bash(echo:*)" "Bash(pwd:*)"
+  --allow-tools Write Edit Bash
 ```
+
+`--allow-tools Bash` grants sandboxed Bash in general. A list of narrow patterns such as `Bash(git:*)` did not
+cover compound commands, pipes and redirects the agents naturally use: the recorded run of 2026-10-21 used such a
+list and logged 36 permission denials in 14 of 16 case-arms, so some runs could not run their checks. The
+OS sandbox, not the pattern list, is what contains the commands.
 
 Add `--case <id>` for one case. Pin the models and set a cost cap before you start; the cap is a
 list-price estimate, not your plan usage. Record the caps, cases, `--runs`, threshold, models and judge
@@ -82,6 +85,10 @@ Code version, the models, the actual cost and the limits. Results belong under
   in the middle of a session. Deterministic graders cover the checkable parts of the same ideas.
 - End state is read from files and tool calls. The graders cannot run the fixture's tests or a
   browser, so a passing score does not prove the repaired code works.
+- The review-only case catches edits through the `Edit` and `Write` tools and common mutating shell commands. An
+  edit made some other way through Bash, for example `cat > file` or a `python3 -c` write, is not caught by the
+  tool-count graders, and the case has no end-state check because switching branches legitimately changes files.
+  In the recorded run no review run made such an edit; that was checked by reading the traces.
 - Cost figures are list-price estimates from the tool.
 
 These files carry the repository's [Apache-2.0](../LICENSE) license and [NOTICE](../NOTICE).

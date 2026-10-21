@@ -16,7 +16,7 @@ and [`report.html`](plugin-eval-run-2026-10-21/report.html).
 |---|---|
 | Skill under test | tree `fd4c9158e83ee0a9a30ed468ecf26d9702d7eb2d` (`git rev-parse HEAD:skills/ai-sdlc-skill`), plugin 0.5.3 |
 | Cases digest | `1d0e419b8ad1a343000e38acb6694488e936e7116485e5d51cbd557cee7c354e` (`eval_report.py --digest`) |
-| Graders digest | `d29bed225e6339ae85783547c43d1d80ac283b1f6a0957d1a96a8f0f0f130e4b` (`render_plugin_evals.py --digest`) |
+| Graders digest | `d29bed225e6339ae85783547c43d1d80ac283b1f6a0957d1a96a8f0f0f130e4b` for the run (`render_plugin_evals.py --digest`). The tree on this branch now has digest `3a3bbf5e2aa9f9ed092baabb0f1fa72a489f3996c92785281cfa6fa1e6c9ca2b`, see below |
 | Claude Code | 2.1.306 |
 | Agent model, judge | `claude-haiku-5-5`, `claude-sonnet-5-5` |
 | Settings | 8 cases, `--runs 3`, `--ablation with-without`, `--threshold 0.8`, `-j 3`, cap `--max-cost-usd 15` |
@@ -44,6 +44,15 @@ Pass rate at threshold 0.8, as the tool reports it: with arm 0.38 overall. Per c
 2 of 3 runs on bug-with-reproducible-symptom, csv-plausible-wrong-output and refactor-without-behavior-change, and
 3 of 3 on browser-feedback-unavailable. The without arm passed 2 of 3 on refactor and 3 of 3 on
 browser-feedback-unavailable, and none on the other cases. The threshold affects pass counts only, not scores.
+
+## Changes to the graders after the run
+
+A code review found that the six exact-content ("unchanged file") graders ended their pattern with `$`, which also
+accepts the original text plus one trailing newline. They now end with a true end-of-input assertion, so the tree
+digest changed. This is a correctness fix, not a tuning of any case criterion. I checked all 48 kept run workspaces
+against the fixtures: 93 files differ from their fixture, none of them only by a trailing newline, so no score in this
+run would change. The scores above were produced by the graders with the first digest and were not recomputed.
+The run's `--allow-tools` list is also documented differently in `evals/README.md` now (see the audit notes).
 
 ## Reading it
 

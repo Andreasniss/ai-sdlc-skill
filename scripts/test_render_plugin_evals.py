@@ -111,6 +111,20 @@ class Suite(unittest.TestCase):
             self.assertIn("unexpected case directory stray-case", problems)
             self.assertTrue(any(p.startswith("missing ") for p in problems))
 
+    def test_write_removes_case_directories_the_spec_dropped_and_keeps_other_directories(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            out = Path(tmp)
+            render.write(out, self.rendered)
+            (out / "dropped-case" / "graders").mkdir(parents=True)
+            (out / "dropped-case" / "prompt.md").write_text("x\n")
+            (out / "dropped-case" / "graders" / "g.md").write_text("x\n")
+            (out / "plugin-eval-run-x").mkdir()
+            (out / "plugin-eval-run-x" / "aggregate-result.json").write_text("{}\n")
+            render.write(out, self.rendered)
+            self.assertFalse((out / "dropped-case").exists())
+            self.assertTrue((out / "plugin-eval-run-x" / "aggregate-result.json").exists())
+            self.assertEqual(render.compare(out, self.rendered), [])
+
     def test_digest_moves_when_a_grader_moves(self):
         changed = dict(self.rendered)
         path = sorted(p for p in changed if "/graders/" in p)[0]
@@ -422,7 +436,8 @@ class GraderBehavior(unittest.TestCase):
                 original = files[grader["file"]]
                 for text, wanted in ((original, True), (original + "x", False), ("x" + original, False),
                                      (original.replace("\n", "\r\n"), False), (original[:-1], False),
-                                     (original[:-2] + "!\n", False)):
+                                     (original[:-2] + "!\n", False),
+                                     (original + "\n", False), (original.rstrip("\n") + "\n\n", False)):
                     items.append({"pattern": pairs["pattern"], "flags": "", "text": text})
                     expectations.append((case_id, grader["name"], wanted))
         self.assertGreater(len(items), 30)

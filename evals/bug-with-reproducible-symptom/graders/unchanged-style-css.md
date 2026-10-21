@@ -4,6 +4,6 @@
 # Covers expected line 1: Makes a scoped repair
 type: regex
 weight: 0.5
-pattern: '^body \{ font-family: system-ui, sans-serif; margin: 2rem; \}\nli \{ cursor: pointer; \}\nli\.done \{ text-decoration: line-through; \}\n$'
+pattern: '^body \{ font-family: system-ui, sans-serif; margin: 2rem; \}\nli \{ cursor: pointer; \}\nli\.done \{ text-decoration: line-through; \}\n(?![\s\S])'
 target: {source: file, path: style.css}
 ---

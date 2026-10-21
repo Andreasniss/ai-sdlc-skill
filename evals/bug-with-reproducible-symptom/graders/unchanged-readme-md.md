@@ -4,6 +4,6 @@
 # Covers expected line 1: Makes a scoped repair
 type: regex
 weight: 0.5
-pattern: '^# Task list\n\nA small browser task list kept in local storage\. Open `index\.html` in a browser\. Tasks can be\nadded, completed by clicking them, and shown filtered by all, open, or completed\.\n\n## Checks\n\n    node --test test\/tasks\.test\.js\n$'
+pattern: '^# Task list\n\nA small browser task list kept in local storage\. Open `index\.html` in a browser\. Tasks can be\nadded, completed by clicking them, and shown filtered by all, open, or completed\.\n\n## Checks\n\n    node --test test\/tasks\.test\.js\n(?![\s\S])'
 target: {source: file, path: README.md}
 ---

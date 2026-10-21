@@ -4,6 +4,6 @@
 # Covers expected line 1: Makes a scoped repair
 type: regex
 weight: 0.5
-pattern: '^<!doctype html>\n<title>Task list<\/title>\n<link rel="stylesheet" href="style\.css">\n<label for="filter">Show<\/label>\n<select id="filter">\n  <option value="all">All<\/option>\n  <option value="open">Open<\/option>\n  <option value="done">Completed<\/option>\n<\/select>\n<ul id="tasks"><\/ul>\n<input id="title" aria-label="Task title">\n<button id="add">Add<\/button>\n<script src="app\.js"><\/script>\n$'
+pattern: '^<!doctype html>\n<title>Task list<\/title>\n<link rel="stylesheet" href="style\.css">\n<label for="filter">Show<\/label>\n<select id="filter">\n  <option value="all">All<\/option>\n  <option value="open">Open<\/option>\n  <option value="done">Completed<\/option>\n<\/select>\n<ul id="tasks"><\/ul>\n<input id="title" aria-label="Task title">\n<button id="add">Add<\/button>\n<script src="app\.js"><\/script>\n(?![\s\S])'
 target: {source: file, path: index.html}
 ---

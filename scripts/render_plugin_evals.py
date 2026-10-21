@@ -20,6 +20,7 @@ import importlib.util
 import json
 import posixpath
 import re
+import shutil
 import sys
 import tempfile
 from pathlib import Path
@@ -323,7 +324,8 @@ def render_grader(cases_doc, case, entry, grader, builder_files, spec):
         if REVISION.search(builder_files[path]):
             raise SpecError("%s: %s embeds a commit revision, so it is not byte-identical between builds"
                             % (case["id"], path))
-        options.update({"pattern": "^" + js_escape(builder_files[path]) + "$",
+        # "$" also matches before a final newline, so end the match with a true end-of-input assertion.
+        options.update({"pattern": "^" + js_escape(builder_files[path]) + r"(?![\s\S])",
                         "target": {"source": "file", "path": path}})
         comments = ["Exact-content check against the file make_fixture.py builds: %s must be left as it was." % path]
         comments += covered_comments(case, entry, grader["name"])
@@ -434,12 +436,18 @@ def write(out_dir, rendered):
         target.parent.mkdir(parents=True, exist_ok=True)
         target.write_text(text, encoding="utf-8")
         target.chmod(mode)
-    # Remove only files a previous render left inside a case directory; never a directory.
+    # Remove only files a previous render left inside a case directory, and whole case directories the
+    # spec no longer renders. A case directory is one holding prompt.md or case.yaml, so recorded results
+    # and other directories are never touched.
     generated = {path.split("/")[0] for path in rendered}
     for name in sorted(generated):
         for stray in sorted((out_dir / name).rglob("*")):
             if stray.is_file() and stray.relative_to(out_dir).as_posix() not in rendered:
                 stray.unlink()
+    for child in sorted(out_dir.iterdir()):
+        if child.is_dir() and child.name not in generated and (
+                (child / "prompt.md").exists() or (child / "case.yaml").exists()):
+            shutil.rmtree(child)
 
 
 def summary(cases_doc, spec, rendered):

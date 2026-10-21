@@ -4,6 +4,6 @@
 # Covers expected line 0: Identifies and resumes the current stage instead of restarting planning
 type: regex
 weight: 0.5
-pattern: '^# Request: clear completed tasks\n\nLet someone remove every completed task in one action\.\n\nAcceptance examples:\n\n- With two completed tasks and one open, the action leaves only the open task\.\n- With no completed tasks, the action changes nothing\.\n- The remaining tasks survive a reload\.\n\nOut of scope: undo, and any change to the filter\.\n$'
+pattern: '^# Request: clear completed tasks\n\nLet someone remove every completed task in one action\.\n\nAcceptance examples:\n\n- With two completed tasks and one open, the action leaves only the open task\.\n- With no completed tasks, the action changes nothing\.\n- The remaining tasks survive a reload\.\n\nOut of scope: undo, and any change to the filter\.\n(?![\s\S])'
 target: {source: file, path: ISSUE.md}
 ---
