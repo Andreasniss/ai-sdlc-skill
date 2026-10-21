@@ -125,6 +125,18 @@ class Suite(unittest.TestCase):
             self.assertTrue((out / "plugin-eval-run-x" / "aggregate-result.json").exists())
             self.assertEqual(render.compare(out, self.rendered), [])
 
+    def test_forced_variant_differs_only_by_the_appended_system_prompt(self):
+        forced = render.render_all(self.cases_doc, self.spec, self.builder, True)
+        self.assertEqual(set(forced), set(self.rendered))
+        changed = [p for p in forced if forced[p] != self.rendered[p]]
+        self.assertEqual(sorted(changed), sorted(case + "/prompt.md" for case in self.spec.CASES))
+        for path in changed:
+            lines = forced[path][0].split("\n")
+            plain = self.rendered[path][0].split("\n")
+            extra = [line for line in lines if line not in plain]
+            self.assertEqual(extra, ["append_system_prompt: " + render.scalar(render.FORCED_PROMPT)], path)
+        self.assertNotEqual(render.digest(forced), render.digest(self.rendered))
+
     def test_digest_moves_when_a_grader_moves(self):
         changed = dict(self.rendered)
         path = sorted(p for p in changed if "/graders/" in p)[0]
@@ -415,8 +427,8 @@ class GraderBehavior(unittest.TestCase):
     def test_every_task_outcome_check_fails_on_the_unmodified_fixture(self):
         # A check that already passes on the starting state cannot detect that the work was done.
         outcome = {"app-under-test-matches-by-identity", "app-js-matches-by-identity", "app-js-sorts",
-                   "app-under-test-duplication-removed", "app-js-duplication-removed", "todo-resolved",
-                   "handler-saves"}
+                   "csv-in-app-js", "csv-in-app-under-test", "escaping-tested", "email-excluded",
+                   "todo-resolved", "handler-saves"}
         seen = set()
         for entry in self.spec.CASES.values():
             for grader in entry["graders"]:

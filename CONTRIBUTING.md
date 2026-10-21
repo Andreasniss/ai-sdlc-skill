@@ -14,6 +14,7 @@ python3 -m unittest discover -s skills/ai-sdlc-skill/tests -v
 python3 scripts/test_docs_consistency.py
 python3 scripts/test_plugin_packaging.py
 python3 scripts/render_plugin_evals.py --check
+python3 scripts/render_plugin_evals.py --forced --check
 python3 scripts/test_render_plugin_evals.py
 python3 scripts/check_privacy.py --staged
 python3 scripts/check_privacy.py --range origin/main HEAD

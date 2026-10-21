@@ -15,6 +15,7 @@ render again; never edit a generated file.
 ```sh
 python3 scripts/render_plugin_evals.py            # write evals/<case-id>/
 python3 scripts/render_plugin_evals.py --check    # verify the tree is current; CI runs this
+python3 scripts/render_plugin_evals.py --forced  # write evals-forced/ (add --check to verify it)
 python3 scripts/render_plugin_evals.py --digest   # sha256 of the rendered tree, for a run record
 python3 scripts/render_plugin_evals.py --summary  # grader inventory per case
 python3 scripts/test_render_plugin_evals.py       # no model calls
@@ -23,10 +24,16 @@ python3 scripts/test_render_plugin_evals.py       # no model calls
 ## What is rendered
 
 Eight of the 27 cases, the ones with a fixture and an outcome a grader can observe: the bug
-reproduction, the missing browser, a review that must not edit, a feature whose interactions must
-keep order, a refactor, resuming an interrupted change, a plausible-but-wrong CSV export, and a
-blocked export handoff. The other cases have no rendered form yet; the generator refuses a case the
-spec does not grade.
+reproduction, a review that must not edit, a feature whose interactions must keep order, a feature
+added in an established project, resuming an interrupted change, resuming an export after the owner's
+answer, a plausible-but-wrong CSV export, and a blocked export handoff. The other cases have no
+rendered form yet; the generator refuses a case the spec does not grade.
+
+`evals-forced/` is the same set with one difference: each prompt appends "Use the ai-sdlc-skill skill
+(AI SDLC Skill) for this task." to the agent's system prompt. Run `evals/` to see whether the model finds
+and uses the skill by itself, and `evals-forced/` with `--ablation none` to see what the skill's content
+adds when it is used. Compare the forced arm with the natural run's no-plugin arm, and leave the
+`skill-fired` indicator out of both scores.
 
 Graders, in order of preference:
 
@@ -64,6 +71,7 @@ cover compound commands, pipes and redirects the agents naturally use: the recor
 list and logged 36 permission denials in 14 of 16 case-arms, so some runs could not run their checks. The
 OS sandbox, not the pattern list, is what contains the commands.
 
+For the forced-use variant add `--eval-dir evals-forced --ablation none` and drop `--ablation with-without`.
 Add `--case <id>` for one case. Pin the models and set a cost cap before you start; the cap is a
 list-price estimate, not your plan usage. Record the caps, cases, `--runs`, threshold, models and judge
 somewhere reviewable before the full run, so the result cannot be tuned afterwards.
