@@ -579,10 +579,11 @@ CASES = {
                                  'const q = document.getElementById("search").value;']),
             # Matching ignores case, and the logic belongs in both copies of the task code.
             file_regex("search-in-app-under-test", "app-under-test.js",
-                       r"(?:toLowerCase|toLocaleLowerCase)\(\)[\s\S]{0,300}?(?:toLowerCase|toLocaleLowerCase)\(\)|/[^/\n]+/i\b", on_unmodified="fail",
+                       r"(?:toLowerCase|toLocaleLowerCase)\(\)[\s\S]{0,300}?(?:toLowerCase|toLocaleLowerCase)\(\)|new RegExp\(\s*[A-Za-z_]\w*[^)]*[\"']i[\"']", on_unmodified="fail",
                        match=["task.title.toLowerCase().includes(text.toLowerCase())",
-                              "return /wr/i.test(task.title);"],
-                       no_match=["const q = query.toLowerCase(); return tasks.filter(t => t.title.includes(q));",
+                              "return new RegExp(text, \"i\").test(task.title);"],
+                       no_match=["return /wr/i.test(task.title);",
+                                 "const q = query.toLowerCase(); return tasks.filter(t => t.title.includes(q));",
                                  "tasks.filter(task => !task.done)"]),
             # The render path itself must use the query, not only a helper declared beside filterTasks.
             file_regex("search-used-in-render", "app.js",
@@ -594,10 +595,11 @@ CASES = {
                                  "function render(tasks, selection) {\n  const q = document.getElementById(\"search\").value;\n  list.textContent = q;"]),
             # The browser copy must match case-insensitively too; the tested copy alone is not enough.
             file_regex("search-in-app-js-case-insensitive", "app.js",
-                       r"(?:toLowerCase|toLocaleLowerCase)\(\)[\s\S]{0,300}?(?:toLowerCase|toLocaleLowerCase)\(\)|/[^/\n]+/i\b", on_unmodified="fail",
+                       r"(?:toLowerCase|toLocaleLowerCase)\(\)[\s\S]{0,300}?(?:toLowerCase|toLocaleLowerCase)\(\)|new RegExp\(\s*[A-Za-z_]\w*[^)]*[\"']i[\"']", on_unmodified="fail",
                        match=["task.title.toLowerCase().includes(text.toLowerCase())",
-                              "return /wr/i.test(task.title);"],
-                       no_match=["const q = query.toLowerCase(); return tasks.filter(t => t.title.includes(q));",
+                              "return new RegExp(text, \"i\").test(task.title);"],
+                       no_match=["return /wr/i.test(task.title);",
+                                 "const q = query.toLowerCase(); return tasks.filter(t => t.title.includes(q));",
                                  "tasks.filter(task => !task.done)"]),
             # Reloading clears the search, so the query is never written to storage.
             file_regex("search-not-persisted", "app.js", r"localStorage\.setItem\([^)]*search", absent=True,
@@ -796,7 +798,7 @@ FAIL if a condition is clearly missing or contradicted, or if the report claims 
             "expected": {
                 0: ["read-update", "read-decisions", "report-quality"],
                 1: ["decisions-mention-undo", "old-decision-marked", "report-quality"],
-                2: ["undo-button", "undo-in-app-js", "undo-in-app-under-test", "undo-wired",
+                2: ["decision-before-code", "undo-button", "undo-in-app-js", "undo-in-app-under-test", "undo-wired",
                     "undo-not-persisted", "clear-still-wired", "clear-button-kept", "report-quality"],
                 3: ["undo-tested", "undo-test-asserts", "ran-checks", "check-after-change",
                     "report-quality"],
@@ -880,6 +882,14 @@ FAIL if a condition is clearly missing or contradicted, or if the report claims 
             bash("no-push", GIT_PUSH, min=0, max=0,
                  match=['{"command":"git push origin clear-completed"}'],
                  no_match=['{"command":"git status"}']),
+            # Project rule: a scope-changing decision is recorded before the code that depends on it.
+            rubric("decision-before-code", """
+The text is an excerpt of an AI coding agent's work session on a task-list repository. The project instructions say a decision that changes scope must be recorded in docs/decisions.md before the code that depends on it.
+
+PASS if the excerpt shows the agent editing docs/decisions.md to record the Undo decision before its first edit to app.js or app-under-test.js for the Undo feature.
+
+FAIL if the first edit to app.js or app-under-test.js for Undo comes before the edit to docs/decisions.md, or the decision file was never edited.
+""", focus="trace"),
             rubric("check-after-change", """
 The text is an excerpt of an AI coding agent's work session on a branch. A check record says the tests passed for the first version of a request. The request has since been widened.
 
