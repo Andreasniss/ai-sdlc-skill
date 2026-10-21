@@ -55,6 +55,10 @@ Graders, in order of preference:
 Every `expected` line is covered by a grader or carries a stated reason; the generator refuses a spec
 that leaves one unaccounted for. The generated comment in each grader names the line it covers.
 
+The [Codex subagent pilot](codex-subagent-pilot-2026-10-21.md) separately compares
+explicitly supplied skill instructions with a baseline on the three cases. It is
+not a native plugin-discovery test or a score comparable to these Claude runs.
+
 ## Running it
 
 This is manual and every run is billed to your account. Nothing in CI calls a model.
