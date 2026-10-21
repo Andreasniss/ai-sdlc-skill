@@ -3,6 +3,6 @@
 # Covers expected line 3: Reruns the checks on the updated code and does not cite the earlier record as evidence for it
 type: tool_used
 tool: Bash
-input_match: '\bnode\b'
+input_match: '\bnode\b[^|;&]*--test\b'
 min: 1
 ---

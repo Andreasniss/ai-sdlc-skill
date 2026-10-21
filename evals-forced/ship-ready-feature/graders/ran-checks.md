@@ -3,6 +3,6 @@
 # Covers expected line 2: Adds tests for the acceptance examples and runs them on the final code
 type: tool_used
 tool: Bash
-input_match: '\bnode\b'
+input_match: '\bnode\b[^|;&]*--test\b'
 min: 2
 ---

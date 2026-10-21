@@ -3,6 +3,6 @@
 # Covers expected line 3: Adds tests for the new behavior and reruns the checks on the updated code
 type: tool_used
 tool: Bash
-input_match: '\bnode\b'
+input_match: '\bnode\b[^|;&]*--test\b'
 min: 1
 ---
