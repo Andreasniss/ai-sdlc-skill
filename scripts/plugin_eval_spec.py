@@ -535,7 +535,8 @@ CASES = {
             "expected": {
                 0: ["read-rules", "read-decisions", "report-quality"],
                 1: ["search-input", "search-in-app-js", "search-in-app-under-test",
-                    "search-composes-with-filter", "no-inplace-sort", "report-quality"],
+                    "search-composes-with-filter", "search-in-app-js-case-insensitive",
+                    "search-not-persisted", "no-inplace-sort", "report-quality"],
                 2: ["search-tested", "search-test-with-filter", "search-test-identity", "ran-checks",
                     "check-covers-final-code", "report-quality"],
                 3: ["branch-created", "committed", "check-record-updated", "check-covers-final-code"],
@@ -565,6 +566,17 @@ CASES = {
                        match=["task.title.toLowerCase().includes(text.toLowerCase())",
                               "return /wr/i.test(task.title);"],
                        no_match=["tasks.filter(task => !task.done)"]),
+            # The browser copy must match case-insensitively too; the tested copy alone is not enough.
+            file_regex("search-in-app-js-case-insensitive", "app.js",
+                       r"toLowerCase\(\)|toLocaleLowerCase\(\)|/[^/\n]+/i\b", on_unmodified="fail",
+                       match=["task.title.toLowerCase().includes(text.toLowerCase())",
+                              "return /wr/i.test(task.title);"],
+                       no_match=["tasks.filter(task => !task.done)"]),
+            # Reloading clears the search, so the query is never written to storage.
+            file_regex("search-not-persisted", "app.js", r"localStorage\.setItem\([^)]*search", absent=True,
+                       on_unmodified="pass", flags="i",
+                       match=['localStorage.setItem("search", box.value);', "localStorage.setItem(SEARCH_KEY, q)"],
+                       no_match=['localStorage.setItem(FILTER_KEY, selection);']),
             # Standing decision: the stored list is never sorted or reordered by a display choice.
             file_regex("no-inplace-sort", "app.js", r"\btasks\.sort\(", absent=True,
                        on_unmodified="pass", weight=0.5,
@@ -637,7 +649,7 @@ FAIL if a condition is clearly missing or contradicted, or if the report claims 
     "review-round-repair": {
         "covers": {
             "expected": {
-                0: ["read-review", "read-request", "report-quality"],
+                0: ["read-review", "read-request", "read-decisions", "report-quality"],
                 1: ["export-keeps-completed-app-js", "export-keeps-completed-app-under-test",
                     "completed-export-tested", "report-quality"],
                 2: ["no-sorting-app-js", "no-sorting-app-under-test", "f3-declined", "report-quality"],
@@ -650,6 +662,9 @@ FAIL if a condition is clearly missing or contradicted, or if the report claims 
             SKILL_FIRED,
             trace("read-review", r"Sort the exported rows by title",
                   match=["## F3 Sort the exported rows by title"],
+                  no_match=["Address the review in REVIEW.md on this branch"]),
+            trace("read-decisions", r"The stored task list keeps insertion order", weight=0.5,
+                  match=["- The stored task list keeps insertion order. Anything that only changes"],
                   no_match=["Address the review in REVIEW.md on this branch"]),
             trace("read-request", r"rows are exported in the order the list shows them", weight=0.5,
                   match=["Added by the owner: rows are exported in the order the list shows them."],
@@ -769,10 +784,14 @@ FAIL if a condition is clearly missing or contradicted, or if the report claims 
             file_regex("undo-in-app-under-test", "app-under-test.js", r"undo|restore", on_unmodified="fail",
                        flags="i", match=["function undoClear(state) {", "function restoreCleared(tasks) {"],
                        no_match=["function clearCompleted(tasks) {"]),
-            file_regex("undo-wired", "app.js", r'getElementById\("undo[^"]*"\)\.addEventListener',
+            file_regex("undo-wired", "app.js",
+                       r'getElementById\("undo[^"]*"\)\s*\.addEventListener'
+                       r'|(?:const|let|var)\s+(\w+)\s*=\s*document\.getElementById\("undo[^"]*"\)[\s\S]*?\1\.addEventListener',
                        on_unmodified="fail",
-                       match=['document.getElementById("undo-clear").addEventListener("click", () => {'],
-                       no_match=['document.getElementById("clear-completed").addEventListener("click", () => {']),
+                       match=['document.getElementById("undo-clear").addEventListener("click", () => {',
+                              'const undo = document.getElementById("undo");\n  undo.addEventListener("click", f);'],
+                       no_match=['const undo = document.getElementById("undo");\n  other.addEventListener("click", f);',
+                                 'document.getElementById("clear-completed").addEventListener("click", () => {']),
             # Undo lasts until reload, so nothing about it is written to storage.
             file_regex("undo-not-persisted", "app.js",
                        r"localStorage\.setItem\(\s*[\"'`]?(?:undo|cleared|removed|trash|backup)", absent=True,
