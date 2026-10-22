@@ -59,6 +59,15 @@ The [Codex subagent pilot](codex-subagent-pilot-2026-10-21.md) separately compar
 explicitly supplied skill instructions with a baseline on the three cases. It is
 not a native plugin-discovery test or a score comparable to these Claude runs.
 
+The separate [lifecycle incident replay pack](lifecycle/README.md) prepares four
+complete, dependency-free cases for a future baseline/checklist/full-skill
+comparison. It includes an ordinary control, an interrupted handoff, a changed
+requirement and mixed review with an unavailable service. Its deterministic
+fixture and grader checks call no models. These are reduced incident adaptations,
+not production website reproductions. The [protocol](lifecycle/protocol.md)
+fixes staged delivery, scoring, overhead measures and stopping rules before runs.
+Existing plugin case criteria and historical results remain unchanged.
+
 ## Running it
 
 This is manual and every run is billed to your account. Nothing in CI calls a model.
