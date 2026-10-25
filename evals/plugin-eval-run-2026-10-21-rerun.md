@@ -36,31 +36,41 @@ Scores are the share of weighted checks passed, excluding the `skill-fired` indi
 Δ is the natural "with" arm minus the "without" arm. The forced arm has no own baseline, so its Δ is against the
 natural "without" arm.
 
+For each run, divide the passed weights by all scored weights after removing `skill-fired`, then average
+the five run scores. The forced runner marked that indicator as scored, so its saved aggregate scores and
+HTML report include it; the table below recomputes the agreed comparison from the individual grader results.
+Raw results are retained unchanged. The combined natural JSON retains the interrupted first run's top-level
+`partial`, cost and aggregate fields; those are not totals for the combined run. Both files contain five runs
+per case and arm, despite the runner's `runsPerCase: 3` metadata. Use the per-run records for counts and costs.
+
 | Case | Without | Natural with | Δ | Forced with | Δ forced | Skill fired (natural / forced) |
 |---|---|---|---|---|---|---|
-| blocked-export-handoff | 0.857 | 0.886 | +0.029 | 0.863 | +0.005 | 0 of 5 / 5 of 5 |
+| blocked-export-handoff | 0.857 | 0.886 | +0.029 | 0.843 | -0.014 | 0 of 5 / 5 of 5 |
 | bug-with-reproducible-symptom | 1.000 | 0.893 | -0.107 | 1.000 | 0.000 | 0 / 5 |
 | csv-plausible-wrong-output | 1.000 | 1.000 | 0.000 | 1.000 | 0.000 | 0 / 5 |
-| feature-in-established-project | 0.875 | 0.900 | +0.025 | 0.911 | +0.036 | 2 / 5 |
-| feature-interaction-preserves-order | 0.960 | 0.960 | 0.000 | 0.933 | -0.027 | 0 / 5 |
-| resume-export-after-answer | 0.981 | 1.000 | +0.019 | 0.983 | +0.002 | 0 / 5 |
-| resume-interrupted-change | 1.000 | 0.973 | -0.027 | 0.953 | -0.047 | 5 / 5 |
-| review-without-edits | 1.000 | 0.943 | -0.057 | 0.900 | -0.100 | 1 / 5 |
-| **Mean** | | | **-0.015** (se 0.017) | | **-0.016** (se 0.015) | |
+| feature-in-established-project | 0.875 | 0.900 | +0.025 | 0.900 | +0.025 | 2 / 5 |
+| feature-interaction-preserves-order | 0.960 | 0.960 | 0.000 | 0.920 | -0.040 | 0 / 5 |
+| resume-export-after-answer | 0.981 | 1.000 | +0.019 | 0.981 | 0.000 | 0 / 5 |
+| resume-interrupted-change | 1.000 | 0.973 | -0.027 | 0.947 | -0.053 | 5 / 5 |
+| review-without-edits | 1.000 | 0.943 | -0.057 | 0.886 | -0.114 | 1 / 5 |
+| **Mean** | | | **-0.015** (se 0.017) | | **-0.025** (se 0.016) | |
 
-Pass rate at threshold 0.8, per the tool, natural with vs without: 0.2 vs 0 (blocked-export-handoff), 0.8 vs 1
+Tool-reported pass rates from the threshold-0.8 run are retained separately, not recalculated from the
+indicator-excluded scores above. Natural with vs without: 0.2 vs 0 (blocked-export-handoff), 0.8 vs 1
 (bug), 1 vs 1 (csv), 0.2 vs 0 (feature-in-established-project), 0.8 vs 0.8 (interaction), 1 vs 0.8
 (resume-export), 0.8 vs 1 (resume-interrupted), 0.6 vs 1 (review). Forced with: 0, 1, 1, 0.2, 0.6, 0.8, 0.6, 0.2.
 
 ## Reading it
 
-- **No measurable gain from the skill on Haiku.** Mean Δ is slightly negative in both arms and within about one
-  standard error of zero (se across the 8 case means). Three cases have a negative Δ, three a small positive one, two are zero.
+- **No measured gain from the skill on these Haiku cases.** Mean Δ is negative in both arms: about 0.9 standard
+  errors below zero naturally and 1.6 when forced (se across the 8 case means). In the natural comparison, three
+  cases have a negative Δ, three a small positive one, and two are zero. These synthetic cases are not a random
+  sample of delivery work, so the standard errors describe variation across this set rather than population evidence.
   Cases where the skill adds nothing or scores lower are reported as they came out.
 - **Ceiling effect.** The no-plugin arm already scores 0.86 to 1.00 on every case, so these cases leave little room
   to show a gain. The result says the skill did not help on these cases, not that it cannot help.
 - **Natural use is rare.** Haiku invoked the skill by itself in 8 of 40 natural runs (5 of them in one case).
-  Forcing the invocation did not raise scores (mean Δ -0.016).
+  Forcing the invocation did not raise scores (mean Δ -0.025 against no plugin).
 - **review-without-edits** is the weakest case for the skill in both arms. One reason I did not rule out: its edit
   check does not catch edits made through Bash, so this case cannot separate "did not edit" from "edited with a shell".
 - This run cannot show that Haiku plus the skill matches Sonnet. No Sonnet arm was run.
