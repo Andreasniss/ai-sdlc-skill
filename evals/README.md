@@ -49,8 +49,9 @@ Graders, in order of preference:
 2. **Sonnet rubrics, only where judgment is needed.** One rubric grades what the final report says;
    one grades the five disqualifiers from `cases.json` over the session excerpt. A rubric never
    mentions the skill or the plugin, so the judge cannot tell the arms apart.
-3. **A skill indicator** (`tool_used: Skill`, `arm: with-only`) that shows whether the skill fired and
-   never counts toward the score.
+3. **A skill indicator** (`tool_used: Skill`, `arm: with-only`) that shows whether the skill fired.
+   Exclude it when computing comparison scores from per-run grader results. The recorded forced run
+   scored this indicator despite `arm: with-only`, so its saved tool aggregates need that correction.
 
 Every `expected` line is covered by a grader or carries a stated reason; the generator refuses a spec
 that leaves one unaccounted for. The generated comment in each grader names the line it covers.
