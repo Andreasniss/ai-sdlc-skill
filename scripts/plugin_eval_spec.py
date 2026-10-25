@@ -149,11 +149,13 @@ FILTERED_SEARCH_ASSERTED = (
     + r'|assert\w*(?:\.\w+)?\(\s*' + FILTERED_SEARCH_CALL)
 # Support literal task objects and the fixture's add(tasks, title) helper. Two identical
 # title values must precede the searched completion and assertions about both rows.
+_SAME_TEST = r'(?:(?!\btest\s*\()[\s\S])'
 DUPLICATE_SEARCH_IDENTITY = (
-    r'''(?:title\s*:\s*|\badd\([^,;]*,\s*)(["'])([^"']+)\1[\s\S]{0,300}?'''
-    r'''(?:title\s*:\s*|\badd\([^,;]*,\s*)\1\2\1[\s\S]{0,500}?search'''
-    r'[\s\S]{0,500}?complete\([^;]*\.id\b[\s\S]{0,500}?assert\w*(?:\.\w+)?\([^;]*(?:\.done|completed)'
-    r'[\s\S]{0,300}?assert\w*(?:\.\w+)?\([^;]*(?:\.done|completed)')
+    r'''(?:title\s*:\s*|\badd\([^,;]*,\s*)(["'])([^"']+)\1''' + _SAME_TEST + r'{0,300}?'
+    + r'''(?:title\s*:\s*|\badd\([^,;]*,\s*|\)\s*,\s*)\1\2\1''' + _SAME_TEST + r'{0,500}?[sS]earch'
+    + _SAME_TEST + r'{0,500}?complete\([^;]*\.id\b' + _SAME_TEST
+    + r'{0,500}?assert\w*(?:\.\w+)?\([^;]*(?:\.done|completed)'
+    + _SAME_TEST + r'{0,300}?assert\w*(?:\.\w+)?\([^;]*(?:\.done|completed)')
 # Git or shell operations that change the repository or its files. `git checkout` is left out on
 # purpose: switching to main to compare is a normal part of a review.
 MUTATING = (r"\bgit\s+(?:-C\s+\S+\s+)?(?:commit|merge|push|rebase|cherry-pick|reset|apply|am|add"
@@ -684,13 +686,16 @@ FAIL if the first edit to any file comes before the agent read either of them, o
             # Duplicate titles: completing one searched result must change that row and leave its sibling alone.
             file_regex("search-test-identity", "test/tasks.test.js",
                        DUPLICATE_SEARCH_IDENTITY,
-                       on_unmodified="fail", flags="i", weight=0.5,
+                       on_unmodified="fail", weight=0.5,
                        match=['test("search keeps ids", () => { const t = [{id: 1, title: "write", done: false}, {id: 2, title: "write", done: false}]; const f = searchTasks(t, "write"); const out = complete(t, f[1].id);\n assert.equal(out[1].done, true);\n assert.equal(out[0].done, false); });',
-                              "let t = add([], 'write'); t = add(t, 'write'); const f = searchTasks(t, 'write'); const out = complete(t, f[1].id); assert.equal(out[1].done, true); assert.equal(out[0].done, false);"],
+                              "let t = add([], 'write'); t = add(t, 'write'); const f = searchTasks(t, 'write'); const out = complete(t, f[1].id); assert.equal(out[1].done, true); assert.equal(out[0].done, false);",
+                              'const t = add(add([], "write"), "write"); const f = searchTasks(t, "write"); const out = complete(t, f[1].id); assert.equal(out[1].done, true); assert.equal(out[0].done, false);'],
                        no_match=['test("search keeps ids", () => { const f = searchTasks(t, "write"); complete(t, f[1].id); });',
                                  'test("search keeps ids", () => { const f = searchTasks(t, "write"); complete(t, f[1].id);\n assert.equal(out[1].done, true); });',
                                  'const t = [{id: 1, title: "write", done: false}, {id: 2, title: "review", done: false}]; const f = searchTasks(t, "write"); const out = complete(t, f[0].id); assert.equal(out[0].done, true); assert.equal(out[1].done, false);',
                                  'const t = [{id: 1, title: "write", done: false}, {id: 2, title: "write", done: false}]; const f = searchTasks(t, "write"); const out = complete(t, f[1].id); assert.equal(out[1].done, true);',
+                                 'const t = add(add([], "Write"), "write"); const f = searchTasks(t, "write"); const out = complete(t, f[1].id); assert.equal(out[1].done, true); assert.equal(out[0].done, false);',
+                                 'test("old duplicate check", () => { const t = add(add([], "write"), "write"); }); test("search", () => { const f = searchTasks(t, "write"); const out = complete(t, f[1].id); assert.equal(out[1].done, true); assert.equal(out[0].done, false); });',
                                  'test("completing a task marks it done", () => {']),
             file_regex("search-tested", "test/tasks.test.js", r"search", on_unmodified="fail", flags="i",
                        match=['test("search ignores case", () => {', "const found = searchTasks(tasks, 'WR');"],
