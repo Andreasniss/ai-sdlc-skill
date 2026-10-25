@@ -104,6 +104,7 @@ NO_DISQUALIFIER = {"name": "no-disqualifier", "type": "disqualifier_rubric", "fo
 NODE_RUN = r"\bnode\b"
 # The project test command. Plain `node` also matches `node --version`, which is no check.
 NODE_TEST = (r'"command"\s*:\s*"(?:[^"]*?(?:&&|;|\|\|)\s*)?(?:\w+=\S+\s+)*node\s+--test\b'
+             r'(?![^|;&"]*\s(?:--help|-h|--version|-v)(?=\s|["|;&]))'
              r'[^|;&"]*test/tasks\.test\.js')
 # A tool input that installs or fetches tooling. Network is closed in the sandbox, but an attempt is
 # still the behavior a case forbids.
@@ -130,6 +131,29 @@ _EMPTY_CALL = (r"(?:\w*search\w*\([^()]*(?:\"\"|'')[^()]*|filterTasks\([^(),]+,[
 EMPTY_SEARCH_ASSERTED = (
     r"(?:const|let|var)\s+(\w+)\s*=\s*" + _EMPTY_CALL + r";?[\s\S]{0,300}?assert\w*(?:\.\w+)?\([^;]*\b\1\b"
     r"|assert\w*(?:\.\w+)?\(\s*" + _EMPTY_CALL)
+# A small set of ordinary listener shapes, bounded by the callback's closing brace. A later
+# initial render must not make a no-op input callback pass. Both JavaScript quote styles work.
+SEARCH_BOX = r'''getElementById\(\s*["']search["']\s*\)'''
+SEARCH_RENDER_CALLBACK = (
+    r'''\.addEventListener\(\s*["'](?:input|keyup|change|search)["']\s*,\s*(?:'''
+    r'(?:\([^)]*\)|\w+)\s*=>\s*(?:\{[^}]{0,300}?|\s*)render\s*\('
+    r'|function\s*\([^)]*\)\s*\{[^}]{0,300}?render\s*\(|render\s*\))')
+# Assert the result of composing search and the Show filter, rather than merely call it.
+FILTERED_SEARCH_CALL = (
+    r'''(?:\w*search\w*\(\s*filterTasks\([^;]*["'](?:open|done)["'][^;]*\)'''
+    r'''|filterTasks\([^;]*\w*search\w*\([^;]*["'](?:open|done)["'][^;]*\)'''
+    r'''|filterTasks\([^,]+,\s*["'](?:open|done)["']\s*,\s*[^,)][^;]*\))''')
+FILTERED_SEARCH_ASSERTED = (
+    r'(?:const|let|var)\s+(\w+)\s*=\s*' + FILTERED_SEARCH_CALL
+    + r';\s*assert\w*(?:\.\w+)?\([^;]*\b\1\b'
+    + r'|assert\w*(?:\.\w+)?\(\s*' + FILTERED_SEARCH_CALL)
+# Support literal task objects and the fixture's add(tasks, title) helper. Two identical
+# title values must precede the searched completion and assertions about both rows.
+DUPLICATE_SEARCH_IDENTITY = (
+    r'''(?:title\s*:\s*|\badd\([^,;]*,\s*)(["'])([^"']+)\1[\s\S]{0,300}?'''
+    r'''(?:title\s*:\s*|\badd\([^,;]*,\s*)\1\2\1[\s\S]{0,500}?search'''
+    r'[\s\S]{0,500}?complete\([^;]*\.id\b[\s\S]{0,500}?assert\w*(?:\.\w+)?\([^;]*(?:\.done|completed)'
+    r'[\s\S]{0,300}?assert\w*(?:\.\w+)?\([^;]*(?:\.done|completed)')
 # Git or shell operations that change the repository or its files. `git checkout` is left out on
 # purpose: switching to main to compare is a normal part of a review.
 MUTATING = (r"\bgit\s+(?:-C\s+\S+\s+)?(?:commit|merge|push|rebase|cherry-pick|reset|apply|am|add"
@@ -583,20 +607,27 @@ FAIL if the first edit to any file comes before the agent read either of them, o
             file_regex("search-input", "index.html", r'id="search"', on_unmodified="fail",
                        match=['<input id="search" aria-label="Search">'],
                        no_match=['<input id="title" aria-label="Task title">']),
-            file_regex("search-in-app-js", "app.js", r'getElementById\("search"\)',
+            file_regex("search-in-app-js", "app.js", SEARCH_BOX,
                        on_unmodified="fail",
-                       match=['const box = document.getElementById("search");'],
+                       match=['const box = document.getElementById("search");',
+                              "const box = document.getElementById('search');"],
                        no_match=['document.getElementById("title")']),
             # Typing in the box must rerun render; a query read only inside render shows nothing until
             # some other action renders.
             file_regex("search-triggers-render", "app.js",
-                       r'getElementById\("search"\)\s*\.addEventListener\(\s*["\'](?:input|keyup|change|search)["\'][\s\S]{0,300}?render\('
-                       r'|(?:const|let|var)\s+(\w+)\s*=\s*document\.getElementById\("search"\)[\s\S]*?\1\.addEventListener\(\s*["\'](?:input|keyup|change|search)["\'][\s\S]{0,300}?render\(',
+                       SEARCH_BOX + r'\s*' + SEARCH_RENDER_CALLBACK
+                       + r'|(?:const|let|var)\s+(\w+)\s*=\s*document\.' + SEARCH_BOX
+                       + r'[\s\S]*?\1\s*' + SEARCH_RENDER_CALLBACK,
                        on_unmodified="fail",
                        match=['document.getElementById("search").addEventListener("input", () => {\n render(tasks, selection);',
-                              'const box = document.getElementById("search");\n box.addEventListener("input", () => render(tasks, sel));'],
+                              'const box = document.getElementById("search");\n box.addEventListener("input", () => render(tasks, sel));',
+                              "document.getElementById('search').addEventListener('input', function () { query = this.value; render(tasks); });",
+                              "const box = document.getElementById('search'); box.addEventListener('input', render);"],
                        no_match=['const box = document.getElementById("search");\n other.addEventListener("input", () => render(tasks));',
                                  'document.getElementById("search").addEventListener("input", () => {\n // nothing\n});',
+                                 'document.getElementById("search").addEventListener("input", () => {});\n render(tasks);',
+                                 "const box = document.getElementById('search'); box.addEventListener('input', () => noop()); render(tasks);",
+                                 "const box = document.getElementById('search'); box.addEventListener('input', () => { } ); render(tasks);",
                                  'const q = document.getElementById("search").value;']),
             # Matching ignores case, and the logic belongs in both copies of the task code.
             file_regex("search-in-app-under-test", "app-under-test.js",
@@ -643,17 +674,23 @@ FAIL if the first edit to any file comes before the agent read either of them, o
                               "const q = search.value; for (const task of filterTasks(tasks, selection)) {"],
                        no_match=["for (const task of filterTasks(tasks, selection)) {"]),
             file_regex("search-test-with-filter", "test/tasks.test.js",
-                       r"search[\s\S]{0,800}?[\"'](?:open|done)[\"']", on_unmodified="fail", flags="i",
-                       match=['test("search with the open filter", () => { searchTasks(filterTasks(t, "open"), "wr"); });'],
-                       no_match=['test("filtering to open hides completed tasks", () => {']),
+                       FILTERED_SEARCH_ASSERTED, on_unmodified="fail", flags="i",
+                       match=['const found = searchTasks(filterTasks(t, "open"), "wr"); assert.deepEqual(found.map(t => t.id), [1]);',
+                              "assert.deepEqual(searchTasks(filterTasks(t, 'done'), 'wr'), [t[1]]);",
+                              "const found = filterTasks(t, 'open', 'wr'); assert.equal(found.length, 1);"],
+                       no_match=['test("filtering to open hides completed tasks", () => {',
+                                 'test("search with the open filter", () => { searchTasks(filterTasks(t, "open"), "wr"); });',
+                                 'const found = searchTasks(filterTasks(t, "open"), "wr"); assert.equal(t.length, 2);']),
             # Duplicate titles: completing one searched result must change that row and leave its sibling alone.
             file_regex("search-test-identity", "test/tasks.test.js",
-                       r"search[\s\S]{0,1000}?complete\([^;]*\.id\b[\s\S]{0,500}?assert\w*(?:\.\w+)?\([^;]*(?:\.done|completed)"
-                       r"[\s\S]{0,300}?assert\w*(?:\.\w+)?\([^;]*(?:\.done|completed)",
+                       DUPLICATE_SEARCH_IDENTITY,
                        on_unmodified="fail", flags="i", weight=0.5,
-                       match=['test("search keeps ids", () => { const f = searchTasks(t, "write"); const out = complete(t, f[1].id);\n assert.equal(out[1].done, true);\n assert.equal(out[0].done, false); });'],
+                       match=['test("search keeps ids", () => { const t = [{id: 1, title: "write", done: false}, {id: 2, title: "write", done: false}]; const f = searchTasks(t, "write"); const out = complete(t, f[1].id);\n assert.equal(out[1].done, true);\n assert.equal(out[0].done, false); });',
+                              "let t = add([], 'write'); t = add(t, 'write'); const f = searchTasks(t, 'write'); const out = complete(t, f[1].id); assert.equal(out[1].done, true); assert.equal(out[0].done, false);"],
                        no_match=['test("search keeps ids", () => { const f = searchTasks(t, "write"); complete(t, f[1].id); });',
                                  'test("search keeps ids", () => { const f = searchTasks(t, "write"); complete(t, f[1].id);\n assert.equal(out[1].done, true); });',
+                                 'const t = [{id: 1, title: "write", done: false}, {id: 2, title: "review", done: false}]; const f = searchTasks(t, "write"); const out = complete(t, f[0].id); assert.equal(out[0].done, true); assert.equal(out[1].done, false);',
+                                 'const t = [{id: 1, title: "write", done: false}, {id: 2, title: "write", done: false}]; const f = searchTasks(t, "write"); const out = complete(t, f[1].id); assert.equal(out[1].done, true);',
                                  'test("completing a task marks it done", () => {']),
             file_regex("search-tested", "test/tasks.test.js", r"search", on_unmodified="fail", flags="i",
                        match=['test("search ignores case", () => {', "const found = searchTasks(tasks, 'WR');"],
@@ -672,6 +709,9 @@ FAIL if the first edit to any file comes before the agent read either of them, o
                         '{"command":"cd app && node --test test/tasks.test.js"}'],
                  no_match=['{"command":"git diff"}', '{"command":"node --version"}', '{"command":"echo node --test"}',
                            '{"command":"node --version --test test/tasks.test.js"}', '{"command":"node --test"}',
+                           '{"command":"node --test --help test/tasks.test.js"}',
+                           '{"command":"node --test -h test/tasks.test.js"}',
+                           '{"command":"node --test --version test/tasks.test.js"}',
                            '{"command":"node -e \\"1\\""}']),
             bash("branch-created", r"\bgit\s+(?:-C\s+\S+\s+)?(?:checkout\s+-[bB]|switch\s+(?:-[cC]|--(?:force-)?create))\b",
                  min=1,

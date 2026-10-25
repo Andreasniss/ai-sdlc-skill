@@ -3,6 +3,6 @@
 # Covers expected line 2: Adds tests for the acceptance examples and runs them on the final code
 type: tool_used
 tool: Bash
-input_match: '"command"\s*:\s*"(?:[^"]*?(?:&&|;|\|\|)\s*)?(?:\w+=\S+\s+)*node\s+--test\b[^|;&"]*test/tasks\.test\.js'
+input_match: '"command"\s*:\s*"(?:[^"]*?(?:&&|;|\|\|)\s*)?(?:\w+=\S+\s+)*node\s+--test\b(?![^|;&"]*\s(?:--help|-h|--version|-v)(?=\s|["|;&]))[^|;&"]*test/tasks\.test\.js'
 min: 2
 ---
