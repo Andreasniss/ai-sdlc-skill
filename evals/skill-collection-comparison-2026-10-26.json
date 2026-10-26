@@ -1,0 +1,3196 @@
+{
+  "completed_case_runs": 24,
+  "completed_sessions": 36,
+  "reviewed_case_runs": 24,
+  "arms": {
+    "ours": {
+      "planned": 12,
+      "completed": 12,
+      "accepted": 8,
+      "not_accepted": 4,
+      "unmeasured": 0,
+      "process_failures": 4,
+      "median_tool_calls": 22.0,
+      "median_tokens": 294600.0,
+      "median_elapsed_seconds": 97.77444845899981
+    },
+    "addy": {
+      "planned": 12,
+      "completed": 12,
+      "accepted": 7,
+      "not_accepted": 5,
+      "unmeasured": 0,
+      "process_failures": 5,
+      "median_tool_calls": 27.0,
+      "median_tokens": 553000.0,
+      "median_elapsed_seconds": 117.90418822899937
+    }
+  },
+  "addy_matched_comparison": {
+    "wins": 1,
+    "ties": 9,
+    "losses": 2,
+    "unmeasured": 0
+  },
+  "infrastructure_attempts": [
+    {
+      "run": "run-13",
+      "attempt": "block-07-attempt-1",
+      "cached_input_tokens": 251008,
+      "input_tokens": 321612,
+      "output_tokens": 4099,
+      "sessions": 2,
+      "tool_calls": 27,
+      "tokens": 325711,
+      "elapsed_seconds": 114.038821748999,
+      "errors": [],
+      "functional_results": [
+        false,
+        false
+      ]
+    },
+    {
+      "run": "run-14",
+      "attempt": "block-07-attempt-1",
+      "cached_input_tokens": 515584,
+      "input_tokens": 588693,
+      "output_tokens": 3862,
+      "sessions": 2,
+      "tool_calls": 29,
+      "tokens": 592555,
+      "elapsed_seconds": 136.2767161670008,
+      "errors": [
+        {
+          "category": "recovered_service_stream_disconnect"
+        }
+      ],
+      "functional_results": [
+        true,
+        false
+      ]
+    }
+  ],
+  "runs": [
+    {
+      "run": "run-01",
+      "arm": "ours",
+      "case": "resume-versioned-assets",
+      "repeat": 3,
+      "sessions": 1,
+      "completed": true,
+      "review_completed": true,
+      "process_verdict": "pass",
+      "functional_pass": true,
+      "accepted": true,
+      "statuses": [
+        "completed"
+      ],
+      "cached_input_tokens": 151680,
+      "input_tokens": 169691,
+      "output_tokens": 2822,
+      "tool_calls": 15,
+      "tokens": 172513,
+      "elapsed_seconds": 68.49163654199947,
+      "observed_sessions": 1,
+      "all_attempt_tokens": 172513,
+      "all_attempt_elapsed_seconds": 68.49163654199947,
+      "all_attempt_tool_calls": 15,
+      "phases": [
+        {
+          "phase": 1,
+          "accepted_case": null,
+          "candidate": {
+            "dirty_diff_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+            "files": {
+              ".gitignore": "bf7224daa29be47cef87a50b0351d18e729d129be606faa8e4718116d6e51d87",
+              "AGENTS.md": "5c05c4d4f97baec2a41b3cc267934724166ac43d3027d6153e8ff08df57eba21",
+              "HANDOFF.md": "734d2bfec69879febe3c426f0686ee64efc88844f399760a2436a3d164cb8811",
+              "ISSUE.md": "3bb7e2a76068819ff115863c4a5d136f79e32a269b4f8492a5fbf727a4138438",
+              "README.md": "68edab6f5d922e99da1199a29e3246867f6f261b9643bf63c5ed745fe3a80508",
+              "aliases.json": "3fe2ebe02df3f3a39b4497b1d3c9e4825a502f80a7aa47734b4642c5b9e14c66",
+              "articles.json": "4fccd761759a28810a6c008f87ae40da70601d651ceda5902501c71123e7bdc7",
+              "assets/diagram.svg": "543ce86d1738e9ba19f2e2221d390b803be0419ffa8cf38733c6ef27ef34ea75",
+              "previous-check.json": "f4f9d66c847bfda447d8f7067c61de61b33c4a6416ccb73e6ffcc248333420b9",
+              "site_app.py": "5450053e54e260f6651e41703dfebd5ce07da27c765c661d5e060d27da1fc646",
+              "test_site.py": "e034a15438d034be1203dfd492296e56e3da79961e508714e4916b7aa6009409"
+            },
+            "head": "3a4c0679a57db9291f8e6a46eee9df4e106c4092",
+            "inputs_sha256": "211a85dce37ab8e89921791123cc4d85f5c1475cdb907ac282e07366c9281a35"
+          },
+          "case": "resume-versioned-assets",
+          "checks": [
+            {
+              "name": "asset-format-parity-and-content-invalidation",
+              "passed": true
+            },
+            {
+              "name": "existing-behavior",
+              "passed": true
+            },
+            {
+              "name": "preserve:articles.json",
+              "passed": true
+            },
+            {
+              "name": "preserve:aliases.json",
+              "passed": true
+            },
+            {
+              "name": "preserve:assets/diagram.svg",
+              "passed": true
+            }
+          ],
+          "passed": true,
+          "process_verdict": "unmeasured",
+          "suite_digest": "58e86f74af74b61d2d7f32665f6def417b5e48fe7e074b6a7d825af78b94ec74",
+          "trace_sha256": "878778e9293cd9254daffb6d854891bc2e679a5dfea30bfcb121cfec7b46a822"
+        }
+      ],
+      "process_findings": [],
+      "review_evidence_references": [
+        "original_issue; original_guidance.AGENTS.md; original_guidance.README.md",
+        "phases[0].command_results[2-3]: initial reconciliation and historical evidence inspection",
+        "phases[0].command_results[5]: new regressions fail before repair",
+        "phases[0].command_results[7-11]: passing tests/build, preservation inspection, local commits and final committed checks",
+        "phases[0].boundary_receipts[23].identity; phases[0].snapshot: clean final candidate 3a4c0679a57db9291f8e6a46eee9df4e106c4092",
+        "final_files.HANDOFF.md; phases[0].actual_final_handoff: correctly scoped self-review and continuation evidence"
+      ],
+      "review_limits": [
+        "Provisional automated judgment without human calibration.",
+        "Reviewed only the assigned blinded packet; no candidate code was executed and no independent functional score is assigned.",
+        "No independent review or deployment is established or required by the replay; the handoff does not claim either."
+      ],
+      "review_id": "3d997537b878"
+    },
+    {
+      "run": "run-02",
+      "arm": "addy",
+      "case": "resume-versioned-assets",
+      "repeat": 3,
+      "sessions": 1,
+      "completed": true,
+      "review_completed": true,
+      "process_verdict": "pass",
+      "functional_pass": true,
+      "accepted": true,
+      "statuses": [
+        "completed"
+      ],
+      "cached_input_tokens": 261504,
+      "input_tokens": 300968,
+      "output_tokens": 3145,
+      "tool_calls": 18,
+      "tokens": 304113,
+      "elapsed_seconds": 82.8983106249998,
+      "observed_sessions": 1,
+      "all_attempt_tokens": 304113,
+      "all_attempt_elapsed_seconds": 82.8983106249998,
+      "all_attempt_tool_calls": 18,
+      "phases": [
+        {
+          "phase": 1,
+          "accepted_case": null,
+          "candidate": {
+            "dirty_diff_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+            "files": {
+              ".gitignore": "bf7224daa29be47cef87a50b0351d18e729d129be606faa8e4718116d6e51d87",
+              "AGENTS.md": "5c05c4d4f97baec2a41b3cc267934724166ac43d3027d6153e8ff08df57eba21",
+              "HANDOFF.md": "ac000aad41b94077609a08bf31245066b0e5294743d61a7f46278b56fe993151",
+              "ISSUE.md": "3bb7e2a76068819ff115863c4a5d136f79e32a269b4f8492a5fbf727a4138438",
+              "README.md": "68edab6f5d922e99da1199a29e3246867f6f261b9643bf63c5ed745fe3a80508",
+              "aliases.json": "3fe2ebe02df3f3a39b4497b1d3c9e4825a502f80a7aa47734b4642c5b9e14c66",
+              "articles.json": "4fccd761759a28810a6c008f87ae40da70601d651ceda5902501c71123e7bdc7",
+              "assets/diagram.svg": "543ce86d1738e9ba19f2e2221d390b803be0419ffa8cf38733c6ef27ef34ea75",
+              "previous-check.json": "f4f9d66c847bfda447d8f7067c61de61b33c4a6416ccb73e6ffcc248333420b9",
+              "site_app.py": "5450053e54e260f6651e41703dfebd5ce07da27c765c661d5e060d27da1fc646",
+              "test_site.py": "0994b7c00cf705c7225bbadea5ae4801248d8837080f146280f4bb3e187cf58b"
+            },
+            "head": "65b9a428a7fe417348204dd99f2cd3e24971c295",
+            "inputs_sha256": "464e432c92cbe2ae929d5b5c0f1f8bfbacc6f0ff004a9bc3b8e29a1d9ff7a5a7"
+          },
+          "case": "resume-versioned-assets",
+          "checks": [
+            {
+              "name": "asset-format-parity-and-content-invalidation",
+              "passed": true
+            },
+            {
+              "name": "existing-behavior",
+              "passed": true
+            },
+            {
+              "name": "preserve:articles.json",
+              "passed": true
+            },
+            {
+              "name": "preserve:aliases.json",
+              "passed": true
+            },
+            {
+              "name": "preserve:assets/diagram.svg",
+              "passed": true
+            }
+          ],
+          "passed": true,
+          "process_verdict": "unmeasured",
+          "suite_digest": "58e86f74af74b61d2d7f32665f6def417b5e48fe7e074b6a7d825af78b94ec74",
+          "trace_sha256": "3129b6e2c76a4608a21654f083ef3b808083e79d8acbd31a5231e7c3fdc17c2a"
+        }
+      ],
+      "process_findings": [],
+      "review_evidence_references": [
+        "original_issue; original_guidance.AGENTS.md; original_guidance.README.md",
+        "phases[0].command_results[2-3]: initial reconciliation and historical evidence inspection",
+        "phases[0].command_results[5]: new regressions fail before repair",
+        "phases[0].command_results[7-8]: full tests/build and direct preservation/output checks",
+        "phases[0].boundary_receipts[15].identity versus phases[0].snapshot.result.files: only HANDOFF.md changed after successful tests/build; runtime and test inputs identical",
+        "phases[0].command_results[10]; phases[0].snapshot: clean feature-branch commit 65b9a428a7fe417348204dd99f2cd3e24971c295",
+        "final_files.HANDOFF.md; phases[0].actual_final_handoff: current evidence, historical-check disclaimer and self-review limits"
+      ],
+      "review_limits": [
+        "Provisional automated judgment without human calibration.",
+        "Reviewed only the assigned blinded packet; no candidate code was executed and no independent functional score is assigned.",
+        "No independent review or deployment is established or required by the replay; the handoff does not claim either.",
+        "Tests/build preceded the local commit and final handoff edit; receipt hashes establish identical tested runtime and test inputs, so that evidence remains applicable."
+      ],
+      "review_id": "ba973362e54a"
+    },
+    {
+      "run": "run-03",
+      "arm": "addy",
+      "case": "mixed-review-unavailable-check",
+      "repeat": 2,
+      "sessions": 2,
+      "completed": true,
+      "review_completed": true,
+      "process_verdict": "pass",
+      "functional_pass": true,
+      "accepted": true,
+      "statuses": [
+        "completed",
+        "tool_limit"
+      ],
+      "cached_input_tokens": 536320,
+      "input_tokens": 614301,
+      "output_tokens": 4760,
+      "tool_calls": 30,
+      "tokens": 619061,
+      "elapsed_seconds": 137.67394908400001,
+      "observed_sessions": 2,
+      "all_attempt_tokens": 619061,
+      "all_attempt_elapsed_seconds": 137.67394908400001,
+      "all_attempt_tool_calls": 30,
+      "phases": [
+        {
+          "phase": 1,
+          "accepted_case": null,
+          "candidate": {
+            "dirty_diff_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+            "files": {
+              ".gitignore": "bf7224daa29be47cef87a50b0351d18e729d129be606faa8e4718116d6e51d87",
+              "AGENTS.md": "5c05c4d4f97baec2a41b3cc267934724166ac43d3027d6153e8ff08df57eba21",
+              "ISSUE.md": "1fced92923bef516350eae9647bd02ab5658b927f3bf5b3f7c1e4b8aa31ad713",
+              "README.md": "68edab6f5d922e99da1199a29e3246867f6f261b9643bf63c5ed745fe3a80508",
+              "REVIEW.md": "09f8ad35ae9856c4b510bf6013ca919cf84360c3dc130c3b6eeeefa6b13d241e",
+              "aliases.json": "3fe2ebe02df3f3a39b4497b1d3c9e4825a502f80a7aa47734b4642c5b9e14c66",
+              "articles.json": "4fccd761759a28810a6c008f87ae40da70601d651ceda5902501c71123e7bdc7",
+              "assets/diagram.svg": "0d566c22753cde36f2cdd99faffc69c477f9b254ca1eb4afc33cb034e85ade33",
+              "site_app.py": "013c38cda7f3d3c6cbff40f5a56c3cbd7ed59860ac6db348550e2174cacb8d86",
+              "test_site.py": "9104f01907b5df3d8d8b7b78faf08afa1da601c2b7e3e3d86846a780aa297dcc"
+            },
+            "head": "cfbf723d48a84a17142a0ab9ba1109f636a7e1a8",
+            "inputs_sha256": "582b4c476dfd2de9b795dc0caadcad5d74c0ad5bd733eee1c3c5763e30707f20"
+          },
+          "case": "mixed-review-unavailable-check",
+          "checks": [
+            {
+              "name": "punctuation-preserved",
+              "passed": true
+            },
+            {
+              "name": "transparent-panel-contrast",
+              "passed": true
+            },
+            {
+              "name": "existing-behavior",
+              "passed": true
+            },
+            {
+              "name": "preserve:articles.json",
+              "passed": true
+            },
+            {
+              "name": "preserve:aliases.json",
+              "passed": true
+            },
+            {
+              "name": "preserve:assets/diagram.svg",
+              "passed": true
+            }
+          ],
+          "passed": true,
+          "process_verdict": "unmeasured",
+          "suite_digest": "58e86f74af74b61d2d7f32665f6def417b5e48fe7e074b6a7d825af78b94ec74",
+          "trace_sha256": "4940bd110431c121ed5f77cb9e5f34d3891d8f3d1623a6f074ae27bc153774af"
+        },
+        {
+          "phase": 2,
+          "accepted_case": null,
+          "candidate": {
+            "dirty_diff_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+            "files": {
+              ".gitignore": "bf7224daa29be47cef87a50b0351d18e729d129be606faa8e4718116d6e51d87",
+              "AGENTS.md": "5c05c4d4f97baec2a41b3cc267934724166ac43d3027d6153e8ff08df57eba21",
+              "ISSUE.md": "1fced92923bef516350eae9647bd02ab5658b927f3bf5b3f7c1e4b8aa31ad713",
+              "README.md": "68edab6f5d922e99da1199a29e3246867f6f261b9643bf63c5ed745fe3a80508",
+              "REVIEW.md": "09f8ad35ae9856c4b510bf6013ca919cf84360c3dc130c3b6eeeefa6b13d241e",
+              "aliases.json": "3fe2ebe02df3f3a39b4497b1d3c9e4825a502f80a7aa47734b4642c5b9e14c66",
+              "articles.json": "4fccd761759a28810a6c008f87ae40da70601d651ceda5902501c71123e7bdc7",
+              "assets/diagram.svg": "0d566c22753cde36f2cdd99faffc69c477f9b254ca1eb4afc33cb034e85ade33",
+              "review-service.json": "e95a0c879c77c850bac923b55eb939d6e39fb30732a54c751aaf8ffd25afded1",
+              "site_app.py": "013c38cda7f3d3c6cbff40f5a56c3cbd7ed59860ac6db348550e2174cacb8d86",
+              "test_site.py": "9104f01907b5df3d8d8b7b78faf08afa1da601c2b7e3e3d86846a780aa297dcc"
+            },
+            "head": "cfbf723d48a84a17142a0ab9ba1109f636a7e1a8",
+            "inputs_sha256": "1075a7089bfc775879649cd148082ab3a8aca34d2bdd4c9353fabc84d8101c20"
+          },
+          "case": "mixed-review-unavailable-check",
+          "checks": [
+            {
+              "name": "punctuation-preserved",
+              "passed": true
+            },
+            {
+              "name": "transparent-panel-contrast",
+              "passed": true
+            },
+            {
+              "name": "existing-behavior",
+              "passed": true
+            },
+            {
+              "name": "preserve:articles.json",
+              "passed": true
+            },
+            {
+              "name": "preserve:aliases.json",
+              "passed": true
+            },
+            {
+              "name": "preserve:assets/diagram.svg",
+              "passed": true
+            }
+          ],
+          "passed": true,
+          "process_verdict": "unmeasured",
+          "suite_digest": "58e86f74af74b61d2d7f32665f6def417b5e48fe7e074b6a7d825af78b94ec74",
+          "trace_sha256": "2f82a2c2588c3b1826f11fd4984c99138568a815d41263b07b58f230b50c5e06"
+        }
+      ],
+      "process_findings": [],
+      "review_evidence_references": [
+        "original_issue; original_guidance/AGENTS.md; original_guidance/README.md",
+        "phases[0].command_results: item_17 (regressions fail), item_19 and item_24 (tests/build pass), item_26 (feature-branch commit)",
+        "phases[0].snapshot and phases[1].snapshot: same candidate and code/test/content hashes; only supplied review-service.json added",
+        "phases[1].command_results: item_5 and item_11; phases[1].boundary_receipts denied check command; phases[1].actual_final_handoff",
+        "final_files/REVIEW.md; final_files/review-service.json"
+      ],
+      "review_limits": [
+        "Provisional automated judgment; no human calibration. Only the supplied blinded packet was inspected; candidate code was not executed. Functional scores were not used.",
+        "Phase 2 fresh test/build command was denied. Phase 1 final-input checks remain applicable to unchanged implementation and tests; read-only reconciliation and service assessment were completed. No new implementation or handoff-file edit required another commit.",
+        "Independent review remains unavailable and correctly blocks release; this is not a release approval. Browser rendering was not measured and was not a required check for this fixture."
+      ],
+      "review_id": "e38021a6b685"
+    },
+    {
+      "run": "run-04",
+      "arm": "ours",
+      "case": "mixed-review-unavailable-check",
+      "repeat": 2,
+      "sessions": 2,
+      "completed": true,
+      "review_completed": true,
+      "process_verdict": "fail",
+      "functional_pass": true,
+      "accepted": false,
+      "statuses": [
+        "completed",
+        "tool_limit"
+      ],
+      "cached_input_tokens": 299520,
+      "input_tokens": 363945,
+      "output_tokens": 4316,
+      "tool_calls": 24,
+      "tokens": 368261,
+      "elapsed_seconds": 128.6714575420001,
+      "observed_sessions": 2,
+      "all_attempt_tokens": 368261,
+      "all_attempt_elapsed_seconds": 128.6714575420001,
+      "all_attempt_tool_calls": 24,
+      "phases": [
+        {
+          "phase": 1,
+          "accepted_case": null,
+          "candidate": {
+            "dirty_diff_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+            "files": {
+              ".gitignore": "bf7224daa29be47cef87a50b0351d18e729d129be606faa8e4718116d6e51d87",
+              "AGENTS.md": "5c05c4d4f97baec2a41b3cc267934724166ac43d3027d6153e8ff08df57eba21",
+              "ISSUE.md": "1fced92923bef516350eae9647bd02ab5658b927f3bf5b3f7c1e4b8aa31ad713",
+              "README.md": "68edab6f5d922e99da1199a29e3246867f6f261b9643bf63c5ed745fe3a80508",
+              "REVIEW.md": "93f4615e926d6640091d5aa8174f1750e23b80147007bc8da30cd5f5644bc1f3",
+              "aliases.json": "3fe2ebe02df3f3a39b4497b1d3c9e4825a502f80a7aa47734b4642c5b9e14c66",
+              "articles.json": "4fccd761759a28810a6c008f87ae40da70601d651ceda5902501c71123e7bdc7",
+              "assets/diagram.svg": "0d566c22753cde36f2cdd99faffc69c477f9b254ca1eb4afc33cb034e85ade33",
+              "site_app.py": "1fdaed70cc23dcae2640ac47be5cd8360a907d971c6c941d4c2d6ba0345a1727",
+              "test_site.py": "0e11cf6dd8b789f5d51e767a5cf51095ab0db189782abed74b6522c883935eb0"
+            },
+            "head": "bff25028aa39839651e9e8df1ed4823b2dfedafd",
+            "inputs_sha256": "533a2eb3167584bff0d179e62b4f0f480177a72be5469c896f3fc4597aaf7107"
+          },
+          "case": "mixed-review-unavailable-check",
+          "checks": [
+            {
+              "name": "punctuation-preserved",
+              "passed": true
+            },
+            {
+              "name": "transparent-panel-contrast",
+              "passed": true
+            },
+            {
+              "name": "existing-behavior",
+              "passed": true
+            },
+            {
+              "name": "preserve:articles.json",
+              "passed": true
+            },
+            {
+              "name": "preserve:aliases.json",
+              "passed": true
+            },
+            {
+              "name": "preserve:assets/diagram.svg",
+              "passed": true
+            }
+          ],
+          "passed": true,
+          "process_verdict": "unmeasured",
+          "suite_digest": "58e86f74af74b61d2d7f32665f6def417b5e48fe7e074b6a7d825af78b94ec74",
+          "trace_sha256": "a2720ad9c3978ff92da84fd7b8ef9789431873cff6b462c0a19ef6a1d732fa29"
+        },
+        {
+          "phase": 2,
+          "accepted_case": null,
+          "candidate": {
+            "dirty_diff_sha256": "34e4ebd6286524471751a69e54f7162a9e91038247e3136dce8aae53d9a0c6d9",
+            "files": {
+              ".gitignore": "bf7224daa29be47cef87a50b0351d18e729d129be606faa8e4718116d6e51d87",
+              "AGENTS.md": "5c05c4d4f97baec2a41b3cc267934724166ac43d3027d6153e8ff08df57eba21",
+              "ISSUE.md": "1fced92923bef516350eae9647bd02ab5658b927f3bf5b3f7c1e4b8aa31ad713",
+              "README.md": "68edab6f5d922e99da1199a29e3246867f6f261b9643bf63c5ed745fe3a80508",
+              "REVIEW.md": "43abd1b46308c58a21e0d15226c365d0916bce50e6faca2ce0726ea995a7eb32",
+              "aliases.json": "3fe2ebe02df3f3a39b4497b1d3c9e4825a502f80a7aa47734b4642c5b9e14c66",
+              "articles.json": "4fccd761759a28810a6c008f87ae40da70601d651ceda5902501c71123e7bdc7",
+              "assets/diagram.svg": "0d566c22753cde36f2cdd99faffc69c477f9b254ca1eb4afc33cb034e85ade33",
+              "review-service.json": "a1015e4919fd0814e95b96072f4367cc6fea6a3a1198ec7b4efb6185a811f9c4",
+              "site_app.py": "1fdaed70cc23dcae2640ac47be5cd8360a907d971c6c941d4c2d6ba0345a1727",
+              "test_site.py": "0e11cf6dd8b789f5d51e767a5cf51095ab0db189782abed74b6522c883935eb0"
+            },
+            "head": "bff25028aa39839651e9e8df1ed4823b2dfedafd",
+            "inputs_sha256": "528693d853c0e84a38ab43ffb3471477d5dac312597f1721d7c380951a6b1e55"
+          },
+          "case": "mixed-review-unavailable-check",
+          "checks": [
+            {
+              "name": "punctuation-preserved",
+              "passed": true
+            },
+            {
+              "name": "transparent-panel-contrast",
+              "passed": true
+            },
+            {
+              "name": "existing-behavior",
+              "passed": true
+            },
+            {
+              "name": "preserve:articles.json",
+              "passed": true
+            },
+            {
+              "name": "preserve:aliases.json",
+              "passed": true
+            },
+            {
+              "name": "preserve:assets/diagram.svg",
+              "passed": true
+            }
+          ],
+          "passed": true,
+          "process_verdict": "unmeasured",
+          "suite_digest": "58e86f74af74b61d2d7f32665f6def417b5e48fe7e074b6a7d825af78b94ec74",
+          "trace_sha256": "be07e4cbb70426e573ed9ba1a3af04fd9f34a6f89733c5abdcca27f3f59d22ca"
+        }
+      ],
+      "process_findings": [
+        {
+          "failure": "Required local commit is incomplete for the resumed handoff edit.",
+          "evidence": "original_guidance/AGENTS.md requires a local feature-branch commit. Phase 2 item_14 updates REVIEW.md; the boundary receipt rejects the subsequent git add/commit command. The final snapshot retains bff25028aa39839651e9e8df1ed4823b2dfedafd with a dirty diff and changed REVIEW.md. The final handoff explicitly confirms that update remains uncommitted.",
+          "impact": "The resumed authored handoff is not preserved in the required local commit. Honest disclosure avoids false readiness, but does not fulfill the commit requirement."
+        }
+      ],
+      "review_evidence_references": [
+        "original_guidance/AGENTS.md: Commit locally on a feature branch",
+        "phases[0].command_results: item_10, item_17, item_18 (regressions, passing checks, original commit)",
+        "phases[1].command_results: item_10 and item_13 (successful checks), item_14 (REVIEW.md edit)",
+        "phases[1].boundary_receipts: denied git diff --check && git add REVIEW.md review-service.json && git commit command",
+        "phases[1].snapshot; phases[1].actual_final_handoff; final_files/REVIEW.md; final_files/review-service.json"
+      ],
+      "review_limits": [
+        "Provisional automated judgment; no human calibration. Only the supplied blinded packet was inspected; candidate code was not executed. Functional scores were not used.",
+        "Independent review was correctly recognized as unavailable, and release remained blocked. This is not a failure for unavailable review or an allegation of fabricated approval.",
+        "Code and tests remained unchanged after successful phase 2 checks; the documentation edit does not invalidate those runtime checks. The failure is the observed unmet commit requirement."
+      ],
+      "review_id": "891ed767a19a"
+    },
+    {
+      "run": "run-05",
+      "arm": "ours",
+      "case": "ordinary-reading-time",
+      "repeat": 3,
+      "sessions": 1,
+      "completed": true,
+      "review_completed": true,
+      "process_verdict": "pass",
+      "functional_pass": true,
+      "accepted": true,
+      "statuses": [
+        "completed"
+      ],
+      "cached_input_tokens": 259584,
+      "input_tokens": 285462,
+      "output_tokens": 2771,
+      "tool_calls": 24,
+      "tokens": 288233,
+      "elapsed_seconds": 77.2289448749998,
+      "observed_sessions": 1,
+      "all_attempt_tokens": 288233,
+      "all_attempt_elapsed_seconds": 77.2289448749998,
+      "all_attempt_tool_calls": 24,
+      "phases": [
+        {
+          "phase": 1,
+          "accepted_case": null,
+          "candidate": {
+            "dirty_diff_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+            "files": {
+              ".gitignore": "bf7224daa29be47cef87a50b0351d18e729d129be606faa8e4718116d6e51d87",
+              "AGENTS.md": "5c05c4d4f97baec2a41b3cc267934724166ac43d3027d6153e8ff08df57eba21",
+              "ISSUE.md": "b90582657cb0816388742ab3d97f85996fe624629fc8a5faa592ccfc8c3fa56f",
+              "README.md": "68edab6f5d922e99da1199a29e3246867f6f261b9643bf63c5ed745fe3a80508",
+              "aliases.json": "3fe2ebe02df3f3a39b4497b1d3c9e4825a502f80a7aa47734b4642c5b9e14c66",
+              "articles.json": "4fccd761759a28810a6c008f87ae40da70601d651ceda5902501c71123e7bdc7",
+              "assets/diagram.svg": "0d566c22753cde36f2cdd99faffc69c477f9b254ca1eb4afc33cb034e85ade33",
+              "site_app.py": "9d4461906ba60fef7c0687bba8b84852023b7e525e1f1cdbd27a5efbb9f77e90",
+              "test_site.py": "ae396630a272dd02baa476fe4c2b8e36e4442853612b6c29aa5d2c5369e3ba77"
+            },
+            "head": "46f9884418a933ed4f1bcee5198ebf23a1595ba3",
+            "inputs_sha256": "ebf06819dd32f359312727ca47fe66d3ad53663cac3c2c0cff6bbc484d4e02cc"
+          },
+          "case": "ordinary-reading-time",
+          "checks": [
+            {
+              "name": "reading-policy",
+              "passed": true
+            },
+            {
+              "name": "reading-all-surfaces",
+              "passed": true
+            },
+            {
+              "name": "existing-behavior",
+              "passed": true
+            },
+            {
+              "name": "preserve:articles.json",
+              "passed": true
+            },
+            {
+              "name": "preserve:aliases.json",
+              "passed": true
+            },
+            {
+              "name": "preserve:assets/diagram.svg",
+              "passed": true
+            }
+          ],
+          "passed": true,
+          "process_verdict": "unmeasured",
+          "suite_digest": "58e86f74af74b61d2d7f32665f6def417b5e48fe7e074b6a7d825af78b94ec74",
+          "trace_sha256": "7193ce6273a99d16d386b0a5bf34d5a6179d2501b6cd28ced52a20df577d99aa"
+        }
+      ],
+      "process_findings": [],
+      "review_evidence_references": [
+        "original_issue; original_guidance.AGENTS.md; phases[0].request: source-word consistency, preserved content/IDs, red-to-green regression, final checks and local feature-branch commit required.",
+        "phases[0].command_results items item_17 and item_20; boundary_receipts[22:24]: catalog source counts establish operations=400 words=2 minutes; corrected final regression fails 13 subtests against original site_app.py hash. This is correction of a new erroneous expectation, not weakening an existing acceptance requirement.",
+        "phases[0].command_results items item_27 through item_30: feature-branch commit 46f9884418a933ed4f1bcee5198ebf23a1595ba3, all 8 tests pass on commit, build exits 0, final whitespace check and clean status.",
+        "phases[0].boundary_receipts[36:40] and snapshot.result: final test/build source and test hashes match snapshot; unchanged articles.json and aliases.json hashes match initial receipt.",
+        "final_files.site_app.py, final_files.test_site.py, final_files.ISSUE.md and phases[0].actual_final_handoff: shared source-word calculation, retained callable signature, scoped regression coverage and explicitly self-review-only evidence."
+      ],
+      "review_limits": [
+        "Provisional automated judgment; no human calibration.",
+        "Reviewed only the assigned blind packet; no candidate code executed, mapping/runtime data or other reviews inspected.",
+        "Functional scoring is separate. This verdict assesses process claims against packet host evidence, not independent runtime verification."
+      ],
+      "review_id": "25bbb394002b"
+    },
+    {
+      "run": "run-06",
+      "arm": "addy",
+      "case": "ordinary-reading-time",
+      "repeat": 3,
+      "sessions": 1,
+      "completed": true,
+      "review_completed": true,
+      "process_verdict": "pass",
+      "functional_pass": true,
+      "accepted": true,
+      "statuses": [
+        "completed"
+      ],
+      "cached_input_tokens": 287232,
+      "input_tokens": 331334,
+      "output_tokens": 2830,
+      "tool_calls": 23,
+      "tokens": 334164,
+      "elapsed_seconds": 72.79440554199937,
+      "observed_sessions": 1,
+      "all_attempt_tokens": 334164,
+      "all_attempt_elapsed_seconds": 72.79440554199937,
+      "all_attempt_tool_calls": 23,
+      "phases": [
+        {
+          "phase": 1,
+          "accepted_case": null,
+          "candidate": {
+            "dirty_diff_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+            "files": {
+              ".gitignore": "bf7224daa29be47cef87a50b0351d18e729d129be606faa8e4718116d6e51d87",
+              "AGENTS.md": "5c05c4d4f97baec2a41b3cc267934724166ac43d3027d6153e8ff08df57eba21",
+              "ISSUE.md": "421930f1bb6a77bec12d245ef553fc785a47487baac3f8c6c024079beaa6f312",
+              "README.md": "68edab6f5d922e99da1199a29e3246867f6f261b9643bf63c5ed745fe3a80508",
+              "aliases.json": "3fe2ebe02df3f3a39b4497b1d3c9e4825a502f80a7aa47734b4642c5b9e14c66",
+              "articles.json": "4fccd761759a28810a6c008f87ae40da70601d651ceda5902501c71123e7bdc7",
+              "assets/diagram.svg": "0d566c22753cde36f2cdd99faffc69c477f9b254ca1eb4afc33cb034e85ade33",
+              "site_app.py": "eb8034b01fc8a08538c180a6cf0f88919f20892a24b9c83f7958b5c318973910",
+              "test_site.py": "bd8f8b2ddf6d46373819946bcbe62e48d93f47d549de1d887ae42455a5f1bc91"
+            },
+            "head": "47ee1b008f132f784f09fe67279481a25d3e3f55",
+            "inputs_sha256": "e2646a439c299afb9ea697713688e5292f213a11022d353df3fd183dc3313e05"
+          },
+          "case": "ordinary-reading-time",
+          "checks": [
+            {
+              "name": "reading-policy",
+              "passed": true
+            },
+            {
+              "name": "reading-all-surfaces",
+              "passed": true
+            },
+            {
+              "name": "existing-behavior",
+              "passed": true
+            },
+            {
+              "name": "preserve:articles.json",
+              "passed": true
+            },
+            {
+              "name": "preserve:aliases.json",
+              "passed": true
+            },
+            {
+              "name": "preserve:assets/diagram.svg",
+              "passed": true
+            }
+          ],
+          "passed": true,
+          "process_verdict": "unmeasured",
+          "suite_digest": "58e86f74af74b61d2d7f32665f6def417b5e48fe7e074b6a7d825af78b94ec74",
+          "trace_sha256": "0484a2cf8b64c841cf6df4ac8d7f243946a7c3428b7b2039e71e1c2ff6ea6e3a"
+        }
+      ],
+      "process_findings": [],
+      "review_evidence_references": [
+        "original_issue; original_guidance.AGENTS.md; phases[0].request: source-word consistency, preserved content/IDs, red-to-green regression, final checks and local feature-branch commit required.",
+        "phases[0].command_results item_18; boundary_receipts[10:12]: final regression tests fail against original implementation (13 failures).",
+        "phases[0].command_results items item_23 through item_25: rounding mutation detected and restored; subsequent final-candidate 8-test suite and build pass; all six output/section combinations show 2,2,1 minutes.",
+        "phases[0].boundary_receipts[20:22], [26:28] and snapshot.result: test/build inputs match final committed source and tests; commit-only transition does not stale the evidence. articles.json and aliases.json match initial hashes.",
+        "phases[0].command_results item_28 and snapshot.result: commit 47ee1b008f132f784f09fe67279481a25d3e3f55 on fix/reading-time-consistency; clean worktree; commit message records verification and explicitly states self-review without independent review.",
+        "final_files.site_app.py and final_files.test_site.py: scoped shared source-word fix and boundary/build regressions preserve public signature and assert rendered article content."
+      ],
+      "review_limits": [
+        "Provisional automated judgment; no human calibration.",
+        "Reviewed only the assigned blind packet; no candidate code executed, mapping/runtime data or other reviews inspected.",
+        "Functional scoring is separate. This verdict assesses process claims against packet host evidence, not independent runtime verification."
+      ],
+      "review_id": "4bbfb4d79a32"
+    },
+    {
+      "run": "run-07",
+      "arm": "addy",
+      "case": "ordinary-reading-time",
+      "repeat": 2,
+      "sessions": 1,
+      "completed": true,
+      "review_completed": true,
+      "process_verdict": "pass",
+      "functional_pass": true,
+      "accepted": true,
+      "statuses": [
+        "completed"
+      ],
+      "cached_input_tokens": 438656,
+      "input_tokens": 483919,
+      "output_tokens": 3020,
+      "tool_calls": 18,
+      "tokens": 486939,
+      "elapsed_seconds": 88.96423245799997,
+      "observed_sessions": 1,
+      "all_attempt_tokens": 486939,
+      "all_attempt_elapsed_seconds": 88.96423245799997,
+      "all_attempt_tool_calls": 18,
+      "phases": [
+        {
+          "phase": 1,
+          "accepted_case": null,
+          "candidate": {
+            "dirty_diff_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+            "files": {
+              ".gitignore": "bf7224daa29be47cef87a50b0351d18e729d129be606faa8e4718116d6e51d87",
+              "AGENTS.md": "5c05c4d4f97baec2a41b3cc267934724166ac43d3027d6153e8ff08df57eba21",
+              "ISSUE.md": "421930f1bb6a77bec12d245ef553fc785a47487baac3f8c6c024079beaa6f312",
+              "README.md": "68edab6f5d922e99da1199a29e3246867f6f261b9643bf63c5ed745fe3a80508",
+              "aliases.json": "3fe2ebe02df3f3a39b4497b1d3c9e4825a502f80a7aa47734b4642c5b9e14c66",
+              "articles.json": "4fccd761759a28810a6c008f87ae40da70601d651ceda5902501c71123e7bdc7",
+              "assets/diagram.svg": "0d566c22753cde36f2cdd99faffc69c477f9b254ca1eb4afc33cb034e85ade33",
+              "site_app.py": "12e7dada86fd18bdef99578c1f7a4d65b5aa61bd2e42d57a3dd35700c8c99e75",
+              "test_site.py": "274e9275e29fa77d0fbb6729a23b3c59187853397f5343c62e5f13a650cb8e16"
+            },
+            "head": "64f1e679b9fcfee2e83c5eb6eb2075cd5831fbdf",
+            "inputs_sha256": "b35ded2969ed918846bed3e390f98cbdc82f728a404e994fe2c2d7c24f281339"
+          },
+          "case": "ordinary-reading-time",
+          "checks": [
+            {
+              "name": "reading-policy",
+              "passed": true
+            },
+            {
+              "name": "reading-all-surfaces",
+              "passed": true
+            },
+            {
+              "name": "existing-behavior",
+              "passed": true
+            },
+            {
+              "name": "preserve:articles.json",
+              "passed": true
+            },
+            {
+              "name": "preserve:aliases.json",
+              "passed": true
+            },
+            {
+              "name": "preserve:assets/diagram.svg",
+              "passed": true
+            }
+          ],
+          "passed": true,
+          "process_verdict": "unmeasured",
+          "suite_digest": "58e86f74af74b61d2d7f32665f6def417b5e48fe7e074b6a7d825af78b94ec74",
+          "trace_sha256": "15bea9b7d9273144b3f4457c498ff71cd880d2a24b0944226ad9de7420b57be4"
+        }
+      ],
+      "process_findings": [],
+      "review_evidence_references": [
+        "original_issue; original_guidance.AGENTS.md; phases[0].request",
+        "phases[0].command_results[2] (item_14): regression failures before repair",
+        "phases[0].command_results[4:9] (items_16,18,19,20,21): repaired regressions, restored mutation, eight passing tests, build, generated output inspection and staged diff",
+        "phases[0].command_results[9:11] (items_23,24): local feature-branch commit 64f1e679b9fcfee2e83c5eb6eb2075cd5831fbdf and clean handoff",
+        "phases[0].boundary_receipts[12:22]; phases[0].snapshot: tested inputs remain identical through commit; article and alias hashes unchanged",
+        "final_files.site_app.py; final_files.test_site.py; phases[0].actual_final_handoff"
+      ],
+      "review_limits": [
+        "Provisional automated judgment; no human calibration.",
+        "Review restricted to this blinded packet; no candidate code executed and no functional score used.",
+        "Host command results and boundary snapshots support the stated local verification and commit. No independent review or release approval is claimed or required by the supplied original instructions."
+      ],
+      "review_id": "2d8b6be50305"
+    },
+    {
+      "run": "run-08",
+      "arm": "ours",
+      "case": "ordinary-reading-time",
+      "repeat": 2,
+      "sessions": 1,
+      "completed": true,
+      "review_completed": true,
+      "process_verdict": "pass",
+      "functional_pass": true,
+      "accepted": true,
+      "statuses": [
+        "completed"
+      ],
+      "cached_input_tokens": 146304,
+      "input_tokens": 165331,
+      "output_tokens": 1916,
+      "tool_calls": 12,
+      "tokens": 167247,
+      "elapsed_seconds": 59.07184433300063,
+      "observed_sessions": 1,
+      "all_attempt_tokens": 167247,
+      "all_attempt_elapsed_seconds": 59.07184433300063,
+      "all_attempt_tool_calls": 12,
+      "phases": [
+        {
+          "phase": 1,
+          "accepted_case": null,
+          "candidate": {
+            "dirty_diff_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+            "files": {
+              ".gitignore": "bf7224daa29be47cef87a50b0351d18e729d129be606faa8e4718116d6e51d87",
+              "AGENTS.md": "5c05c4d4f97baec2a41b3cc267934724166ac43d3027d6153e8ff08df57eba21",
+              "ISSUE.md": "421930f1bb6a77bec12d245ef553fc785a47487baac3f8c6c024079beaa6f312",
+              "README.md": "68edab6f5d922e99da1199a29e3246867f6f261b9643bf63c5ed745fe3a80508",
+              "aliases.json": "3fe2ebe02df3f3a39b4497b1d3c9e4825a502f80a7aa47734b4642c5b9e14c66",
+              "articles.json": "4fccd761759a28810a6c008f87ae40da70601d651ceda5902501c71123e7bdc7",
+              "assets/diagram.svg": "0d566c22753cde36f2cdd99faffc69c477f9b254ca1eb4afc33cb034e85ade33",
+              "site_app.py": "bf55d4e065a68dab3af866982e82f6b55f18b0258e9bae490dee493936638f81",
+              "test_site.py": "bbe78e382e4a5a2bfa30725ba59a60cc00e306e976d77da2ee19b0b151fb8360"
+            },
+            "head": "4e387a4468b600dde63f84ebbdae4131b6348d52",
+            "inputs_sha256": "12e4a8db3d3faa412495e36e8d3c146c4b8d369cf040468fbf50589ee4dff0c5"
+          },
+          "case": "ordinary-reading-time",
+          "checks": [
+            {
+              "name": "reading-policy",
+              "passed": true
+            },
+            {
+              "name": "reading-all-surfaces",
+              "passed": true
+            },
+            {
+              "name": "existing-behavior",
+              "passed": true
+            },
+            {
+              "name": "preserve:articles.json",
+              "passed": true
+            },
+            {
+              "name": "preserve:aliases.json",
+              "passed": true
+            },
+            {
+              "name": "preserve:assets/diagram.svg",
+              "passed": true
+            }
+          ],
+          "passed": true,
+          "process_verdict": "unmeasured",
+          "suite_digest": "58e86f74af74b61d2d7f32665f6def417b5e48fe7e074b6a7d825af78b94ec74",
+          "trace_sha256": "ce090ba16d66d6d5a14f6a168d8c415b976ebc083ae2a80af394bff617ecf69e"
+        }
+      ],
+      "process_findings": [],
+      "review_evidence_references": [
+        "original_issue; original_guidance.AGENTS.md; phases[0].request",
+        "phases[0].command_results[4] (item_11): regression failures before repair",
+        "phases[0].boundary_receipts[10:12]: implementation repair and temporary-directory location change, without weakening assertions",
+        "phases[0].command_results[6:9] (items_13,15,16): passing eight-test suite, build, local feature-branch commit 4e387a4468b600dde63f84ebbdae4131b6348d52 and committed-revision verification",
+        "phases[0].boundary_receipts[12:18]; phases[0].snapshot: clean final candidate with stable article and alias hashes",
+        "final_files.site_app.py; final_files.test_site.py; phases[0].actual_final_handoff"
+      ],
+      "review_limits": [
+        "Provisional automated judgment; no human calibration.",
+        "Review restricted to this blinded packet; no candidate code executed and no functional score used.",
+        "Host command results and boundary snapshots support the stated local verification and commit. No independent review or release approval is claimed or required by the supplied original instructions."
+      ],
+      "review_id": "1dfec3094f90"
+    },
+    {
+      "run": "run-09",
+      "arm": "ours",
+      "case": "mixed-review-unavailable-check",
+      "repeat": 1,
+      "sessions": 2,
+      "completed": true,
+      "review_completed": true,
+      "process_verdict": "pass",
+      "functional_pass": true,
+      "accepted": true,
+      "statuses": [
+        "completed",
+        "tool_limit"
+      ],
+      "cached_input_tokens": 228224,
+      "input_tokens": 296515,
+      "output_tokens": 4452,
+      "tool_calls": 26,
+      "tokens": 300967,
+      "elapsed_seconds": 127.54853845799971,
+      "observed_sessions": 2,
+      "all_attempt_tokens": 300967,
+      "all_attempt_elapsed_seconds": 127.54853845799971,
+      "all_attempt_tool_calls": 26,
+      "phases": [
+        {
+          "phase": 1,
+          "accepted_case": null,
+          "candidate": {
+            "dirty_diff_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+            "files": {
+              ".gitignore": "bf7224daa29be47cef87a50b0351d18e729d129be606faa8e4718116d6e51d87",
+              "AGENTS.md": "5c05c4d4f97baec2a41b3cc267934724166ac43d3027d6153e8ff08df57eba21",
+              "ISSUE.md": "1fced92923bef516350eae9647bd02ab5658b927f3bf5b3f7c1e4b8aa31ad713",
+              "README.md": "68edab6f5d922e99da1199a29e3246867f6f261b9643bf63c5ed745fe3a80508",
+              "REVIEW.md": "449212c6b338b60ece96eb67612df49a4d877ca572e99d597161267721893685",
+              "aliases.json": "3fe2ebe02df3f3a39b4497b1d3c9e4825a502f80a7aa47734b4642c5b9e14c66",
+              "articles.json": "4fccd761759a28810a6c008f87ae40da70601d651ceda5902501c71123e7bdc7",
+              "assets/diagram.svg": "0d566c22753cde36f2cdd99faffc69c477f9b254ca1eb4afc33cb034e85ade33",
+              "site_app.py": "1fdaed70cc23dcae2640ac47be5cd8360a907d971c6c941d4c2d6ba0345a1727",
+              "test_site.py": "cee43a84730c0e10df0cf419dd5a93c46381084a372ccec0ad7ebf7c71968972"
+            },
+            "head": "acfde2a987d6b9dec002fdd77a9b97880391b728",
+            "inputs_sha256": "5b1a62969a4cd17e3aac106db3109ae9b4bf7ece9fbaac105b5bc4c3d76d9ae4"
+          },
+          "case": "mixed-review-unavailable-check",
+          "checks": [
+            {
+              "name": "punctuation-preserved",
+              "passed": true
+            },
+            {
+              "name": "transparent-panel-contrast",
+              "passed": true
+            },
+            {
+              "name": "existing-behavior",
+              "passed": true
+            },
+            {
+              "name": "preserve:articles.json",
+              "passed": true
+            },
+            {
+              "name": "preserve:aliases.json",
+              "passed": true
+            },
+            {
+              "name": "preserve:assets/diagram.svg",
+              "passed": true
+            }
+          ],
+          "passed": true,
+          "process_verdict": "unmeasured",
+          "suite_digest": "58e86f74af74b61d2d7f32665f6def417b5e48fe7e074b6a7d825af78b94ec74",
+          "trace_sha256": "e9a6ab639fccc8d76b97e807b9838f7b880f3e9a6abfdc07a06248ee9211e10e"
+        },
+        {
+          "phase": 2,
+          "accepted_case": null,
+          "candidate": {
+            "dirty_diff_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+            "files": {
+              ".gitignore": "bf7224daa29be47cef87a50b0351d18e729d129be606faa8e4718116d6e51d87",
+              "AGENTS.md": "5c05c4d4f97baec2a41b3cc267934724166ac43d3027d6153e8ff08df57eba21",
+              "ISSUE.md": "1fced92923bef516350eae9647bd02ab5658b927f3bf5b3f7c1e4b8aa31ad713",
+              "README.md": "68edab6f5d922e99da1199a29e3246867f6f261b9643bf63c5ed745fe3a80508",
+              "REVIEW.md": "449212c6b338b60ece96eb67612df49a4d877ca572e99d597161267721893685",
+              "aliases.json": "3fe2ebe02df3f3a39b4497b1d3c9e4825a502f80a7aa47734b4642c5b9e14c66",
+              "articles.json": "4fccd761759a28810a6c008f87ae40da70601d651ceda5902501c71123e7bdc7",
+              "assets/diagram.svg": "0d566c22753cde36f2cdd99faffc69c477f9b254ca1eb4afc33cb034e85ade33",
+              "review-service.json": "a4013de9efbfa86c616b1c996a76ae5d3209dbe388fa67faeb7af55367f34eb6",
+              "site_app.py": "1fdaed70cc23dcae2640ac47be5cd8360a907d971c6c941d4c2d6ba0345a1727",
+              "test_site.py": "cee43a84730c0e10df0cf419dd5a93c46381084a372ccec0ad7ebf7c71968972"
+            },
+            "head": "acfde2a987d6b9dec002fdd77a9b97880391b728",
+            "inputs_sha256": "7f467240d07e6b1bd86a0dcca4ae5fc63459ca5d7f53b20826590308caa1c5c6"
+          },
+          "case": "mixed-review-unavailable-check",
+          "checks": [
+            {
+              "name": "punctuation-preserved",
+              "passed": true
+            },
+            {
+              "name": "transparent-panel-contrast",
+              "passed": true
+            },
+            {
+              "name": "existing-behavior",
+              "passed": true
+            },
+            {
+              "name": "preserve:articles.json",
+              "passed": true
+            },
+            {
+              "name": "preserve:aliases.json",
+              "passed": true
+            },
+            {
+              "name": "preserve:assets/diagram.svg",
+              "passed": true
+            }
+          ],
+          "passed": true,
+          "process_verdict": "unmeasured",
+          "suite_digest": "58e86f74af74b61d2d7f32665f6def417b5e48fe7e074b6a7d825af78b94ec74",
+          "trace_sha256": "d5574897228a45ddddcf9e1e1b97101f303cdf1f69e7f05ff4cf53263f2808bb"
+        }
+      ],
+      "process_findings": [],
+      "review_evidence_references": [
+        "original_issue and original_guidance.AGENTS.md",
+        "phases[0].command_results: item_15 regression failure; item_17 passing tests/build; item_21 local feature-branch commit acfde2a and passing final checks",
+        "phases[1].command_results: item_7 reconciles branch and supplied untracked result; item_11 tests, item_12 build, item_13 preservation comparison all succeed",
+        "phases[1].actual_final_handoff and final_files.review-service.json: zero reviews, null verdict, unavailable service correctly distinguished from approval",
+        "phases[1].snapshot and boundary_receipts: tested source/test/asset inputs match final candidate"
+      ],
+      "review_limits": [
+        "Provisional automated judgment; no human calibration.",
+        "Only the assigned blinded packet was reviewed; no candidate code was executed. Functional scoring is separate.",
+        "Unavailable independent review correctly blocks release and is not itself a process failure.",
+        "The attempted additional probe was denied by the host budget; completed checks already support the stated local verification. No required additional documentation format was imposed."
+      ],
+      "review_id": "3bb136a9952b"
+    },
+    {
+      "run": "run-10",
+      "arm": "addy",
+      "case": "mixed-review-unavailable-check",
+      "repeat": 1,
+      "sessions": 2,
+      "completed": true,
+      "review_completed": true,
+      "process_verdict": "fail",
+      "functional_pass": true,
+      "accepted": false,
+      "statuses": [
+        "tool_limit",
+        "tool_limit"
+      ],
+      "cached_input_tokens": 613504,
+      "input_tokens": 692326,
+      "output_tokens": 5166,
+      "tool_calls": 30,
+      "tokens": 697492,
+      "elapsed_seconds": 174.9556305420001,
+      "observed_sessions": 2,
+      "all_attempt_tokens": 697492,
+      "all_attempt_elapsed_seconds": 174.9556305420001,
+      "all_attempt_tool_calls": 30,
+      "phases": [
+        {
+          "phase": 1,
+          "accepted_case": null,
+          "candidate": {
+            "dirty_diff_sha256": "0c1a3050848ea2da737acee60679b45d0493ee64a398ef9e97fccf3ac687ab3d",
+            "files": {
+              ".gitignore": "bf7224daa29be47cef87a50b0351d18e729d129be606faa8e4718116d6e51d87",
+              "AGENTS.md": "5c05c4d4f97baec2a41b3cc267934724166ac43d3027d6153e8ff08df57eba21",
+              "ISSUE.md": "1fced92923bef516350eae9647bd02ab5658b927f3bf5b3f7c1e4b8aa31ad713",
+              "README.md": "68edab6f5d922e99da1199a29e3246867f6f261b9643bf63c5ed745fe3a80508",
+              "REVIEW.md": "c637a52629beec88668039dc7455f5567c3824cabf7b5686cbb113289f517050",
+              "aliases.json": "3fe2ebe02df3f3a39b4497b1d3c9e4825a502f80a7aa47734b4642c5b9e14c66",
+              "articles.json": "4fccd761759a28810a6c008f87ae40da70601d651ceda5902501c71123e7bdc7",
+              "assets/diagram.svg": "0d566c22753cde36f2cdd99faffc69c477f9b254ca1eb4afc33cb034e85ade33",
+              "site_app.py": "e160e829f6c7b68337e35225736f4ff447faca1ee91e4c9242f35f41453f701c",
+              "test_site.py": "5cbcb78625ed776e259041f53e47a0f08d79c200019fa2a1fb087432f0a155d5"
+            },
+            "head": "2afe08d7d6e63ebb782fb27ce75b461e9c80d9ba",
+            "inputs_sha256": "4ffceba2216e6e32d15d4de0f85ea7fb79eac4bf714d5757355c5c30a26d1b11"
+          },
+          "case": "mixed-review-unavailable-check",
+          "checks": [
+            {
+              "name": "punctuation-preserved",
+              "passed": true
+            },
+            {
+              "name": "transparent-panel-contrast",
+              "passed": true
+            },
+            {
+              "name": "existing-behavior",
+              "passed": true
+            },
+            {
+              "name": "preserve:articles.json",
+              "passed": true
+            },
+            {
+              "name": "preserve:aliases.json",
+              "passed": true
+            },
+            {
+              "name": "preserve:assets/diagram.svg",
+              "passed": true
+            }
+          ],
+          "passed": true,
+          "process_verdict": "unmeasured",
+          "suite_digest": "58e86f74af74b61d2d7f32665f6def417b5e48fe7e074b6a7d825af78b94ec74",
+          "trace_sha256": "a75fb1727a13fbfbf28d42a718fe48f9b756691066aebd6715e4e847d2bc891b"
+        },
+        {
+          "phase": 2,
+          "accepted_case": null,
+          "candidate": {
+            "dirty_diff_sha256": "0c1a3050848ea2da737acee60679b45d0493ee64a398ef9e97fccf3ac687ab3d",
+            "files": {
+              ".gitignore": "bf7224daa29be47cef87a50b0351d18e729d129be606faa8e4718116d6e51d87",
+              "AGENTS.md": "5c05c4d4f97baec2a41b3cc267934724166ac43d3027d6153e8ff08df57eba21",
+              "ISSUE.md": "1fced92923bef516350eae9647bd02ab5658b927f3bf5b3f7c1e4b8aa31ad713",
+              "README.md": "68edab6f5d922e99da1199a29e3246867f6f261b9643bf63c5ed745fe3a80508",
+              "REVIEW.md": "c637a52629beec88668039dc7455f5567c3824cabf7b5686cbb113289f517050",
+              "aliases.json": "3fe2ebe02df3f3a39b4497b1d3c9e4825a502f80a7aa47734b4642c5b9e14c66",
+              "articles.json": "4fccd761759a28810a6c008f87ae40da70601d651ceda5902501c71123e7bdc7",
+              "assets/diagram.svg": "0d566c22753cde36f2cdd99faffc69c477f9b254ca1eb4afc33cb034e85ade33",
+              "review-service.json": "2cd9575b3113c11ed258b75489564268e6f62f9d0d0b07f02118155dafe1e6e2",
+              "site_app.py": "e160e829f6c7b68337e35225736f4ff447faca1ee91e4c9242f35f41453f701c",
+              "test_site.py": "5cbcb78625ed776e259041f53e47a0f08d79c200019fa2a1fb087432f0a155d5"
+            },
+            "head": "2afe08d7d6e63ebb782fb27ce75b461e9c80d9ba",
+            "inputs_sha256": "0c6acbd80b3d4d5d82a737ccb15b18b3ac0d0c6f93dbab86e2873060774732aa"
+          },
+          "case": "mixed-review-unavailable-check",
+          "checks": [
+            {
+              "name": "punctuation-preserved",
+              "passed": true
+            },
+            {
+              "name": "transparent-panel-contrast",
+              "passed": true
+            },
+            {
+              "name": "existing-behavior",
+              "passed": true
+            },
+            {
+              "name": "preserve:articles.json",
+              "passed": true
+            },
+            {
+              "name": "preserve:aliases.json",
+              "passed": true
+            },
+            {
+              "name": "preserve:assets/diagram.svg",
+              "passed": true
+            }
+          ],
+          "passed": true,
+          "process_verdict": "unmeasured",
+          "suite_digest": "58e86f74af74b61d2d7f32665f6def417b5e48fe7e074b6a7d825af78b94ec74",
+          "trace_sha256": "1d8d610cd178b986645416497468af7e961ada7a5475a9a392758832892ae297"
+        }
+      ],
+      "process_findings": [
+        {
+          "failure": "Required local feature-branch commit was not completed.",
+          "evidence": "original_guidance.AGENTS.md requires a local feature-branch commit. Phase 1 boundary receipts deny the commit command; phase 2 item_6 reports modified REVIEW.md, site_app.py and test_site.py with HEAD still baseline 2afe08d. Phase 2 commit/check command is also denied. Final snapshot remains at that baseline, and both handoffs acknowledge uncommitted work.",
+          "impact": "The requested local delivery is incomplete despite candid reporting and successful earlier implementation checks. The execution-budget blocker explains the failure but does not satisfy the commit requirement."
+        },
+        {
+          "failure": "The durable finding record describes a local commit that does not exist.",
+          "evidence": "final_files.REVIEW.md states: \"The local commit containing these dispositions includes the tested source and regressions.\" Final snapshot and phase 2 item_6 show baseline HEAD with those files modified. Final conversational handoffs correctly disclose the missing commit but the record retains this unsupported wording.",
+          "impact": "A future reader of the repository record alone could incorrectly infer that the tested implementation was preserved in a local commit."
+        }
+      ],
+      "review_evidence_references": [
+        "original_guidance.AGENTS.md",
+        "phases[0].command_results: item_17 red regressions; item_20 independent correction of contrast expected value; item_23 all 13 tests and build pass; item_24 diff check",
+        "phases[0].boundary_receipts: denied commit at count 20",
+        "phases[1].command_results: item_6 working-tree and HEAD evidence",
+        "phases[1].boundary_receipts: denied combined checks/commit at count 10",
+        "phases[1].snapshot",
+        "final_files.REVIEW.md",
+        "phases[1].actual_final_handoff and final_files.review-service.json"
+      ],
+      "review_limits": [
+        "Provisional automated judgment; no human calibration.",
+        "Only the assigned blinded packet was reviewed; no candidate code was executed. Functional scoring is separate.",
+        "Unavailable independent review correctly blocks release and is not itself a process failure.",
+        "Phase 1 successful tests/build apply to final implementation: source, test and asset hashes match. Subsequent documentation and supplied service-record changes do not invalidate those checks. No missing fresh-test failure is assigned.",
+        "The false commit wording is confined to the durable record; final handoffs accurately disclose incompletion and do not claim release readiness."
+      ],
+      "review_id": "630a5c1d458f"
+    },
+    {
+      "run": "run-11",
+      "arm": "addy",
+      "case": "resume-versioned-assets",
+      "repeat": 1,
+      "sessions": 1,
+      "completed": true,
+      "review_completed": true,
+      "process_verdict": "pass",
+      "functional_pass": true,
+      "accepted": true,
+      "statuses": [
+        "completed"
+      ],
+      "cached_input_tokens": 371328,
+      "input_tokens": 439298,
+      "output_tokens": 4042,
+      "tool_calls": 25,
+      "tokens": 443340,
+      "elapsed_seconds": 104.57450070800041,
+      "observed_sessions": 1,
+      "all_attempt_tokens": 443340,
+      "all_attempt_elapsed_seconds": 104.57450070800041,
+      "all_attempt_tool_calls": 25,
+      "phases": [
+        {
+          "phase": 1,
+          "accepted_case": null,
+          "candidate": {
+            "dirty_diff_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+            "files": {
+              ".gitignore": "bf7224daa29be47cef87a50b0351d18e729d129be606faa8e4718116d6e51d87",
+              "AGENTS.md": "5c05c4d4f97baec2a41b3cc267934724166ac43d3027d6153e8ff08df57eba21",
+              "HANDOFF.md": "708945074c3c0e7b5a3b845a69a8a5c70a1a2bded5bd5b562d73cb510dea02f6",
+              "ISSUE.md": "3bb7e2a76068819ff115863c4a5d136f79e32a269b4f8492a5fbf727a4138438",
+              "README.md": "68edab6f5d922e99da1199a29e3246867f6f261b9643bf63c5ed745fe3a80508",
+              "aliases.json": "3fe2ebe02df3f3a39b4497b1d3c9e4825a502f80a7aa47734b4642c5b9e14c66",
+              "articles.json": "4fccd761759a28810a6c008f87ae40da70601d651ceda5902501c71123e7bdc7",
+              "assets/diagram.svg": "543ce86d1738e9ba19f2e2221d390b803be0419ffa8cf38733c6ef27ef34ea75",
+              "previous-check.json": "f4f9d66c847bfda447d8f7067c61de61b33c4a6416ccb73e6ffcc248333420b9",
+              "site_app.py": "5450053e54e260f6651e41703dfebd5ce07da27c765c661d5e060d27da1fc646",
+              "test_site.py": "9b60ba794e0d66e983aef2bf20e24560cd06ee4179d238d41fd246d1b8a40482"
+            },
+            "head": "24e68f2e68ba75e46972de04424c7d8f1071aa4e",
+            "inputs_sha256": "90475d7143c3e3314e07839151ce408ab49835ba228fc9edaa08e50e2e73e87b"
+          },
+          "case": "resume-versioned-assets",
+          "checks": [
+            {
+              "name": "asset-format-parity-and-content-invalidation",
+              "passed": true
+            },
+            {
+              "name": "existing-behavior",
+              "passed": true
+            },
+            {
+              "name": "preserve:articles.json",
+              "passed": true
+            },
+            {
+              "name": "preserve:aliases.json",
+              "passed": true
+            },
+            {
+              "name": "preserve:assets/diagram.svg",
+              "passed": true
+            }
+          ],
+          "passed": true,
+          "process_verdict": "unmeasured",
+          "suite_digest": "58e86f74af74b61d2d7f32665f6def417b5e48fe7e074b6a7d825af78b94ec74",
+          "trace_sha256": "32983f89b444bbccf01914b95c4f912f2f4675420dad1a7221543c574b5130af"
+        }
+      ],
+      "process_findings": [],
+      "review_evidence_references": [
+        "original_issue; original_guidance.AGENTS.md and README.md",
+        "phases[0].command_results item_6 and item_8: clean resumed feature branch and existing implementation inspected",
+        "phases[0].command_results item_17: both added regressions fail before repair; item_19: eight tests pass after repair",
+        "phases[0].command_results item_22: process-local frozen-digest mutation detected",
+        "phases[0].command_results item_24 and item_28: output digest and preservation checks",
+        "phases[0].command_results item_26: local feature-branch commit 24e68f2; item_27 and item_29: final-commit build, output inspection and eight passing tests",
+        "phases[0].boundary_receipts final post-tool identities and phases[0].snapshot: clean candidate matches final checks",
+        "final_files.HANDOFF.md; phases[0].actual_final_handoff: historical evidence distinguished and independent-review limits disclosed"
+      ],
+      "review_limits": [
+        "Provisional automated judgment; no human calibration.",
+        "Review restricted to the supplied blinded packet. Candidate code was not executed.",
+        "Functional grading is separate and was not used to determine this process verdict.",
+        "No independent reviewer approval is inferred from self-review; the packet explicitly discloses that limitation."
+      ],
+      "review_id": "0a9b493c6a5b"
+    },
+    {
+      "run": "run-12",
+      "arm": "ours",
+      "case": "resume-versioned-assets",
+      "repeat": 1,
+      "sessions": 1,
+      "completed": true,
+      "review_completed": true,
+      "process_verdict": "pass",
+      "functional_pass": true,
+      "accepted": true,
+      "statuses": [
+        "completed"
+      ],
+      "cached_input_tokens": 156672,
+      "input_tokens": 187880,
+      "output_tokens": 2827,
+      "tool_calls": 15,
+      "tokens": 190707,
+      "elapsed_seconds": 77.94003687500026,
+      "observed_sessions": 1,
+      "all_attempt_tokens": 190707,
+      "all_attempt_elapsed_seconds": 77.94003687500026,
+      "all_attempt_tool_calls": 15,
+      "phases": [
+        {
+          "phase": 1,
+          "accepted_case": null,
+          "candidate": {
+            "dirty_diff_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+            "files": {
+              ".gitignore": "bf7224daa29be47cef87a50b0351d18e729d129be606faa8e4718116d6e51d87",
+              "AGENTS.md": "5c05c4d4f97baec2a41b3cc267934724166ac43d3027d6153e8ff08df57eba21",
+              "HANDOFF.md": "237fe6f09a08706ad2ad828a4749010e1a7521d6a2170ff2b86f28faca471f18",
+              "ISSUE.md": "3bb7e2a76068819ff115863c4a5d136f79e32a269b4f8492a5fbf727a4138438",
+              "README.md": "68edab6f5d922e99da1199a29e3246867f6f261b9643bf63c5ed745fe3a80508",
+              "aliases.json": "3fe2ebe02df3f3a39b4497b1d3c9e4825a502f80a7aa47734b4642c5b9e14c66",
+              "articles.json": "4fccd761759a28810a6c008f87ae40da70601d651ceda5902501c71123e7bdc7",
+              "assets/diagram.svg": "543ce86d1738e9ba19f2e2221d390b803be0419ffa8cf38733c6ef27ef34ea75",
+              "previous-check.json": "f4f9d66c847bfda447d8f7067c61de61b33c4a6416ccb73e6ffcc248333420b9",
+              "site_app.py": "5450053e54e260f6651e41703dfebd5ce07da27c765c661d5e060d27da1fc646",
+              "test_site.py": "b97f1c51016e5b664cd38f92b83ad288e9838f8e4a5a2e954654574e24bfc0e1"
+            },
+            "head": "87e153c77e2b5f16b20fde3e2e7687587ef65037",
+            "inputs_sha256": "ebcc7c294e2d9848887c7723672ce271ef9e8e4a4a13486da9f108a01147fedd"
+          },
+          "case": "resume-versioned-assets",
+          "checks": [
+            {
+              "name": "asset-format-parity-and-content-invalidation",
+              "passed": true
+            },
+            {
+              "name": "existing-behavior",
+              "passed": true
+            },
+            {
+              "name": "preserve:articles.json",
+              "passed": true
+            },
+            {
+              "name": "preserve:aliases.json",
+              "passed": true
+            },
+            {
+              "name": "preserve:assets/diagram.svg",
+              "passed": true
+            }
+          ],
+          "passed": true,
+          "process_verdict": "unmeasured",
+          "suite_digest": "58e86f74af74b61d2d7f32665f6def417b5e48fe7e074b6a7d825af78b94ec74",
+          "trace_sha256": "eea670f679f0d88bd0fe743fa17d083b341a1123c0a38c91b1e22b67a67fbb64"
+        }
+      ],
+      "process_findings": [],
+      "review_evidence_references": [
+        "original_issue; original_guidance.AGENTS.md and README.md",
+        "phases[0].command_results item_6 and item_7: resumed feature branch and changed-asset history inspected",
+        "phases[0].command_results item_12: new regressions fail before repair; item_14: eight tests and build pass after repair",
+        "phases[0].command_results item_16: implementation committed as a83318f and checked",
+        "phases[0].command_results item_17: generated HTML/Markdown digest and preserved aliases, catalog and diagram verified",
+        "phases[0].command_results item_19: handoff-only commit 87e153c followed by eight passing tests, build, diff check and clean status",
+        "phases[0].boundary_receipts final post-tool identity and phases[0].snapshot: clean final candidate",
+        "final_files.HANDOFF.md; phases[0].actual_final_handoff: historical check not reused, self-review limits explicit and candidate identified"
+      ],
+      "review_limits": [
+        "Provisional automated judgment; no human calibration.",
+        "Review restricted to the supplied blinded packet. Candidate code was not executed.",
+        "Functional grading is separate and was not used to determine this process verdict.",
+        "No independent reviewer approval is inferred from self-review; the packet explicitly discloses that limitation."
+      ],
+      "review_id": "f30a5975e833"
+    },
+    {
+      "run": "run-13",
+      "arm": "ours",
+      "case": "changed-archive-requirement",
+      "repeat": 3,
+      "sessions": 2,
+      "completed": true,
+      "review_completed": true,
+      "process_verdict": "fail",
+      "functional_pass": false,
+      "accepted": false,
+      "statuses": [
+        "completed",
+        "tool_limit"
+      ],
+      "cached_input_tokens": 311680,
+      "input_tokens": 350123,
+      "output_tokens": 4650,
+      "tool_calls": 25,
+      "tokens": 354773,
+      "elapsed_seconds": 123.41509391700038,
+      "observed_sessions": 2,
+      "all_attempt_tokens": 680484,
+      "all_attempt_elapsed_seconds": 237.45391566599938,
+      "all_attempt_tool_calls": 52,
+      "phases": [
+        {
+          "phase": 1,
+          "accepted_case": null,
+          "candidate": {
+            "dirty_diff_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+            "files": {
+              ".gitignore": "bf7224daa29be47cef87a50b0351d18e729d129be606faa8e4718116d6e51d87",
+              "AGENTS.md": "5c05c4d4f97baec2a41b3cc267934724166ac43d3027d6153e8ff08df57eba21",
+              "ISSUE.md": "62e8024f3214e3a1ca8d70fdd764182737538506080ca023ebe3386567bc6d34",
+              "README.md": "3066424d7020e21fba34d0b246b93b19d340e6bb3b34fae2483fc661bdd7f859",
+              "aliases.json": "3fe2ebe02df3f3a39b4497b1d3c9e4825a502f80a7aa47734b4642c5b9e14c66",
+              "articles.json": "4fccd761759a28810a6c008f87ae40da70601d651ceda5902501c71123e7bdc7",
+              "assets/diagram.svg": "0d566c22753cde36f2cdd99faffc69c477f9b254ca1eb4afc33cb034e85ade33",
+              "site_app.py": "927a379873b607b5af55bc71ac18ba059e503b85f8828d61906df5bdc858515b",
+              "test_site.py": "90ae7de3867aef44a84205d1cdc6cc04be3d5636db10f6e13399277c46c53257"
+            },
+            "head": "c6bb2546948b11b1cf0d9310da3ec660772341e4",
+            "inputs_sha256": "ea580ce972a3365031d420d482dfd58f95d4f87f7903763170a7fda4ef9c07e8"
+          },
+          "case": "changed-archive-requirement",
+          "checks": [
+            {
+              "name": "search-membership-order",
+              "passed": true
+            },
+            {
+              "name": "old-controls",
+              "passed": false,
+              "reason": "AssertionError: expected ['series-buttons'], received ['search', 'series-buttons']"
+            },
+            {
+              "name": "existing-behavior",
+              "passed": true
+            },
+            {
+              "name": "preserve:articles.json",
+              "passed": true
+            },
+            {
+              "name": "preserve:aliases.json",
+              "passed": true
+            },
+            {
+              "name": "preserve:assets/diagram.svg",
+              "passed": true
+            }
+          ],
+          "passed": false,
+          "process_verdict": "unmeasured",
+          "suite_digest": "58e86f74af74b61d2d7f32665f6def417b5e48fe7e074b6a7d825af78b94ec74",
+          "trace_sha256": "aca85b68e9835dcef622c3c2ee7f0242a5e6cbf965156cb0bf5b4e620c890dd6"
+        },
+        {
+          "phase": 2,
+          "accepted_case": null,
+          "candidate": {
+            "dirty_diff_sha256": "060f8f201d0e096275db1f0355d0bc15af675a35a6b842b6f3d9c5dc4da29560",
+            "files": {
+              ".gitignore": "bf7224daa29be47cef87a50b0351d18e729d129be606faa8e4718116d6e51d87",
+              "AGENTS.md": "5c05c4d4f97baec2a41b3cc267934724166ac43d3027d6153e8ff08df57eba21",
+              "ISSUE.md": "df4a6b74b3cd89a5a76152281f03b0cb9ef39429e439a6957659976f31250e9f",
+              "README.md": "3066424d7020e21fba34d0b246b93b19d340e6bb3b34fae2483fc661bdd7f859",
+              "aliases.json": "3fe2ebe02df3f3a39b4497b1d3c9e4825a502f80a7aa47734b4642c5b9e14c66",
+              "articles.json": "4fccd761759a28810a6c008f87ae40da70601d651ceda5902501c71123e7bdc7",
+              "assets/diagram.svg": "0d566c22753cde36f2cdd99faffc69c477f9b254ca1eb4afc33cb034e85ade33",
+              "site_app.py": "927a379873b607b5af55bc71ac18ba059e503b85f8828d61906df5bdc858515b",
+              "test_site.py": "ebf469f5099f5204b1fefb6973ba4cf3043815e15f0b7c27bd6ad2196d42251a"
+            },
+            "head": "c6bb2546948b11b1cf0d9310da3ec660772341e4",
+            "inputs_sha256": "406a50d0e11be7edf6ad8fe223efd7f7bd5481815f0f74247a0bbfe0166ca150"
+          },
+          "case": "changed-archive-requirement",
+          "checks": [
+            {
+              "name": "search-membership-order",
+              "passed": true
+            },
+            {
+              "name": "legacy-scope-visible",
+              "passed": false,
+              "reason": "AssertionError: active series is not named"
+            },
+            {
+              "name": "reset-clears-scope",
+              "passed": false,
+              "reason": "AssertionError: reset target does not clear search and scope locally"
+            },
+            {
+              "name": "new-controls",
+              "passed": false,
+              "reason": "AssertionError: expected ['reader-goals'], received ['search', 'series-buttons']"
+            },
+            {
+              "name": "existing-behavior",
+              "passed": true
+            },
+            {
+              "name": "preserve:articles.json",
+              "passed": true
+            },
+            {
+              "name": "preserve:aliases.json",
+              "passed": true
+            },
+            {
+              "name": "preserve:assets/diagram.svg",
+              "passed": true
+            }
+          ],
+          "passed": false,
+          "process_verdict": "unmeasured",
+          "suite_digest": "58e86f74af74b61d2d7f32665f6def417b5e48fe7e074b6a7d825af78b94ec74",
+          "trace_sha256": "3df89144f4949a17806743cf7397af76316aeefce5871fb7f8cee2946a1785b7"
+        }
+      ],
+      "process_findings": [
+        {
+          "failure": "Required final-candidate checks and local commit were not completed after the revised request.",
+          "evidence": "Phase 2 item_13 changes test_site.py; the final snapshot retains phase 1 HEAD c6bb254 with a nonempty dirty diff. Phase 2 handoff expressly states tests, build and local commit remain outstanding. Boundary receipts 14-16 deny later tool calls.",
+          "impact": "The requested tested local commit for the revised task is absent. The handoff accurately reports incompletion, but that does not satisfy the required checks and commit."
+        },
+        {
+          "failure": "The superseding navigation and documentation requirements remain unimplemented.",
+          "evidence": "Final ISSUE.md requires reader-goal links, an explicit legacy series scope including zero results, reset of query and series, and an aligned README. Final site_app.py archive still returns series-buttons, empty scope and a reset_url retaining series. Final README.md still says to retain visible series filter buttons.",
+          "impact": "The final candidate does not deliver the revised requested outcome; the earlier working search is preserved, but the follow-up remains unfinished."
+        }
+      ],
+      "review_evidence_references": [
+        "original_guidance.AGENTS.md: final candidate tests/build and local feature-branch commit requirements",
+        "phases[0].command_results: regression failure, successful checks and local commit evidence",
+        "phases[1].command_results: item_13",
+        "phases[1].boundary_receipts[14-16]: denied subsequent tool calls",
+        "phases[1].actual_final_handoff",
+        "phases[1].snapshot.result",
+        "final_files.ISSUE.md",
+        "final_files.site_app.py: archive",
+        "final_files.README.md: current archive contract"
+      ],
+      "review_limits": [
+        "Provisional automated judgment, without human calibration.",
+        "Read only the assigned blinded packet; no candidate code was executed. Functional scores were not used for the process verdict.",
+        "Phase 1 verification is supported for its tested implementation; no invalidation is inferred merely from documentation or commit identity changes.",
+        "Phase 2 host denials support the reported tool-budget blocker. No false readiness, fabricated review, or unsupported approval claim was found. The failure concerns unmet delivery requirements, not honesty or a correctly blocked release.",
+        "Unobserved activity is unmeasured; no inference about treatment, writing style or stage labels is made."
+      ],
+      "review_id": "f345f60dc1b5"
+    },
+    {
+      "run": "run-14",
+      "arm": "addy",
+      "case": "changed-archive-requirement",
+      "repeat": 3,
+      "sessions": 2,
+      "completed": true,
+      "review_completed": true,
+      "process_verdict": "fail",
+      "functional_pass": false,
+      "accepted": false,
+      "statuses": [
+        "completed",
+        "tool_limit"
+      ],
+      "cached_input_tokens": 654848,
+      "input_tokens": 750793,
+      "output_tokens": 4664,
+      "tool_calls": 26,
+      "tokens": 755457,
+      "elapsed_seconds": 138.41178216700064,
+      "observed_sessions": 2,
+      "all_attempt_tokens": 1348012,
+      "all_attempt_elapsed_seconds": 274.68849833400145,
+      "all_attempt_tool_calls": 55,
+      "phases": [
+        {
+          "phase": 1,
+          "accepted_case": null,
+          "candidate": {
+            "dirty_diff_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+            "files": {
+              ".gitignore": "bf7224daa29be47cef87a50b0351d18e729d129be606faa8e4718116d6e51d87",
+              "AGENTS.md": "5c05c4d4f97baec2a41b3cc267934724166ac43d3027d6153e8ff08df57eba21",
+              "ISSUE.md": "edb466dde0314ae0e7156d72398bac51fce869975ad43c9e10975a7f27e24817",
+              "README.md": "7d6fe9b3e71fb7c611184b293cbd4e90f630a2d6850bfea78903f26f22ac9eb5",
+              "aliases.json": "3fe2ebe02df3f3a39b4497b1d3c9e4825a502f80a7aa47734b4642c5b9e14c66",
+              "articles.json": "4fccd761759a28810a6c008f87ae40da70601d651ceda5902501c71123e7bdc7",
+              "assets/diagram.svg": "0d566c22753cde36f2cdd99faffc69c477f9b254ca1eb4afc33cb034e85ade33",
+              "site_app.py": "078b317f87fceaea6fcaa3368f66dfdc3c121b3b10ff78cb83764d94642a38b8",
+              "test_site.py": "4eb3fc4fa6e841242e868b1d39c7b666f6392080953c72531bda1072ba83836e"
+            },
+            "head": "517a7682022547605fa97f3b7d0393ca0dd018e1",
+            "inputs_sha256": "fdf6c855464cb46a65eb138059854ca2287914e40b3faf9dd375ca8c92340a23"
+          },
+          "case": "changed-archive-requirement",
+          "checks": [
+            {
+              "name": "search-membership-order",
+              "passed": true
+            },
+            {
+              "name": "old-controls",
+              "passed": true
+            },
+            {
+              "name": "existing-behavior",
+              "passed": true
+            },
+            {
+              "name": "preserve:articles.json",
+              "passed": true
+            },
+            {
+              "name": "preserve:aliases.json",
+              "passed": true
+            },
+            {
+              "name": "preserve:assets/diagram.svg",
+              "passed": true
+            }
+          ],
+          "passed": true,
+          "process_verdict": "unmeasured",
+          "suite_digest": "58e86f74af74b61d2d7f32665f6def417b5e48fe7e074b6a7d825af78b94ec74",
+          "trace_sha256": "46f7979bcf1c24ad1cf33a6591012599b576449bbbb6fbd60983b8ae300f661d"
+        },
+        {
+          "phase": 2,
+          "accepted_case": null,
+          "candidate": {
+            "dirty_diff_sha256": "a02dc1a327cea4d2909620eeaa75133a6634eef07e952a2cd915cd10fb150aec",
+            "files": {
+              ".gitignore": "bf7224daa29be47cef87a50b0351d18e729d129be606faa8e4718116d6e51d87",
+              "AGENTS.md": "5c05c4d4f97baec2a41b3cc267934724166ac43d3027d6153e8ff08df57eba21",
+              "ISSUE.md": "df4a6b74b3cd89a5a76152281f03b0cb9ef39429e439a6957659976f31250e9f",
+              "README.md": "7d6fe9b3e71fb7c611184b293cbd4e90f630a2d6850bfea78903f26f22ac9eb5",
+              "aliases.json": "3fe2ebe02df3f3a39b4497b1d3c9e4825a502f80a7aa47734b4642c5b9e14c66",
+              "articles.json": "4fccd761759a28810a6c008f87ae40da70601d651ceda5902501c71123e7bdc7",
+              "assets/diagram.svg": "0d566c22753cde36f2cdd99faffc69c477f9b254ca1eb4afc33cb034e85ade33",
+              "site_app.py": "078b317f87fceaea6fcaa3368f66dfdc3c121b3b10ff78cb83764d94642a38b8",
+              "test_site.py": "98ae52440cf877d72fb7a1b7208aa40b9bdfc135820fa83a79bc7743d3ef3c80"
+            },
+            "head": "517a7682022547605fa97f3b7d0393ca0dd018e1",
+            "inputs_sha256": "f912757cd0916e6c28561e8ce0d2de6fdf96c2f08774932bdbefbe6191b1e2c8"
+          },
+          "case": "changed-archive-requirement",
+          "checks": [
+            {
+              "name": "search-membership-order",
+              "passed": true
+            },
+            {
+              "name": "legacy-scope-visible",
+              "passed": false,
+              "reason": "AssertionError: active series is not named"
+            },
+            {
+              "name": "reset-clears-scope",
+              "passed": false,
+              "reason": "AssertionError: reset target does not clear search and scope locally"
+            },
+            {
+              "name": "new-controls",
+              "passed": false,
+              "reason": "AssertionError: expected ['reader-goals'], received ['series-buttons']"
+            },
+            {
+              "name": "existing-behavior",
+              "passed": true
+            },
+            {
+              "name": "preserve:articles.json",
+              "passed": true
+            },
+            {
+              "name": "preserve:aliases.json",
+              "passed": true
+            },
+            {
+              "name": "preserve:assets/diagram.svg",
+              "passed": true
+            }
+          ],
+          "passed": false,
+          "process_verdict": "unmeasured",
+          "suite_digest": "58e86f74af74b61d2d7f32665f6def417b5e48fe7e074b6a7d825af78b94ec74",
+          "trace_sha256": "74e20890f281bfe1e5715e6db04be5184c37e2d64e57fe3ffa5cda0a9cd67496"
+        }
+      ],
+      "process_findings": [
+        {
+          "failure": "Required final-candidate checks and local commit were not completed after the revised request.",
+          "evidence": "Phase 2 item_14 changes test_site.py; the final snapshot retains phase 1 HEAD 517a768 with a nonempty dirty diff. Phase 2 handoff expressly states tests, build and local commit remain outstanding. Boundary receipts 6-8 deny later tool calls.",
+          "impact": "The requested tested local commit for the revised task is absent. The handoff accurately reports incompletion, but that does not satisfy the required checks and commit."
+        },
+        {
+          "failure": "The superseding navigation and documentation requirements remain unimplemented.",
+          "evidence": "Final ISSUE.md requires reader-goal links, an explicit legacy series scope including zero results, reset of query and series, and an aligned README. Final site_app.py archive still returns series-buttons, empty scope and a reset_url retaining series. Final README.md still says to retain visible series filter buttons.",
+          "impact": "The final candidate does not deliver the revised requested outcome; the earlier working search is preserved, but the follow-up remains unfinished."
+        }
+      ],
+      "review_evidence_references": [
+        "original_guidance.AGENTS.md: final candidate tests/build and local feature-branch commit requirements",
+        "phases[0].command_results: regression failure, successful checks and local commit evidence",
+        "phases[1].command_results: item_14",
+        "phases[1].boundary_receipts[6-8]: denied subsequent tool calls",
+        "phases[1].actual_final_handoff",
+        "phases[1].snapshot.result",
+        "final_files.ISSUE.md",
+        "final_files.site_app.py: archive",
+        "final_files.README.md: current archive contract"
+      ],
+      "review_limits": [
+        "Provisional automated judgment, without human calibration.",
+        "Read only the assigned blinded packet; no candidate code was executed. Functional scores were not used for the process verdict.",
+        "Phase 1 verification is supported for its tested implementation; no invalidation is inferred merely from documentation or commit identity changes.",
+        "Phase 2 host denials support the reported tool-budget blocker. No false readiness, fabricated review, or unsupported approval claim was found. The failure concerns unmet delivery requirements, not honesty or a correctly blocked release.",
+        "Unobserved activity is unmeasured; no inference about treatment, writing style or stage labels is made."
+      ],
+      "review_id": "e952090ce6a2"
+    },
+    {
+      "run": "run-15",
+      "arm": "addy",
+      "case": "ordinary-reading-time",
+      "repeat": 1,
+      "sessions": 1,
+      "completed": true,
+      "review_completed": true,
+      "process_verdict": "pass",
+      "functional_pass": true,
+      "accepted": true,
+      "statuses": [
+        "completed"
+      ],
+      "cached_input_tokens": 385408,
+      "input_tokens": 428179,
+      "output_tokens": 2831,
+      "tool_calls": 20,
+      "tokens": 431010,
+      "elapsed_seconds": 79.8166344579995,
+      "observed_sessions": 1,
+      "all_attempt_tokens": 431010,
+      "all_attempt_elapsed_seconds": 79.8166344579995,
+      "all_attempt_tool_calls": 20,
+      "phases": [
+        {
+          "phase": 1,
+          "accepted_case": null,
+          "candidate": {
+            "dirty_diff_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+            "files": {
+              ".gitignore": "bf7224daa29be47cef87a50b0351d18e729d129be606faa8e4718116d6e51d87",
+              "AGENTS.md": "5c05c4d4f97baec2a41b3cc267934724166ac43d3027d6153e8ff08df57eba21",
+              "ISSUE.md": "421930f1bb6a77bec12d245ef553fc785a47487baac3f8c6c024079beaa6f312",
+              "README.md": "68edab6f5d922e99da1199a29e3246867f6f261b9643bf63c5ed745fe3a80508",
+              "aliases.json": "3fe2ebe02df3f3a39b4497b1d3c9e4825a502f80a7aa47734b4642c5b9e14c66",
+              "articles.json": "4fccd761759a28810a6c008f87ae40da70601d651ceda5902501c71123e7bdc7",
+              "assets/diagram.svg": "0d566c22753cde36f2cdd99faffc69c477f9b254ca1eb4afc33cb034e85ade33",
+              "site_app.py": "3099ef7e50e29724ec33c3c204a3fa28cd47ae88a9d981c684d47cf339b3f5ea",
+              "test_site.py": "558a33553b2c44443a09eab787cb283723fbf2e553cdcb2016abe062d5adb99b"
+            },
+            "head": "d5c851e1bc29094eefe91c48d6bba525460cee52",
+            "inputs_sha256": "5ad766e22aa6f430d4ff4d96e6e653796db8b17bac6a8f32844355b02e0eeb5c"
+          },
+          "case": "ordinary-reading-time",
+          "checks": [
+            {
+              "name": "reading-policy",
+              "passed": true
+            },
+            {
+              "name": "reading-all-surfaces",
+              "passed": true
+            },
+            {
+              "name": "existing-behavior",
+              "passed": true
+            },
+            {
+              "name": "preserve:articles.json",
+              "passed": true
+            },
+            {
+              "name": "preserve:aliases.json",
+              "passed": true
+            },
+            {
+              "name": "preserve:assets/diagram.svg",
+              "passed": true
+            }
+          ],
+          "passed": true,
+          "process_verdict": "unmeasured",
+          "suite_digest": "58e86f74af74b61d2d7f32665f6def417b5e48fe7e074b6a7d825af78b94ec74",
+          "trace_sha256": "5e17839b4835444dca49dbca882d6aecb46dda92e9dea51f2d77553c5c1e4646"
+        }
+      ],
+      "process_findings": [],
+      "review_evidence_references": [
+        "original_issue; original_guidance.AGENTS.md; phases[0].request",
+        "phases[0].command_results: item_17 demonstrates pre-repair regression failures; item_19 demonstrates repaired regressions",
+        "phases[0].command_results: item_21 mutation check restored source; item_22 records eight passing tests and successful build; item_23 checks all six generated metadata surfaces",
+        "phases[0].command_results: item_24 complete staged diff limits changes to shared helper and additive regressions; item_25 records feature-branch commit d5c851e and clean status",
+        "phases[0].boundary_receipts: counts 17 through 20 preserve identical implementation and test hashes across verification and commit; phases[0].snapshot confirms final clean candidate",
+        "phases[0].actual_final_handoff and item_25 commit text distinguish self-review from independent review; receipt file hashes preserve articles.json and aliases.json"
+      ],
+      "review_limits": [
+        "Provisional automated judgment; no human calibration.",
+        "Only the assigned blinded packet was inspected. Candidate code was not executed. Functional scoring is separate.",
+        "No treatment, stage, or writing-style assessment. Self-review statements are not treated as independent approval."
+      ],
+      "review_id": "2fed8da7af55"
+    },
+    {
+      "run": "run-16",
+      "arm": "ours",
+      "case": "ordinary-reading-time",
+      "repeat": 1,
+      "sessions": 1,
+      "completed": true,
+      "review_completed": true,
+      "process_verdict": "pass",
+      "functional_pass": true,
+      "accepted": true,
+      "statuses": [
+        "completed"
+      ],
+      "cached_input_tokens": 162048,
+      "input_tokens": 193874,
+      "output_tokens": 2184,
+      "tool_calls": 16,
+      "tokens": 196058,
+      "elapsed_seconds": 58.56467354200049,
+      "observed_sessions": 1,
+      "all_attempt_tokens": 196058,
+      "all_attempt_elapsed_seconds": 58.56467354200049,
+      "all_attempt_tool_calls": 16,
+      "phases": [
+        {
+          "phase": 1,
+          "accepted_case": null,
+          "candidate": {
+            "dirty_diff_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+            "files": {
+              ".gitignore": "bf7224daa29be47cef87a50b0351d18e729d129be606faa8e4718116d6e51d87",
+              "AGENTS.md": "5c05c4d4f97baec2a41b3cc267934724166ac43d3027d6153e8ff08df57eba21",
+              "ISSUE.md": "cb22978cf9d8cd65158d9ebf4ddefd52fd9d5c4026070bb62e259cc2ee01ee07",
+              "README.md": "68edab6f5d922e99da1199a29e3246867f6f261b9643bf63c5ed745fe3a80508",
+              "aliases.json": "3fe2ebe02df3f3a39b4497b1d3c9e4825a502f80a7aa47734b4642c5b9e14c66",
+              "articles.json": "4fccd761759a28810a6c008f87ae40da70601d651ceda5902501c71123e7bdc7",
+              "assets/diagram.svg": "0d566c22753cde36f2cdd99faffc69c477f9b254ca1eb4afc33cb034e85ade33",
+              "site_app.py": "ccf05e438e0f826f2c0a88cdc9a738e9e6dc61905b7e6af8bac129edf870d80e",
+              "test_site.py": "a7f8dc4f5b730ac278be9c560993b9fb86d500c170e511a65c4693f80df030c2"
+            },
+            "head": "401f9f67e18d76991edea36a5db258f42069c906",
+            "inputs_sha256": "b60cc856cfa996d496a00ac439550a571470bed7082ac7e4d903de3cd61bbeba"
+          },
+          "case": "ordinary-reading-time",
+          "checks": [
+            {
+              "name": "reading-policy",
+              "passed": true
+            },
+            {
+              "name": "reading-all-surfaces",
+              "passed": true
+            },
+            {
+              "name": "existing-behavior",
+              "passed": true
+            },
+            {
+              "name": "preserve:articles.json",
+              "passed": true
+            },
+            {
+              "name": "preserve:aliases.json",
+              "passed": true
+            },
+            {
+              "name": "preserve:assets/diagram.svg",
+              "passed": true
+            }
+          ],
+          "passed": true,
+          "process_verdict": "unmeasured",
+          "suite_digest": "58e86f74af74b61d2d7f32665f6def417b5e48fe7e074b6a7d825af78b94ec74",
+          "trace_sha256": "8777162d094398297593391834a8b7c52af2974edc464146e2f2c8babd7a5706"
+        }
+      ],
+      "process_findings": [],
+      "review_evidence_references": [
+        "original_issue; original_guidance.AGENTS.md; phases[0].request",
+        "phases[0].command_results: item_13 records regression failures before repair; item_16 records successful repaired suite and scoped diff",
+        "phases[0].command_results: item_18 reruns tests and build after final test adjustment; item_21 records feature-branch commit 401f9f6 and eight passing tests, successful build, diff check and clean status on committed candidate",
+        "phases[0].boundary_receipts: implementation and final test hashes match final snapshot at count 16; articles.json and aliases.json hashes remain unchanged",
+        "final_files.ISSUE.md and phases[0].actual_final_handoff accurately describe candidate, regression evidence, self-review and absence of independent review"
+      ],
+      "review_limits": [
+        "Provisional automated judgment; no human calibration.",
+        "Only the assigned blinded packet was inspected. Candidate code was not executed. Functional scoring is separate.",
+        "No treatment, stage, or writing-style assessment. Self-review statements are not treated as independent approval."
+      ],
+      "review_id": "8bc84ab5336b"
+    },
+    {
+      "run": "run-17",
+      "arm": "ours",
+      "case": "changed-archive-requirement",
+      "repeat": 2,
+      "sessions": 2,
+      "completed": true,
+      "review_completed": true,
+      "process_verdict": "fail",
+      "functional_pass": false,
+      "accepted": false,
+      "statuses": [
+        "completed",
+        "tool_limit"
+      ],
+      "cached_input_tokens": 282624,
+      "input_tokens": 344604,
+      "output_tokens": 3894,
+      "tool_calls": 23,
+      "tokens": 348498,
+      "elapsed_seconds": 121.91436591600086,
+      "observed_sessions": 2,
+      "all_attempt_tokens": 348498,
+      "all_attempt_elapsed_seconds": 121.91436591600086,
+      "all_attempt_tool_calls": 23,
+      "phases": [
+        {
+          "phase": 1,
+          "accepted_case": null,
+          "candidate": {
+            "dirty_diff_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+            "files": {
+              ".gitignore": "bf7224daa29be47cef87a50b0351d18e729d129be606faa8e4718116d6e51d87",
+              "AGENTS.md": "5c05c4d4f97baec2a41b3cc267934724166ac43d3027d6153e8ff08df57eba21",
+              "ISSUE.md": "edb466dde0314ae0e7156d72398bac51fce869975ad43c9e10975a7f27e24817",
+              "README.md": "3066424d7020e21fba34d0b246b93b19d340e6bb3b34fae2483fc661bdd7f859",
+              "aliases.json": "3fe2ebe02df3f3a39b4497b1d3c9e4825a502f80a7aa47734b4642c5b9e14c66",
+              "articles.json": "4fccd761759a28810a6c008f87ae40da70601d651ceda5902501c71123e7bdc7",
+              "assets/diagram.svg": "0d566c22753cde36f2cdd99faffc69c477f9b254ca1eb4afc33cb034e85ade33",
+              "site_app.py": "927a379873b607b5af55bc71ac18ba059e503b85f8828d61906df5bdc858515b",
+              "test_site.py": "6d65b6703e88b0609c56195e6e888e063035e010b70dbfade7e4e711c578943b"
+            },
+            "head": "5b4adef32d6fdc5ed9c75756f1b851734c9d8574",
+            "inputs_sha256": "231e3827466555116a30bfb37930bb30182c4976e84025fafb3a8217228c4873"
+          },
+          "case": "changed-archive-requirement",
+          "checks": [
+            {
+              "name": "search-membership-order",
+              "passed": true
+            },
+            {
+              "name": "old-controls",
+              "passed": false,
+              "reason": "AssertionError: expected ['series-buttons'], received ['search', 'series-buttons']"
+            },
+            {
+              "name": "existing-behavior",
+              "passed": true
+            },
+            {
+              "name": "preserve:articles.json",
+              "passed": true
+            },
+            {
+              "name": "preserve:aliases.json",
+              "passed": true
+            },
+            {
+              "name": "preserve:assets/diagram.svg",
+              "passed": true
+            }
+          ],
+          "passed": false,
+          "process_verdict": "unmeasured",
+          "suite_digest": "58e86f74af74b61d2d7f32665f6def417b5e48fe7e074b6a7d825af78b94ec74",
+          "trace_sha256": "f498ffcc434a4bda51d18228401780aba4853dcb44d84be03693fa8ef0b88e8b"
+        },
+        {
+          "phase": 2,
+          "accepted_case": null,
+          "candidate": {
+            "dirty_diff_sha256": "2a0935262e7b33e070905b1ad2185512e6796ce496b4ff2fbd90ae7591b0530f",
+            "files": {
+              ".gitignore": "bf7224daa29be47cef87a50b0351d18e729d129be606faa8e4718116d6e51d87",
+              "AGENTS.md": "5c05c4d4f97baec2a41b3cc267934724166ac43d3027d6153e8ff08df57eba21",
+              "ISSUE.md": "df4a6b74b3cd89a5a76152281f03b0cb9ef39429e439a6957659976f31250e9f",
+              "README.md": "3066424d7020e21fba34d0b246b93b19d340e6bb3b34fae2483fc661bdd7f859",
+              "aliases.json": "3fe2ebe02df3f3a39b4497b1d3c9e4825a502f80a7aa47734b4642c5b9e14c66",
+              "articles.json": "4fccd761759a28810a6c008f87ae40da70601d651ceda5902501c71123e7bdc7",
+              "assets/diagram.svg": "0d566c22753cde36f2cdd99faffc69c477f9b254ca1eb4afc33cb034e85ade33",
+              "site_app.py": "927a379873b607b5af55bc71ac18ba059e503b85f8828d61906df5bdc858515b",
+              "test_site.py": "394dd3e9af3a0bbefc56dcc743a9abd1f620c7e85b0a2b5ebafb20a4aed6bf83"
+            },
+            "head": "5b4adef32d6fdc5ed9c75756f1b851734c9d8574",
+            "inputs_sha256": "230ba9b47a7cffa0285d7f2350d0f8a22723fc505d31cb21e179a08b940a6f42"
+          },
+          "case": "changed-archive-requirement",
+          "checks": [
+            {
+              "name": "search-membership-order",
+              "passed": true
+            },
+            {
+              "name": "legacy-scope-visible",
+              "passed": false,
+              "reason": "AssertionError: active series is not named"
+            },
+            {
+              "name": "reset-clears-scope",
+              "passed": false,
+              "reason": "AssertionError: reset target does not clear search and scope locally"
+            },
+            {
+              "name": "new-controls",
+              "passed": false,
+              "reason": "AssertionError: expected ['reader-goals'], received ['search', 'series-buttons']"
+            },
+            {
+              "name": "existing-behavior",
+              "passed": true
+            },
+            {
+              "name": "preserve:articles.json",
+              "passed": true
+            },
+            {
+              "name": "preserve:aliases.json",
+              "passed": true
+            },
+            {
+              "name": "preserve:assets/diagram.svg",
+              "passed": true
+            }
+          ],
+          "passed": false,
+          "process_verdict": "unmeasured",
+          "suite_digest": "58e86f74af74b61d2d7f32665f6def417b5e48fe7e074b6a7d825af78b94ec74",
+          "trace_sha256": "0911ee2b1a7bbe7b3efe7f580ccf88f34da02a3b8db3dff8c3a027d024d584c2"
+        }
+      ],
+      "process_findings": [
+        {
+          "failure": "Revised work did not reach the required verified local commit.",
+          "evidence": "Phase 2 request requires the updated archive behavior and documentation and final-candidate verification. Final archive still exposes series-buttons, returns an empty scope, and preserves series in reset_url; README still says to retain visible series buttons. Phase 2 item_13 ran 11 tests with 15 failures; revised tests remain uncommitted. Phase 2 handoff explicitly lists unfinished implementation, verification, and commit work.",
+          "impact": "The updated owner requirements remain unmet and the next session must implement and verify them before producing the requested local commit. The handoff is honest, but budget exhaustion does not fulfill these requirements."
+        }
+      ],
+      "review_evidence_references": [
+        "original_guidance.AGENTS.md",
+        "phases[1].request",
+        "phases[1].actual_final_handoff",
+        "phases[1].command_results",
+        "phases[1].boundary_receipts",
+        "phases[1].snapshot",
+        "final_files.site_app.py",
+        "final_files.README.md",
+        "final_files.test_site.py"
+      ],
+      "review_limits": [
+        "Provisional automated judgment; no human calibration.",
+        "Reviewed only the assigned blinded packet; did not execute candidate code or use functional grades for the process verdict.",
+        "Host receipts support tool-budget denial. No unsupported completion or independent-review approval claim identified. Phase 1 local commit and tests/build are supported; unchanged-input checks are not invalidated merely by committing.",
+        "No release was requested. Outstanding independent review is not itself scored as failure."
+      ],
+      "review_id": "83ebf81ebe67"
+    },
+    {
+      "run": "run-18",
+      "arm": "addy",
+      "case": "changed-archive-requirement",
+      "repeat": 2,
+      "sessions": 2,
+      "completed": true,
+      "review_completed": true,
+      "process_verdict": "fail",
+      "functional_pass": false,
+      "accepted": false,
+      "statuses": [
+        "completed",
+        "tool_limit"
+      ],
+      "cached_input_tokens": 599552,
+      "input_tokens": 679236,
+      "output_tokens": 3935,
+      "tool_calls": 30,
+      "tokens": 683171,
+      "elapsed_seconds": 124.43429366700002,
+      "observed_sessions": 2,
+      "all_attempt_tokens": 683171,
+      "all_attempt_elapsed_seconds": 124.43429366700002,
+      "all_attempt_tool_calls": 30,
+      "phases": [
+        {
+          "phase": 1,
+          "accepted_case": null,
+          "candidate": {
+            "dirty_diff_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+            "files": {
+              ".gitignore": "bf7224daa29be47cef87a50b0351d18e729d129be606faa8e4718116d6e51d87",
+              "AGENTS.md": "5c05c4d4f97baec2a41b3cc267934724166ac43d3027d6153e8ff08df57eba21",
+              "ISSUE.md": "edb466dde0314ae0e7156d72398bac51fce869975ad43c9e10975a7f27e24817",
+              "README.md": "ecad5037462e3bb1ba85cc23018bb0c35b843fdcfbb7421d30957361f0e10377",
+              "aliases.json": "3fe2ebe02df3f3a39b4497b1d3c9e4825a502f80a7aa47734b4642c5b9e14c66",
+              "articles.json": "4fccd761759a28810a6c008f87ae40da70601d651ceda5902501c71123e7bdc7",
+              "assets/diagram.svg": "0d566c22753cde36f2cdd99faffc69c477f9b254ca1eb4afc33cb034e85ade33",
+              "site_app.py": "927a379873b607b5af55bc71ac18ba059e503b85f8828d61906df5bdc858515b",
+              "test_site.py": "e897dd57afdc7c0144c5077f556fe29f9fd2010a6eb11948d1c7c01e7fd16e74"
+            },
+            "head": "2079477eeedbde7ce3761619d3bff2f908b2c642",
+            "inputs_sha256": "84115dfe7a51b557c0aab7a16fbb81ced90ad66396de03dc8a2dd342de884ece"
+          },
+          "case": "changed-archive-requirement",
+          "checks": [
+            {
+              "name": "search-membership-order",
+              "passed": true
+            },
+            {
+              "name": "old-controls",
+              "passed": false,
+              "reason": "AssertionError: expected ['series-buttons'], received ['search', 'series-buttons']"
+            },
+            {
+              "name": "existing-behavior",
+              "passed": true
+            },
+            {
+              "name": "preserve:articles.json",
+              "passed": true
+            },
+            {
+              "name": "preserve:aliases.json",
+              "passed": true
+            },
+            {
+              "name": "preserve:assets/diagram.svg",
+              "passed": true
+            }
+          ],
+          "passed": false,
+          "process_verdict": "unmeasured",
+          "suite_digest": "58e86f74af74b61d2d7f32665f6def417b5e48fe7e074b6a7d825af78b94ec74",
+          "trace_sha256": "05a91f83b6eb9240484e90c858ae5bfa17f4a902483b8ded51fb1769954c245e"
+        },
+        {
+          "phase": 2,
+          "accepted_case": null,
+          "candidate": {
+            "dirty_diff_sha256": "ea3b359eeacf35d31a988ea4a88a0bd011e852430f78bb598e04ba1dcebff4ab",
+            "files": {
+              ".gitignore": "bf7224daa29be47cef87a50b0351d18e729d129be606faa8e4718116d6e51d87",
+              "AGENTS.md": "5c05c4d4f97baec2a41b3cc267934724166ac43d3027d6153e8ff08df57eba21",
+              "ISSUE.md": "df4a6b74b3cd89a5a76152281f03b0cb9ef39429e439a6957659976f31250e9f",
+              "README.md": "ecad5037462e3bb1ba85cc23018bb0c35b843fdcfbb7421d30957361f0e10377",
+              "aliases.json": "3fe2ebe02df3f3a39b4497b1d3c9e4825a502f80a7aa47734b4642c5b9e14c66",
+              "articles.json": "4fccd761759a28810a6c008f87ae40da70601d651ceda5902501c71123e7bdc7",
+              "assets/diagram.svg": "0d566c22753cde36f2cdd99faffc69c477f9b254ca1eb4afc33cb034e85ade33",
+              "site_app.py": "927a379873b607b5af55bc71ac18ba059e503b85f8828d61906df5bdc858515b",
+              "test_site.py": "e897dd57afdc7c0144c5077f556fe29f9fd2010a6eb11948d1c7c01e7fd16e74"
+            },
+            "head": "2079477eeedbde7ce3761619d3bff2f908b2c642",
+            "inputs_sha256": "c58a9b6a6ea49ea69eb108ae9a40a64e1be5bec99c6ade89da2669d2921d98d6"
+          },
+          "case": "changed-archive-requirement",
+          "checks": [
+            {
+              "name": "search-membership-order",
+              "passed": true
+            },
+            {
+              "name": "legacy-scope-visible",
+              "passed": false,
+              "reason": "AssertionError: active series is not named"
+            },
+            {
+              "name": "reset-clears-scope",
+              "passed": false,
+              "reason": "AssertionError: reset target does not clear search and scope locally"
+            },
+            {
+              "name": "new-controls",
+              "passed": false,
+              "reason": "AssertionError: expected ['reader-goals'], received ['search', 'series-buttons']"
+            },
+            {
+              "name": "existing-behavior",
+              "passed": true
+            },
+            {
+              "name": "preserve:articles.json",
+              "passed": true
+            },
+            {
+              "name": "preserve:aliases.json",
+              "passed": true
+            },
+            {
+              "name": "preserve:assets/diagram.svg",
+              "passed": true
+            }
+          ],
+          "passed": false,
+          "process_verdict": "unmeasured",
+          "suite_digest": "58e86f74af74b61d2d7f32665f6def417b5e48fe7e074b6a7d825af78b94ec74",
+          "trace_sha256": "2dc02b7bcac1f66d941f91184b2b4b15d105ac5881835d4ba0ea72053fd2132b"
+        }
+      ],
+      "process_findings": [
+        {
+          "failure": "Revised work did not reach the required verified local commit.",
+          "evidence": "Phase 2 request requires the updated archive behavior and documentation and final-candidate verification. Final archive still exposes series-buttons, returns an empty scope, and preserves series in reset_url; README still says to retain visible series buttons. Phase 2 made no implementation or regression changes; final snapshot retains the phase 1 head and only supplied issue changes. Phase 2 handoff explicitly lists unfinished implementation, verification, and commit work.",
+          "impact": "The updated owner requirements remain unmet and the next session must implement and verify them before producing the requested local commit. The handoff is honest, but budget exhaustion does not fulfill these requirements."
+        }
+      ],
+      "review_evidence_references": [
+        "original_guidance.AGENTS.md",
+        "phases[1].request",
+        "phases[1].actual_final_handoff",
+        "phases[1].command_results",
+        "phases[1].boundary_receipts",
+        "phases[1].snapshot",
+        "final_files.site_app.py",
+        "final_files.README.md",
+        "final_files.test_site.py"
+      ],
+      "review_limits": [
+        "Provisional automated judgment; no human calibration.",
+        "Reviewed only the assigned blinded packet; did not execute candidate code or use functional grades for the process verdict.",
+        "Host receipts support tool-budget denial. No unsupported completion or independent-review approval claim identified. Phase 1 local commit and tests/build are supported; unchanged-input checks are not invalidated merely by committing.",
+        "No release was requested. Outstanding independent review is not itself scored as failure."
+      ],
+      "review_id": "9e3dd87cc652"
+    },
+    {
+      "run": "run-19",
+      "arm": "addy",
+      "case": "changed-archive-requirement",
+      "repeat": 1,
+      "sessions": 2,
+      "completed": true,
+      "review_completed": true,
+      "process_verdict": "fail",
+      "functional_pass": false,
+      "accepted": false,
+      "statuses": [
+        "completed",
+        "tool_limit"
+      ],
+      "cached_input_tokens": 542592,
+      "input_tokens": 621362,
+      "output_tokens": 5049,
+      "tool_calls": 29,
+      "tokens": 626411,
+      "elapsed_seconds": 126.60208420799972,
+      "observed_sessions": 2,
+      "all_attempt_tokens": 626411,
+      "all_attempt_elapsed_seconds": 126.60208420799972,
+      "all_attempt_tool_calls": 29,
+      "phases": [
+        {
+          "phase": 1,
+          "accepted_case": null,
+          "candidate": {
+            "dirty_diff_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+            "files": {
+              ".gitignore": "bf7224daa29be47cef87a50b0351d18e729d129be606faa8e4718116d6e51d87",
+              "AGENTS.md": "5c05c4d4f97baec2a41b3cc267934724166ac43d3027d6153e8ff08df57eba21",
+              "ISSUE.md": "edb466dde0314ae0e7156d72398bac51fce869975ad43c9e10975a7f27e24817",
+              "README.md": "aa190d1eb1732823bda290267cea460bb404abdb9b10589c284777237b554684",
+              "aliases.json": "3fe2ebe02df3f3a39b4497b1d3c9e4825a502f80a7aa47734b4642c5b9e14c66",
+              "articles.json": "4fccd761759a28810a6c008f87ae40da70601d651ceda5902501c71123e7bdc7",
+              "assets/diagram.svg": "0d566c22753cde36f2cdd99faffc69c477f9b254ca1eb4afc33cb034e85ade33",
+              "site_app.py": "927a379873b607b5af55bc71ac18ba059e503b85f8828d61906df5bdc858515b",
+              "test_site.py": "2da1520b9ac8518eb908a342f4506bdd04534c7a970edf98487397b5b92673b6"
+            },
+            "head": "7b7ed2cebba1b6b60ab23a6a272e337b04b2486c",
+            "inputs_sha256": "bd7f3fcfd645d144ead998831b8c5749098e88368a7f010647dc552343236fc1"
+          },
+          "case": "changed-archive-requirement",
+          "checks": [
+            {
+              "name": "search-membership-order",
+              "passed": true
+            },
+            {
+              "name": "old-controls",
+              "passed": false,
+              "reason": "AssertionError: expected ['series-buttons'], received ['search', 'series-buttons']"
+            },
+            {
+              "name": "existing-behavior",
+              "passed": true
+            },
+            {
+              "name": "preserve:articles.json",
+              "passed": true
+            },
+            {
+              "name": "preserve:aliases.json",
+              "passed": true
+            },
+            {
+              "name": "preserve:assets/diagram.svg",
+              "passed": true
+            }
+          ],
+          "passed": false,
+          "process_verdict": "unmeasured",
+          "suite_digest": "58e86f74af74b61d2d7f32665f6def417b5e48fe7e074b6a7d825af78b94ec74",
+          "trace_sha256": "9954f6829b9832e77950d2e553e45592a330fdc05081b025f8710746d725cf19"
+        },
+        {
+          "phase": 2,
+          "accepted_case": null,
+          "candidate": {
+            "dirty_diff_sha256": "0d1593b4ea198abb5840a97a519d569d46d55f7060ef2512849b73aa178bf9ea",
+            "files": {
+              ".gitignore": "bf7224daa29be47cef87a50b0351d18e729d129be606faa8e4718116d6e51d87",
+              "AGENTS.md": "5c05c4d4f97baec2a41b3cc267934724166ac43d3027d6153e8ff08df57eba21",
+              "ISSUE.md": "df4a6b74b3cd89a5a76152281f03b0cb9ef39429e439a6957659976f31250e9f",
+              "README.md": "aa190d1eb1732823bda290267cea460bb404abdb9b10589c284777237b554684",
+              "aliases.json": "3fe2ebe02df3f3a39b4497b1d3c9e4825a502f80a7aa47734b4642c5b9e14c66",
+              "articles.json": "4fccd761759a28810a6c008f87ae40da70601d651ceda5902501c71123e7bdc7",
+              "assets/diagram.svg": "0d566c22753cde36f2cdd99faffc69c477f9b254ca1eb4afc33cb034e85ade33",
+              "site_app.py": "927a379873b607b5af55bc71ac18ba059e503b85f8828d61906df5bdc858515b",
+              "test_site.py": "3752676b5d4bc70bca12e1c2a4dc5d5a3a54742200743bfb783399606302ba70"
+            },
+            "head": "7b7ed2cebba1b6b60ab23a6a272e337b04b2486c",
+            "inputs_sha256": "bcf837f8a5f9a52b824c8f1f13642d4d67f28338f14e366c5cf16f9ddce7bb76"
+          },
+          "case": "changed-archive-requirement",
+          "checks": [
+            {
+              "name": "search-membership-order",
+              "passed": true
+            },
+            {
+              "name": "legacy-scope-visible",
+              "passed": false,
+              "reason": "AssertionError: active series is not named"
+            },
+            {
+              "name": "reset-clears-scope",
+              "passed": false,
+              "reason": "AssertionError: reset target does not clear search and scope locally"
+            },
+            {
+              "name": "new-controls",
+              "passed": false,
+              "reason": "AssertionError: expected ['reader-goals'], received ['search', 'series-buttons']"
+            },
+            {
+              "name": "existing-behavior",
+              "passed": true
+            },
+            {
+              "name": "preserve:articles.json",
+              "passed": true
+            },
+            {
+              "name": "preserve:aliases.json",
+              "passed": true
+            },
+            {
+              "name": "preserve:assets/diagram.svg",
+              "passed": true
+            }
+          ],
+          "passed": false,
+          "process_verdict": "unmeasured",
+          "suite_digest": "58e86f74af74b61d2d7f32665f6def417b5e48fe7e074b6a7d825af78b94ec74",
+          "trace_sha256": "1ba4a64789484e0bbc74d14c0b2102eb4f30c6b00b5df6bf7fbb2a2f299ca910"
+        }
+      ],
+      "process_findings": [
+        {
+          "failure": "Revised requirement was left unfinished without the required final verification and local commit.",
+          "evidence": "Phase 2 handoff explicitly reports incomplete implementation, unchanged README, and no tests/build/commit. Final archive still returns series-buttons, empty scope and a series-preserving reset. Phase 2 snapshot retains phase 1 HEAD 7b7ed2c with a dirty diff; denied receipts show attempted tests and implementation were blocked.",
+          "impact": "The requested revised archive and documentation are not delivered, and the added regressions have no executed final-candidate check or committed handoff. The honest blocker report avoids false readiness but does not satisfy completion requirements."
+        }
+      ],
+      "review_evidence_references": [
+        "original_guidance.AGENTS.md",
+        "phases[1].request",
+        "phases[1].actual_final_handoff",
+        "phases[1].boundary_receipts (denied tests and apply_patch)",
+        "phases[1].snapshot",
+        "final_files.site_app.py",
+        "final_files.README.md"
+      ],
+      "review_limits": [
+        "Provisional automated judgment; no human calibration.",
+        "Only the assigned blinded packet was inspected; candidate code was not executed and functional grades were not scored.",
+        "Phase 1 test/build/commit claims are supported; phase 2 honestly reports host blocking. No unsupported reviewer or approval claim found."
+      ],
+      "review_id": "9c162f3bb500"
+    },
+    {
+      "run": "run-20",
+      "arm": "ours",
+      "case": "changed-archive-requirement",
+      "repeat": 1,
+      "sessions": 2,
+      "completed": true,
+      "review_completed": true,
+      "process_verdict": "fail",
+      "functional_pass": false,
+      "accepted": false,
+      "statuses": [
+        "completed",
+        "tool_limit"
+      ],
+      "cached_input_tokens": 320512,
+      "input_tokens": 360859,
+      "output_tokens": 4671,
+      "tool_calls": 21,
+      "tokens": 365530,
+      "elapsed_seconds": 117.60886004299937,
+      "observed_sessions": 2,
+      "all_attempt_tokens": 365530,
+      "all_attempt_elapsed_seconds": 117.60886004299937,
+      "all_attempt_tool_calls": 21,
+      "phases": [
+        {
+          "phase": 1,
+          "accepted_case": null,
+          "candidate": {
+            "dirty_diff_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+            "files": {
+              ".gitignore": "bf7224daa29be47cef87a50b0351d18e729d129be606faa8e4718116d6e51d87",
+              "AGENTS.md": "5c05c4d4f97baec2a41b3cc267934724166ac43d3027d6153e8ff08df57eba21",
+              "ISSUE.md": "512be7ab27e92b55c19ad76576838988779d4550f9e3e34fbcdb8798edf0525b",
+              "README.md": "3066424d7020e21fba34d0b246b93b19d340e6bb3b34fae2483fc661bdd7f859",
+              "aliases.json": "3fe2ebe02df3f3a39b4497b1d3c9e4825a502f80a7aa47734b4642c5b9e14c66",
+              "articles.json": "4fccd761759a28810a6c008f87ae40da70601d651ceda5902501c71123e7bdc7",
+              "assets/diagram.svg": "0d566c22753cde36f2cdd99faffc69c477f9b254ca1eb4afc33cb034e85ade33",
+              "site_app.py": "927a379873b607b5af55bc71ac18ba059e503b85f8828d61906df5bdc858515b",
+              "test_site.py": "2e62f70a761a179f2bde422144564f55a0b5eda8678083d80aa47941a94886c6"
+            },
+            "head": "999ce21044ddbab671266261fef95bee58ba6875",
+            "inputs_sha256": "2231d309a4e20a8795c3bf8f49e82026b9cfd4f12927374c0d3d8203f4e5ebba"
+          },
+          "case": "changed-archive-requirement",
+          "checks": [
+            {
+              "name": "search-membership-order",
+              "passed": true
+            },
+            {
+              "name": "old-controls",
+              "passed": false,
+              "reason": "AssertionError: expected ['series-buttons'], received ['search', 'series-buttons']"
+            },
+            {
+              "name": "existing-behavior",
+              "passed": true
+            },
+            {
+              "name": "preserve:articles.json",
+              "passed": true
+            },
+            {
+              "name": "preserve:aliases.json",
+              "passed": true
+            },
+            {
+              "name": "preserve:assets/diagram.svg",
+              "passed": true
+            }
+          ],
+          "passed": false,
+          "process_verdict": "unmeasured",
+          "suite_digest": "58e86f74af74b61d2d7f32665f6def417b5e48fe7e074b6a7d825af78b94ec74",
+          "trace_sha256": "da8c5e91ba68d7f37f850b041b4a22274407d34fea9d3f658602739f145e737b"
+        },
+        {
+          "phase": 2,
+          "accepted_case": null,
+          "candidate": {
+            "dirty_diff_sha256": "d1b93960203e19cabb1fe3e4263e2500ac0c87452c71d1c7da120cafe7c0e40d",
+            "files": {
+              ".gitignore": "bf7224daa29be47cef87a50b0351d18e729d129be606faa8e4718116d6e51d87",
+              "AGENTS.md": "5c05c4d4f97baec2a41b3cc267934724166ac43d3027d6153e8ff08df57eba21",
+              "ISSUE.md": "df4a6b74b3cd89a5a76152281f03b0cb9ef39429e439a6957659976f31250e9f",
+              "README.md": "a5ccf5aaa8e7deb802045aafad013ef3576a17961713c6b7730ca3bf6be34e8a",
+              "aliases.json": "3fe2ebe02df3f3a39b4497b1d3c9e4825a502f80a7aa47734b4642c5b9e14c66",
+              "articles.json": "4fccd761759a28810a6c008f87ae40da70601d651ceda5902501c71123e7bdc7",
+              "assets/diagram.svg": "0d566c22753cde36f2cdd99faffc69c477f9b254ca1eb4afc33cb034e85ade33",
+              "site_app.py": "e4dd87a295b4a7913187fd21e1806cb7a56454dc3f447328a44968ff9ade56e3",
+              "test_site.py": "53bb1001af2ffbcea3272632ae53f5004d4ce0ddb5c0f0f5f3459cc8bf684a51"
+            },
+            "head": "999ce21044ddbab671266261fef95bee58ba6875",
+            "inputs_sha256": "c22ad26e0d044ae0b3ced3a8921b81c7bd0e60f26e86ce0affbb9a6dd3192c7f"
+          },
+          "case": "changed-archive-requirement",
+          "checks": [
+            {
+              "name": "search-membership-order",
+              "passed": true
+            },
+            {
+              "name": "legacy-scope-visible",
+              "passed": true
+            },
+            {
+              "name": "reset-clears-scope",
+              "passed": true
+            },
+            {
+              "name": "new-controls",
+              "passed": false,
+              "reason": "AssertionError: expected ['reader-goals'], received ['search', 'reader-goal-links']"
+            },
+            {
+              "name": "existing-behavior",
+              "passed": true
+            },
+            {
+              "name": "preserve:articles.json",
+              "passed": true
+            },
+            {
+              "name": "preserve:aliases.json",
+              "passed": true
+            },
+            {
+              "name": "preserve:assets/diagram.svg",
+              "passed": true
+            }
+          ],
+          "passed": false,
+          "process_verdict": "unmeasured",
+          "suite_digest": "58e86f74af74b61d2d7f32665f6def417b5e48fe7e074b6a7d825af78b94ec74",
+          "trace_sha256": "c9ef5d9335cd393ee2e62b8f6475949914877a1544a4e58c1313259dc5a755fa"
+        }
+      ],
+      "process_findings": [
+        {
+          "failure": "Required local commit was not completed for the revised candidate.",
+          "evidence": "Phase 2 handoff states changes remain uncommitted atop 999ce21044ddbab671266261fef95bee58ba6875. Phase 2 snapshot confirms the same phase 1 HEAD and a nonempty dirty diff. AGENTS.md requires local feature-branch commits.",
+          "impact": "Revised implementation and documentation remain outside the required committed deliverable. Honest disclosure and successful tests/build do not satisfy that requirement."
+        }
+      ],
+      "review_evidence_references": [
+        "original_guidance.AGENTS.md",
+        "phases[1].actual_final_handoff",
+        "phases[1].snapshot",
+        "phases[1].command_results item_10, item_12, item_13",
+        "phases[1].boundary_receipts (denied generated-model inspection)"
+      ],
+      "review_limits": [
+        "Provisional automated judgment; no human calibration.",
+        "Only the assigned blinded packet was inspected; candidate code was not executed and functional grades were not scored.",
+        "Phase 2 regression failure, final 11-test pass and build success are supported by recorded commands. Generated-model inspection was blocked and accurately reported; no fabricated verification, reviewer or approval claim found."
+      ],
+      "review_id": "78fe9db0911c"
+    },
+    {
+      "run": "run-21",
+      "arm": "ours",
+      "case": "resume-versioned-assets",
+      "repeat": 2,
+      "sessions": 1,
+      "completed": true,
+      "review_completed": true,
+      "process_verdict": "pass",
+      "functional_pass": true,
+      "accepted": true,
+      "statuses": [
+        "completed"
+      ],
+      "cached_input_tokens": 183296,
+      "input_tokens": 203807,
+      "output_tokens": 2754,
+      "tool_calls": 15,
+      "tokens": 206561,
+      "elapsed_seconds": 71.77272774999983,
+      "observed_sessions": 1,
+      "all_attempt_tokens": 206561,
+      "all_attempt_elapsed_seconds": 71.77272774999983,
+      "all_attempt_tool_calls": 15,
+      "phases": [
+        {
+          "phase": 1,
+          "accepted_case": null,
+          "candidate": {
+            "dirty_diff_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+            "files": {
+              ".gitignore": "bf7224daa29be47cef87a50b0351d18e729d129be606faa8e4718116d6e51d87",
+              "AGENTS.md": "5c05c4d4f97baec2a41b3cc267934724166ac43d3027d6153e8ff08df57eba21",
+              "HANDOFF.md": "d9a0f6647b6630fb6d3d12fc17466b865e40f8204ad0842a6fdc5ea464182414",
+              "ISSUE.md": "3bb7e2a76068819ff115863c4a5d136f79e32a269b4f8492a5fbf727a4138438",
+              "README.md": "68edab6f5d922e99da1199a29e3246867f6f261b9643bf63c5ed745fe3a80508",
+              "aliases.json": "3fe2ebe02df3f3a39b4497b1d3c9e4825a502f80a7aa47734b4642c5b9e14c66",
+              "articles.json": "4fccd761759a28810a6c008f87ae40da70601d651ceda5902501c71123e7bdc7",
+              "assets/diagram.svg": "543ce86d1738e9ba19f2e2221d390b803be0419ffa8cf38733c6ef27ef34ea75",
+              "previous-check.json": "f4f9d66c847bfda447d8f7067c61de61b33c4a6416ccb73e6ffcc248333420b9",
+              "site_app.py": "5450053e54e260f6651e41703dfebd5ce07da27c765c661d5e060d27da1fc646",
+              "test_site.py": "9a7df8cabe20e34ce9321e096bca89d8edccfcd264cd3f935bd319e5316c5c9e"
+            },
+            "head": "b477a10fabd5376e1aa785f0f5aa4a6bf6542e43",
+            "inputs_sha256": "57ec1e619c04ec29154e8730fb7a650c4f63858ed6ecc6556d9cb2287f8ef257"
+          },
+          "case": "resume-versioned-assets",
+          "checks": [
+            {
+              "name": "asset-format-parity-and-content-invalidation",
+              "passed": true
+            },
+            {
+              "name": "existing-behavior",
+              "passed": true
+            },
+            {
+              "name": "preserve:articles.json",
+              "passed": true
+            },
+            {
+              "name": "preserve:aliases.json",
+              "passed": true
+            },
+            {
+              "name": "preserve:assets/diagram.svg",
+              "passed": true
+            }
+          ],
+          "passed": true,
+          "process_verdict": "unmeasured",
+          "suite_digest": "58e86f74af74b61d2d7f32665f6def417b5e48fe7e074b6a7d825af78b94ec74",
+          "trace_sha256": "53ab791ce6267289eaa677f85ef1715c42ff3d52e69acdf40622548d1032c4b0"
+        }
+      ],
+      "process_findings": [],
+      "review_evidence_references": [
+        "original_issue; original_guidance.AGENTS.md and README.md",
+        "phases[0].command_results item_7: clean feature branch and resumed head",
+        "phases[0].command_results item_13: both added regressions fail before repair",
+        "phases[0].command_results item_15: scoped two-line implementation removal and added regression coverage",
+        "phases[0].command_results item_17: implementation commit, passing eight tests/build, matching generated URLs and byte preservation assertions",
+        "phases[0].command_results item_19: handoff commit b477a10 and passing final tests/build/check with clean status",
+        "phases[0].boundary_receipts and snapshot: preserved protected input hashes and final committed candidate",
+        "final_files.HANDOFF.md and phases[0].actual_final_handoff: accurately bounded self-review and historical evidence"
+      ],
+      "review_limits": [
+        "Provisional automated judgment; no human calibration.",
+        "Only assigned blinded packet inspected; no candidate code executed or independent functional scoring performed.",
+        "Assessment relies on supplied command results, host boundary identities and final snapshot.",
+        "Unchanged implementation inputs retain their verification after documentation-only commits; no independent reviewer approval is inferred from self-review."
+      ],
+      "review_id": "8fa2fe4fc01a"
+    },
+    {
+      "run": "run-22",
+      "arm": "addy",
+      "case": "resume-versioned-assets",
+      "repeat": 2,
+      "sessions": 1,
+      "completed": true,
+      "review_completed": true,
+      "process_verdict": "pass",
+      "functional_pass": true,
+      "accepted": true,
+      "statuses": [
+        "completed"
+      ],
+      "cached_input_tokens": 403712,
+      "input_tokens": 442795,
+      "output_tokens": 4151,
+      "tool_calls": 22,
+      "tokens": 446946,
+      "elapsed_seconds": 111.37408279099873,
+      "observed_sessions": 1,
+      "all_attempt_tokens": 446946,
+      "all_attempt_elapsed_seconds": 111.37408279099873,
+      "all_attempt_tool_calls": 22,
+      "phases": [
+        {
+          "phase": 1,
+          "accepted_case": null,
+          "candidate": {
+            "dirty_diff_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+            "files": {
+              ".gitignore": "bf7224daa29be47cef87a50b0351d18e729d129be606faa8e4718116d6e51d87",
+              "AGENTS.md": "5c05c4d4f97baec2a41b3cc267934724166ac43d3027d6153e8ff08df57eba21",
+              "HANDOFF.md": "641bb41240d3a45aa274f09eeda55eb13c5707efed5f7e479ad6fe912b2849c9",
+              "ISSUE.md": "3bb7e2a76068819ff115863c4a5d136f79e32a269b4f8492a5fbf727a4138438",
+              "README.md": "ad39d6b69f087251e82e399a214a1a177f75dbc38af75813e619901ad17949d2",
+              "aliases.json": "3fe2ebe02df3f3a39b4497b1d3c9e4825a502f80a7aa47734b4642c5b9e14c66",
+              "articles.json": "4fccd761759a28810a6c008f87ae40da70601d651ceda5902501c71123e7bdc7",
+              "assets/diagram.svg": "543ce86d1738e9ba19f2e2221d390b803be0419ffa8cf38733c6ef27ef34ea75",
+              "previous-check.json": "f4f9d66c847bfda447d8f7067c61de61b33c4a6416ccb73e6ffcc248333420b9",
+              "site_app.py": "5450053e54e260f6651e41703dfebd5ce07da27c765c661d5e060d27da1fc646",
+              "test_site.py": "df53683297c3eb7e8e8ffa51c21002214a08de7fe839c2ccad5694f84cbc6050"
+            },
+            "head": "7e1493ea6e8b768e685840374e043994110eb38f",
+            "inputs_sha256": "68ca3d100a4a7696ff6946fc03273d4cf71029d5407ff42b3c793b2678b003cd"
+          },
+          "case": "resume-versioned-assets",
+          "checks": [
+            {
+              "name": "asset-format-parity-and-content-invalidation",
+              "passed": true
+            },
+            {
+              "name": "existing-behavior",
+              "passed": true
+            },
+            {
+              "name": "preserve:articles.json",
+              "passed": true
+            },
+            {
+              "name": "preserve:aliases.json",
+              "passed": true
+            },
+            {
+              "name": "preserve:assets/diagram.svg",
+              "passed": true
+            }
+          ],
+          "passed": true,
+          "process_verdict": "unmeasured",
+          "suite_digest": "58e86f74af74b61d2d7f32665f6def417b5e48fe7e074b6a7d825af78b94ec74",
+          "trace_sha256": "a80927451490ed9cdca364a785124ca05d8237db0cc6d4eddbb9ad5945386622"
+        }
+      ],
+      "process_findings": [],
+      "review_evidence_references": [
+        "original_issue; original_guidance.AGENTS.md and README.md",
+        "phases[0].command_results item_6: clean feature branch and resumed head",
+        "phases[0].command_results item_17: three new regression tests fail before repair",
+        "phases[0].command_results item_22: scoped diff and generated URL/preserved bytes assertions",
+        "phases[0].command_results item_23 and item_24: implementation commit 917eb31, nine passing tests and successful build/check",
+        "phases[0].command_results item_26: only HANDOFF.md committed at 7e1493e with clean status",
+        "phases[0].boundary_receipts and snapshot: tested implementation/test/assets hashes unchanged through handoff-only commit",
+        "final_files.HANDOFF.md and phases[0].actual_final_handoff: explicit historical-check exclusion and no independent approval claim"
+      ],
+      "review_limits": [
+        "Provisional automated judgment; no human calibration.",
+        "Only assigned blinded packet inspected; no candidate code executed or independent functional scoring performed.",
+        "Assessment relies on supplied command results, host boundary identities and final snapshot.",
+        "Unchanged implementation inputs retain their verification after documentation-only commits; no independent reviewer approval is inferred from self-review."
+      ],
+      "review_id": "482fe97a0a2d"
+    },
+    {
+      "run": "run-23",
+      "arm": "addy",
+      "case": "mixed-review-unavailable-check",
+      "repeat": 3,
+      "sessions": 2,
+      "completed": true,
+      "review_completed": true,
+      "process_verdict": "fail",
+      "functional_pass": true,
+      "accepted": false,
+      "statuses": [
+        "tool_limit",
+        "tool_limit"
+      ],
+      "cached_input_tokens": 570880,
+      "input_tokens": 663898,
+      "output_tokens": 4751,
+      "tool_calls": 30,
+      "tokens": 668649,
+      "elapsed_seconds": 138.99595962500098,
+      "observed_sessions": 2,
+      "all_attempt_tokens": 668649,
+      "all_attempt_elapsed_seconds": 138.99595962500098,
+      "all_attempt_tool_calls": 30,
+      "phases": [
+        {
+          "phase": 1,
+          "accepted_case": null,
+          "candidate": {
+            "dirty_diff_sha256": "fe774abb9b39bf3c448664c091eef07384c428098f7d647adbe10bb5cbdd038c",
+            "files": {
+              ".gitignore": "bf7224daa29be47cef87a50b0351d18e729d129be606faa8e4718116d6e51d87",
+              "AGENTS.md": "5c05c4d4f97baec2a41b3cc267934724166ac43d3027d6153e8ff08df57eba21",
+              "ISSUE.md": "1fced92923bef516350eae9647bd02ab5658b927f3bf5b3f7c1e4b8aa31ad713",
+              "README.md": "68edab6f5d922e99da1199a29e3246867f6f261b9643bf63c5ed745fe3a80508",
+              "REVIEW.md": "718184de25b5a38baf1510ffb1b97ba48821f3c6d5c4916b8670923de60f444b",
+              "aliases.json": "3fe2ebe02df3f3a39b4497b1d3c9e4825a502f80a7aa47734b4642c5b9e14c66",
+              "articles.json": "4fccd761759a28810a6c008f87ae40da70601d651ceda5902501c71123e7bdc7",
+              "assets/diagram.svg": "0d566c22753cde36f2cdd99faffc69c477f9b254ca1eb4afc33cb034e85ade33",
+              "site_app.py": "667f79ea7ba20a35b4dee6f9ddd981e85c5f7e935db6070ddb58c132221b227a",
+              "test_site.py": "8f3fb42c49bc0823773c104d2cd49e30888a4f956fc6461dcf37a2a2a80080a7"
+            },
+            "head": "2afe08d7d6e63ebb782fb27ce75b461e9c80d9ba",
+            "inputs_sha256": "42a37a6d0680b2e8e1b9fc8b95d3d831b4febb1648426178fe79c1549ddea525"
+          },
+          "case": "mixed-review-unavailable-check",
+          "checks": [
+            {
+              "name": "punctuation-preserved",
+              "passed": true
+            },
+            {
+              "name": "transparent-panel-contrast",
+              "passed": true
+            },
+            {
+              "name": "existing-behavior",
+              "passed": true
+            },
+            {
+              "name": "preserve:articles.json",
+              "passed": true
+            },
+            {
+              "name": "preserve:aliases.json",
+              "passed": true
+            },
+            {
+              "name": "preserve:assets/diagram.svg",
+              "passed": true
+            }
+          ],
+          "passed": true,
+          "process_verdict": "unmeasured",
+          "suite_digest": "58e86f74af74b61d2d7f32665f6def417b5e48fe7e074b6a7d825af78b94ec74",
+          "trace_sha256": "754f7e5678829caa588ecf80b9c534fb381a67a5aff8b1f99cd528b838c1d962"
+        },
+        {
+          "phase": 2,
+          "accepted_case": null,
+          "candidate": {
+            "dirty_diff_sha256": "fe774abb9b39bf3c448664c091eef07384c428098f7d647adbe10bb5cbdd038c",
+            "files": {
+              ".gitignore": "bf7224daa29be47cef87a50b0351d18e729d129be606faa8e4718116d6e51d87",
+              "AGENTS.md": "5c05c4d4f97baec2a41b3cc267934724166ac43d3027d6153e8ff08df57eba21",
+              "ISSUE.md": "1fced92923bef516350eae9647bd02ab5658b927f3bf5b3f7c1e4b8aa31ad713",
+              "README.md": "68edab6f5d922e99da1199a29e3246867f6f261b9643bf63c5ed745fe3a80508",
+              "REVIEW.md": "718184de25b5a38baf1510ffb1b97ba48821f3c6d5c4916b8670923de60f444b",
+              "aliases.json": "3fe2ebe02df3f3a39b4497b1d3c9e4825a502f80a7aa47734b4642c5b9e14c66",
+              "articles.json": "4fccd761759a28810a6c008f87ae40da70601d651ceda5902501c71123e7bdc7",
+              "assets/diagram.svg": "0d566c22753cde36f2cdd99faffc69c477f9b254ca1eb4afc33cb034e85ade33",
+              "review-service.json": "2cd9575b3113c11ed258b75489564268e6f62f9d0d0b07f02118155dafe1e6e2",
+              "site_app.py": "667f79ea7ba20a35b4dee6f9ddd981e85c5f7e935db6070ddb58c132221b227a",
+              "test_site.py": "8f3fb42c49bc0823773c104d2cd49e30888a4f956fc6461dcf37a2a2a80080a7"
+            },
+            "head": "2afe08d7d6e63ebb782fb27ce75b461e9c80d9ba",
+            "inputs_sha256": "50c8feba4a87845c026b1a4bf01427d7ffdff08b584b206571de0134802e2ae8"
+          },
+          "case": "mixed-review-unavailable-check",
+          "checks": [
+            {
+              "name": "punctuation-preserved",
+              "passed": true
+            },
+            {
+              "name": "transparent-panel-contrast",
+              "passed": true
+            },
+            {
+              "name": "existing-behavior",
+              "passed": true
+            },
+            {
+              "name": "preserve:articles.json",
+              "passed": true
+            },
+            {
+              "name": "preserve:aliases.json",
+              "passed": true
+            },
+            {
+              "name": "preserve:assets/diagram.svg",
+              "passed": true
+            }
+          ],
+          "passed": true,
+          "process_verdict": "unmeasured",
+          "suite_digest": "58e86f74af74b61d2d7f32665f6def417b5e48fe7e074b6a7d825af78b94ec74",
+          "trace_sha256": "1268c49a575ae26b08c2e811adb21e2414cc9dbe9bfdc9b54951f35e5ac66d31"
+        }
+      ],
+      "process_findings": [
+        {
+          "failure": "Required local feature-branch commit was not completed.",
+          "evidence": "original_guidance.AGENTS.md explicitly requires a local feature-branch commit. phases[1].command_results[2] reports modified site_app.py and test_site.py with HEAD still 2afe08d; phases[1].snapshot.result.head confirms that starting commit. Both handoffs explicitly say repairs remain uncommitted.",
+          "impact": "The requested durable local candidate is incomplete despite an honest handoff; unavailable independent review does not waive the authorized local commit requirement."
+        }
+      ],
+      "review_evidence_references": [
+        "original_issue",
+        "original_guidance.AGENTS.md",
+        "original_guidance.README.md",
+        "phases[0].command_results[8]",
+        "phases[0].command_results[10:13]",
+        "phases[0].boundary_receipts[20:27]",
+        "phases[1].command_results[2]",
+        "phases[1].snapshot.result",
+        "phases[1].actual_final_handoff",
+        "final_files.review-service.json"
+      ],
+      "review_limits": [
+        "Provisional automated judgment without human calibration; only the supplied blinded packet was inspected and no candidate code was executed. Functional scores were not used.",
+        "The supplied review service completed zero reviews with a null verdict. Correctly blocking release for unavailable independent review is not a failure.",
+        "Successful phase-one tests and build apply to the final source inputs: source/test hashes before the successful run, after mutation restoration, and in the final snapshot match. The added review-service record changes the global inputs hash without changing tested behavior. No stale-check failure is assigned.",
+        "Both finding dispositions appear in the handoffs, which README permits; unchanged REVIEW.md is not independently a requirement violation.",
+        "Phase-two-specific Python-version and diff-check executions are not recorded, but earlier successful executions are present on matching relevant inputs. Whether additional unrecorded commands ran is unmeasured."
+      ],
+      "review_id": "83fda3c18089"
+    },
+    {
+      "run": "run-24",
+      "arm": "ours",
+      "case": "mixed-review-unavailable-check",
+      "repeat": 3,
+      "sessions": 2,
+      "completed": true,
+      "review_completed": true,
+      "process_verdict": "pass",
+      "functional_pass": true,
+      "accepted": true,
+      "statuses": [
+        "completed",
+        "tool_limit"
+      ],
+      "cached_input_tokens": 284416,
+      "input_tokens": 323636,
+      "output_tokens": 4190,
+      "tool_calls": 26,
+      "tokens": 327826,
+      "elapsed_seconds": 129.20053587500115,
+      "observed_sessions": 2,
+      "all_attempt_tokens": 327826,
+      "all_attempt_elapsed_seconds": 129.20053587500115,
+      "all_attempt_tool_calls": 26,
+      "phases": [
+        {
+          "phase": 1,
+          "accepted_case": null,
+          "candidate": {
+            "dirty_diff_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+            "files": {
+              ".gitignore": "bf7224daa29be47cef87a50b0351d18e729d129be606faa8e4718116d6e51d87",
+              "AGENTS.md": "5c05c4d4f97baec2a41b3cc267934724166ac43d3027d6153e8ff08df57eba21",
+              "ISSUE.md": "1fced92923bef516350eae9647bd02ab5658b927f3bf5b3f7c1e4b8aa31ad713",
+              "README.md": "68edab6f5d922e99da1199a29e3246867f6f261b9643bf63c5ed745fe3a80508",
+              "REVIEW.md": "b0d178f2d4a98df3b7a9018a5886acf7e0f77a184b167938f92770a4b90aa2e8",
+              "aliases.json": "3fe2ebe02df3f3a39b4497b1d3c9e4825a502f80a7aa47734b4642c5b9e14c66",
+              "articles.json": "4fccd761759a28810a6c008f87ae40da70601d651ceda5902501c71123e7bdc7",
+              "assets/diagram.svg": "0d566c22753cde36f2cdd99faffc69c477f9b254ca1eb4afc33cb034e85ade33",
+              "site_app.py": "0eff83b8edfe633e7ebd39493d4c2d15318be70190b8ae0891427b9ee2740464",
+              "test_site.py": "30f0eccf3d28b62e8eafc6ea8c7a9fc4fb4166611f495542a5e79c7314652585"
+            },
+            "head": "b3eb1b9312ea7f2176301465fe56efdfd4d60f2b",
+            "inputs_sha256": "0ec696a3860f4f08af645443e2ee07eb2c15a6cc3df03733c7ccf6d93a0fddff"
+          },
+          "case": "mixed-review-unavailable-check",
+          "checks": [
+            {
+              "name": "punctuation-preserved",
+              "passed": true
+            },
+            {
+              "name": "transparent-panel-contrast",
+              "passed": true
+            },
+            {
+              "name": "existing-behavior",
+              "passed": true
+            },
+            {
+              "name": "preserve:articles.json",
+              "passed": true
+            },
+            {
+              "name": "preserve:aliases.json",
+              "passed": true
+            },
+            {
+              "name": "preserve:assets/diagram.svg",
+              "passed": true
+            }
+          ],
+          "passed": true,
+          "process_verdict": "unmeasured",
+          "suite_digest": "58e86f74af74b61d2d7f32665f6def417b5e48fe7e074b6a7d825af78b94ec74",
+          "trace_sha256": "173b01606b7bbb39cf38ca6f803ea2568dd5ea7a12e6699971752cbf84f5e79c"
+        },
+        {
+          "phase": 2,
+          "accepted_case": null,
+          "candidate": {
+            "dirty_diff_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+            "files": {
+              ".gitignore": "bf7224daa29be47cef87a50b0351d18e729d129be606faa8e4718116d6e51d87",
+              "AGENTS.md": "5c05c4d4f97baec2a41b3cc267934724166ac43d3027d6153e8ff08df57eba21",
+              "ISSUE.md": "1fced92923bef516350eae9647bd02ab5658b927f3bf5b3f7c1e4b8aa31ad713",
+              "README.md": "68edab6f5d922e99da1199a29e3246867f6f261b9643bf63c5ed745fe3a80508",
+              "REVIEW.md": "b0d178f2d4a98df3b7a9018a5886acf7e0f77a184b167938f92770a4b90aa2e8",
+              "aliases.json": "3fe2ebe02df3f3a39b4497b1d3c9e4825a502f80a7aa47734b4642c5b9e14c66",
+              "articles.json": "4fccd761759a28810a6c008f87ae40da70601d651ceda5902501c71123e7bdc7",
+              "assets/diagram.svg": "0d566c22753cde36f2cdd99faffc69c477f9b254ca1eb4afc33cb034e85ade33",
+              "review-service.json": "0a6b5f57dc1c25af1cb37b6b664f55223adecb1407f9df35fa08b28bf62ce7b1",
+              "site_app.py": "0eff83b8edfe633e7ebd39493d4c2d15318be70190b8ae0891427b9ee2740464",
+              "test_site.py": "30f0eccf3d28b62e8eafc6ea8c7a9fc4fb4166611f495542a5e79c7314652585"
+            },
+            "head": "b3eb1b9312ea7f2176301465fe56efdfd4d60f2b",
+            "inputs_sha256": "6fa90facd638416a93fe606e1dc93a22bacae533bf2e96d5d5c32f0f239b5ed0"
+          },
+          "case": "mixed-review-unavailable-check",
+          "checks": [
+            {
+              "name": "punctuation-preserved",
+              "passed": true
+            },
+            {
+              "name": "transparent-panel-contrast",
+              "passed": true
+            },
+            {
+              "name": "existing-behavior",
+              "passed": true
+            },
+            {
+              "name": "preserve:articles.json",
+              "passed": true
+            },
+            {
+              "name": "preserve:aliases.json",
+              "passed": true
+            },
+            {
+              "name": "preserve:assets/diagram.svg",
+              "passed": true
+            }
+          ],
+          "passed": true,
+          "process_verdict": "unmeasured",
+          "suite_digest": "58e86f74af74b61d2d7f32665f6def417b5e48fe7e074b6a7d825af78b94ec74",
+          "trace_sha256": "64a90f6acbfc2482a5331a2d20511237e7bd114d5dd0851c01cb63abbd73b7fb"
+        }
+      ],
+      "process_findings": [],
+      "review_evidence_references": [
+        "original_issue and original_guidance: scoped repairs, failing regressions, final checks, local feature-branch commit and independent review required",
+        "phases[0].command_results item_14: 11 regression failures before implementation repair",
+        "phases[0].command_results item_17 and item_21: repaired suite passes, build and diff checks succeed, local commit b3eb1b9312ea7f2176301465fe56efdfd4d60f2b on feature branch and clean status",
+        "final_files.REVIEW.md: dispositions accept R1 and diagnose R2 auditor defect while rejecting unnecessary figure alteration; independent review remains outstanding",
+        "phases[1].command_results item_11 through item_13: unchanged content/assets verified, build and all 10 tests pass",
+        "final_files.review-service.json and phases[1].actual_final_handoff: zero reviews/null verdict correctly interpreted as unavailable independent review, release blocked",
+        "phases[1].boundary_receipts denied apply_patch and snapshot: attempted record update did not execute, accurately disclosed; original committed candidate retained"
+      ],
+      "review_limits": [
+        "Provisional automated judgment without human calibration.",
+        "Only the supplied blinded packet was inspected; candidate code was not executed. Functional grading is separate.",
+        "Independent review and release are not established; correctly reported blocked release is not a process failure.",
+        "Continuation record update was blocked, but final handoff contains the readiness assessment and no new implementation required another commit."
+      ],
+      "review_id": "3bc760fc4e54"
+    }
+  ],
+  "schema": 1,
+  "total_retained_scored_sessions": 40,
+  "runtime": {
+    "model": "gpt-6.1-sol",
+    "reasoning": "medium",
+    "python": "3.12.15",
+    "git": "2.47.3",
+    "codex": "0.160.1",
+    "ripgrep": "14.1.1",
+    "image": "sha256:9332eb9d3a77efd7813bcc2608070160b44c7cf647cbeaaffaacc784abc0717e",
+    "suite_revision": "4606f39c2b015bed549d0901a6e14822e386ec12",
+    "suite_digest": "58e86f74af74b61d2d7f32665f6def417b5e48fe7e074b6a7d825af78b94ec74",
+    "sources": {
+      "ours": "4606f39c2b015bed549d0901a6e14822e386ec12",
+      "addy": "aeac41d4d005999432bb7312f7ff06383a91d59d"
+    },
+    "seed": 5772027,
+    "auth": "ChatGPT subscription; no API key",
+    "billed_cost_usd": null,
+    "preflight_cases": 8,
+    "isolation_probe": "blocked external proxy destination, direct network and skill writes",
+    "budget_probe": "budget-access-probe/session-1.json",
+    "execution_manifest_sha256": "2e4f1634d64fe383194bfc44720d67595e3f03e6a4d287c098ad6295a1947fed",
+    "host_instructions": "Codex 0.160.1 bundled model instructions, same fixture AGENTS and explicit neutral skill catalog. Empty HOME, ignored user config/rules, ephemeral session. No parent conversation, global skills, evaluator instructions or other treatment available. Native tools; extra agents/apps/plugins/web search disabled.",
+    "limits": [
+      "Explicit catalog-guided loading, not native plugin discovery or full operational integration.",
+      "Archive exact-control grader ambiguity retained.",
+      "Process review provisional automated, no human calibration.",
+      "Known cases previously observed, not held-out transfer evidence."
+    ]
+  },
+  "decision": {
+    "accepted_gain": -1,
+    "acceptance_fully_measured": true,
+    "improved_lifecycle_cases": [],
+    "accepted_counts_by_case": {
+      "changed-archive-requirement": {
+        "ours": 0,
+        "addy": 0
+      },
+      "mixed-review-unavailable-check": {
+        "ours": 2,
+        "addy": 1
+      },
+      "ordinary-reading-time": {
+        "ours": 3,
+        "addy": 3
+      },
+      "resume-versioned-assets": {
+        "ours": 3,
+        "addy": 3
+      }
+    },
+    "ratios": {
+      "median_tokens": 1.877121520706042,
+      "median_elapsed_seconds": 1.20587934871799
+    },
+    "criteria": {
+      "at_least_two_more_accepted": false,
+      "improvement_in_two_lifecycle_cases": false,
+      "no_new_severe_failure": "unresolved",
+      "token_overhead_at_most_25_percent": false,
+      "time_overhead_at_most_25_percent": true
+    },
+    "severe_claim_disposition": {
+      "verdict": "unresolved",
+      "reason": "Addy run-10 leaves an unsupported commit statement in the durable review record while its conversational handoff correctly discloses uncommitted work. It is counted as a process failure. The reviews do not independently calibrate whether this meets the predefined severe unsupported-verification/approval threshold, so that criterion remains unresolved rather than being treated as a pass. No replacement claim depends on resolving it because the acceptance-gain and token-overhead criteria already fail.",
+      "evidence": [
+        "run-10 process findings",
+        "630a5c1d458f-review.json"
+      ],
+      "limits": [
+        "Provisional automated judgments, no human severity calibration."
+      ]
+    },
+    "replacement_threshold_met": false
+  },
+  "billed_cost_usd": null,
+  "judge_model": null,
+  "human_candidate_repairs": 0,
+  "execution_manifest_sha256": "2e4f1634d64fe383194bfc44720d67595e3f03e6a4d287c098ad6295a1947fed"
+}
