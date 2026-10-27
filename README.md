@@ -1,166 +1,123 @@
 # AI SDLC Skill
 
-[Built by Andreas Nissen](https://github.com/Andreasniss) · [AndreasNissen.dev](https://andreasnissen.dev) · [Connect on LinkedIn](https://www.linkedin.com/in/andreasnissen) · [Source on GitHub](https://github.com/Andreasniss/ai-sdlc-skill) · [Apache-2.0](LICENSE)
+An experimental set of reusable instructions for carrying a software change from requirements through implementation, checks, review and release. Built by [Andreas Nissen](https://andreasnissen.dev), with AI assistance. Canonical identifier: `ai-sdlc-skill`, version 0.5.3.
 
-A reusable, experimental skill that helps a coding agent turn a requested change into working code, relevant checks, and a reviewable delivery record. Start with the smallest process that preserves the decisions and evidence the next session needs. Humans retain product, architecture, risk, and release judgment.
+**Try it against no skill before adopting it.** The October controlled website-task comparison accepted 12/12 runs both with and without the skill; the full skill used 48.2% more median worker tokens than no skill. That limited result does not establish value for your workload. Guidance that helped an older model may be unnecessary for your current model and workload.
 
-Independently built from selected [Anthropic AI-native SDLC guidance](https://claude.com/blog/the-ai-native-sdlc-playbook) and [Peter Steinberger's feedback-driven development practices](skills/ai-sdlc-skill/references/sources.md). This is the canonical source for the `ai-sdlc-skill` identifier, version 0.5.3.
+This README owns the quick start and adoption decision. The [project article](https://andreasnissen.dev/projects/ai-sdlc-skill/) explains what building the skill taught me about evaluating guidance. Detailed host setup lives in [INSTALLATION.md](INSTALLATION.md).
 
-Read the [project article](https://andreasnissen.dev/projects/ai-sdlc-skill/) for three explanatory diagrams, a detailed file walkthrough, and the 7DayFocus worked example.
+## Decide whether it belongs in your workflow
 
-**Recommended starting point:** use Auto for clear, authorized work; use Plan mode when you want to settle the approach before implementation. Keep durable change records in either mode. The [FAQ](#faq) explains the distinction.
+The skill provides conventions for proportional planning, relevant checks, review, and handoffs between sessions. It may be worth testing if your agent repeatedly loses accepted decisions, checks the wrong behavior, or leaves work that another session cannot continue. Those are intended uses, not measured benefits.
 
-## Install
+If your model already completes the work reliably under your repository's existing instructions, extra general guidance may add little. Keep organization-specific facts, requirements and controls; test whether the reusable process guidance contributes anything beyond them.
 
-An optional [plugin packaging pilot](PLUGIN.md) wraps the same canonical skill
-for Codex and Claude Code. It adds no hooks or permissions and has no public
-marketplace listing. The installation route below remains recommended.
+### Compare with no skill
 
-From the project where you want to use the skill, run:
+1. Choose representative tasks and define acceptable outcomes before running them. Include ordinary work and the failure that motivated adding guidance.
+2. For each model, compare fresh sessions with **no skill**, **the full skill**, and **reduced guidance**. Keep task prompts, starting files, tools, permissions and acceptance criteria matched. Remove direct and indirect skill-loading references from the no-skill setup; preserve project requirements and enforced controls.
+3. Record the exact model/version, settings, host, skill revision and instructions actually loaded. Repeat cases; one successful run does not establish a reliable advantage.
+4. Judge correct outcomes, regressions, review and repair effort. Count total input/output tokens, cache usage, tool costs and elapsed time where available, including failed attempts. Report unavailable measures as unknown.
+5. Compare each guidance variant against the no-skill result for that model and task mix. Keep, reduce or remove the guidance according to the result. Repeat when the model or workload changes.
+
+This three-way comparison is an adoption method; the recorded two-arm experiment below does not test a reduced skill or your workload. A shorter prompt can still cause more retries. [Cost per verified outcome](https://andreasnissen.dev/writing/hidden-token-tax-agent-tools/) explains why the complete task matters more than the size of one input or response. The [evaluation reference](skills/ai-sdlc-skill/references/evaluation.md) owns case execution and recorded-run requirements.
+
+## Install and try one bounded task
+
+From your project directory, with Node.js and npm available:
 
 ```sh
 npx skills@latest add Andreasniss/ai-sdlc-skill --skill ai-sdlc-skill
 ```
 
-The [Skills CLI](https://github.com/vercel-labs/skills) lets you choose your coding agents and installation scope. It needs Node.js and npm. To inspect the available skill first, append `--list`. See the [installation guide](INSTALLATION.md) for Codex, Claude, chat-only hosts, reviewed revision pinning, and updates. Local installation does not automatically install a skill into ChatGPT web or mobile.
+Choose your assistant and scope in the installer. Append `--list` to inspect the available skill first. Use one installation route so duplicate copies do not compete. The [installation guide](INSTALLATION.md) covers reviewed revision pinning, manual copies, chat-only hosts, updates and removal. Local installation does not install the skill into ChatGPT web or mobile.
 
-Then give your agent a concrete task. You can start with an empty directory, an undocumented codebase, or an existing project:
+In a disposable branch, select a real documentation error and ask:
 
-For a small fix in an existing project:
+> Use AI SDLC Skill to correct this documentation example. Read the repository rules and choose the appropriate planning depth. Make the requested change. Report the skill file you loaded, its revision, checks actually run, findings and remaining limits.
 
-> Use AI SDLC Skill to fix the task label disappearing after reload. Reproduce the failure, preserve the existing data format, implement the fix, and run the relevant checks. Keep the outcome and evidence in the existing issue or PR. Follow the repository's review and release rules.
+Inspect the diff and actual check results. The agent should stay within the request and identify unavailable verification. Keep or discard the trial deliberately. This checks loading and scoped behavior; use the matched comparison above to assess added value.
 
-For a new project:
+For clear, authorized work, Auto can be sufficient. Use Plan mode when you want to settle requirements or the approach first. Neither mode changes repository permissions or release authority.
 
-> Use AI SDLC Skill to start a new local task tracker in this directory. Use plain HTML, CSS, and JavaScript with browser storage. Build a first version that can add and complete tasks and keeps them after reload. Add setup instructions and verify those behaviors.
+### Reproduce the task-list example
 
-For an existing project without documentation:
+Use a disposable task-list app with a known defect: completing one task also completes another task with the same title. You need a POSIX environment (macOS, Linux or WSL), Git, Python 3, Node.js, and a coding assistant with local file and terminal access. The assistant uses your existing subscription or API account.
 
-> Use AI SDLC Skill to initialize project guidance from this codebase. Inspect the code, configuration, and CI. Add a concise README and instructions for the agent I am using, with verified commands and clearly marked unknowns. Keep application behavior unchanged.
+From a scratch directory, create the example using the [reviewed skill revision](https://github.com/Andreasniss/ai-sdlc-skill/tree/16c686ae68385c3b7bff9c609fab957159d2e4e5):
 
-See [common cases and example prompts](skills/ai-sdlc-skill/references/common-cases.md) for native `/init`, features, bugs, refactoring, review, and resuming work.
+```sh
+git clone https://github.com/Andreasniss/ai-sdlc-skill.git ai-sdlc-source
+git -C ai-sdlc-source checkout 16c686ae68385c3b7bff9c609fab957159d2e4e5
+python3 ai-sdlc-source/skills/ai-sdlc-skill/scripts/make_fixture.py \
+  --state bug --into ai-sdlc-trial
+cd ai-sdlc-trial
+npx skills@latest add ../ai-sdlc-source --skill ai-sdlc-skill
+```
 
-Read the [workflow](skills/ai-sdlc-skill/SKILL.md) to see what the agent loads. The instructions need no Python dependency; the optional helper requires Python 3.10+, Git, and POSIX.
+Choose your assistant and project installation scope. The [installation guide](https://github.com/Andreasniss/ai-sdlc-skill/blob/16c686ae68385c3b7bff9c609fab957159d2e4e5/INSTALLATION.md) covers manual installation and other hosts. Then open the trial folder in your assistant and ask:
 
-**Expected result:** a scoped change, observed check results, any unresolved limits, and a linked record another session can continue from. An installation command or a generated plan alone does not establish that the skill was loaded or the change works.
+> Use AI SDLC Skill to fix this task-list bug: when two tasks have the same title, completing one must leave the other open. Reproduce the defect before changing code. Add a regression check, fix the browser app and check the result. Keep adding tasks and filtering working. Do not publish or deploy. Report the skill file loaded, the diff, checks actually run and any checks you could not perform.
 
-## How the delivery method works
+**Inspect the result:**
 
-### Where are the artifacts?
+- The original two tests pass even with the defect. A new duplicate-title check should fail before the fix and pass after it.
+- Run `node --test test/tasks.test.js`. Check both `app.js` (the browser) and `app-under-test.js` (the test copy); fixing only the test copy leaves the app broken.
+- Serve the folder with `python3 -m http.server 8877`, open `http://localhost:8877`, add two tasks named “write”, and click one. Only that task should complete, including after a reload. Check the Open and Completed filters too.
+- Inspect `git diff` and the assistant’s report. A browser check that was unavailable should be reported as unavailable.
 
-The reusable workflow is [`skills/ai-sdlc-skill/SKILL.md`](skills/ai-sdlc-skill/SKILL.md). The [file-location guide](skills/ai-sdlc-skill/references/artifact-layout.md) explains the recommended layout, repository-wide documents, and Anthropic's actual guidance. Your project's change records live in **your project**, outside the installed skill folder.
+Stop the local server with Ctrl+C. Keep the trial for inspection or delete the two scratch folders when finished. This example lets you inspect one result; it is not a measurement of productivity or reliability across projects.
 
-For the concrete example, open [all four P04 files in 7DayFocus](https://github.com/Andreasniss/7dayfocus-ai-delivery-lab/tree/main/docs/ai-dlc/changes/P04-plan-my-week), or start at its [lifecycle index](https://github.com/Andreasniss/7dayfocus-ai-delivery-lab/blob/main/docs/ai-dlc/README.md). P04 is the Plan My Week feature's identifier. One material change uses one folder across sessions: `intent.md`, `spec.md`, `plan.md`, then observed `evidence.md`. This folder layout and fourth file are our convention; Anthropic suggests a shared `intent/` home and names the first three artifacts. Small changes can use an issue or PR instead.
+## Use it for your change
 
-Standing files such as `SECURITY.md`, `PRIVACY.md`, `PROVENANCE.md`, and `CONTRIBUTING.md` describe the repository across changes. The guide explains when each helps and how to link them without copying them into every packet.
+The workflow is **Plan → Design → Build → Test → Review → Deploy → Maintain**. Start at the stage the task needs; the stages are responsibilities, not mandatory ceremony. Read [SKILL.md](skills/ai-sdlc-skill/SKILL.md) for the instructions an agent loads.
 
-### The lifecycle and handoffs
-
-The skill names the loop **Plan → Design → Build → Test → Review → Deploy → Maintain**. Start at the current stage and scale the work to the change. The [handoff contract](skills/ai-sdlc-skill/SKILL.md#handoffs) defines what the next session receives and which judgment stays with the owner.
-
-| Your change | Useful starting record | What makes it sufficient |
+| Task | Starting prompt | Expected evidence |
 | --- | --- | --- |
-| Small, reversible fix | Existing issue or PR | Clear outcome, scope, relevant checks, and result |
-| Material feature or refactor | Existing specification and plan, or a linked change packet | Decisions, boundaries, acceptance examples, and current verification evidence |
-| Consequential data, access, or release change | Design plus the actual authorization record | Explicit risk and recovery decisions, with enforced controls where required |
+| Fix a bug | Reproduce the disappearing task label after reload, preserve the data format, fix it and run relevant checks. | A reproduction, scoped repair, check results and remaining limits |
+| Start a project | Build a small task tracker that adds and completes tasks and retains them after reload. | A working first slice, setup instructions and checks of those behaviors |
+| Document existing code | Inspect source, configuration and CI; add concise project guidance without changing application behavior. | Observed structure, verified commands and clearly marked unknowns |
+| Resume work | Read the existing decision and handoff, then continue the same change. | Preserved scope, the continuation point and refreshed checks where needed |
 
-For the disappearing-label example, a save-and-reload check addresses the failure. Formatting checks alone do not. If the fix changes the saved-data format, revisit compatibility and recovery before treating it as routine. Existing authorization persists; generating a document does not create a new approval ceremony.
+Prefix a task with “Use AI SDLC Skill” and supply the project's actual requirement. See [common cases](skills/ai-sdlc-skill/references/common-cases.md) for complete prompts, review-only work and native `/init` distinctions.
 
-The skill adapts selected Anthropic guidance. AWS AI-DLC adds broader lifecycle coordination, while OpenAI's harness engineering focuses on the agent's execution environment. These emphases overlap. The [companion article](https://andreasnissen.dev/writing/ai-native-software-delivery-methods/) explains when each helps; this skill does not implement the complete AWS method or reproduce either company's internal process.
+### Where the records belong
 
-## What it adds
+Small changes can keep outcome, scope, checks and result in the existing issue or PR. Material changes may need intent, specification, plan and evidence in one change folder. Put these in the adopter project, outside the installed skill bundle. The [artifact guide](skills/ai-sdlc-skill/references/artifact-layout.md) owns the layout and document roles.
 
-- A short build loop: make a useful slice, exercise it, inspect the result, repair the cause, and rerun affected checks. Establish observable feedback before expanding the implementation.
-- Explicit handling of missing execution capabilities, stalled retries, and interactions with existing behavior. Passing technical checks still leaves product usefulness to human judgment.
-- Planning proportional to the change, with existing repository requirements preserved.
-- Verification tied to a candidate revision, with failed and unavailable checks reported explicitly.
-- Fresh review when the risk warrants it, followed by checks of the revision that will actually merge.
-- Recurring lessons encoded where they change future behavior, in one place, without competing rule sets.
-- A [behavior evaluation set](skills/ai-sdlc-skill/evals/cases.md), with reproducible starting repositories, to rerun when the instructions themselves change.
+For a worked example, inspect [Plan My Week in 7DayFocus](https://github.com/Andreasniss/7dayfocus-ai-delivery-lab/tree/main/docs/ai-dlc/changes/P04-plan-my-week). Its requirement prevents an old proposal from overwriting newer edits. The records connect intent, specification, implementation plan and historical checks. This demonstrates a traceable change, not an improvement over no skill.
 
-It does not install hooks, grant approvals, enforce a sandbox, or authorize publication. Configured commands run with the caller's privileges. Read the [execution boundaries](skills/ai-sdlc-skill/references/adoption.md) before running them.
+Keep shared repository rules in their canonical instruction file. The [shared-instructions article](https://andreasnissen.dev/writing/agents-md-claude-md-shared-instructions/) explains how `AGENTS.md` and a thin `CLAUDE.md` can work together.
 
-## FAQ
+### Is the Python helper required?
 
-### Do I need Plan mode if this skill already includes planning?
+No. Ordinary use runs the project's own checks directly. The optional helper needs Python 3.10+, Git and a POSIX environment, with no Python package dependencies. It records reviewed commands, exit status, revision and configuration digest for a clean committed candidate. Consult [setup and limits](skills/ai-sdlc-skill/references/adoption.md) before using it.
 
-No. For clear, bounded work, the agent can plan, implement, and verify in Auto while following the skill. Use Plan mode when you want to resolve requirements, compare architectures, or review the approach before implementation. The lifecycle's Plan stage still matters even when a separate Plan-mode session is unnecessary.
-
-### Can I use Auto all the way through?
-
-Yes, within the agreed scope and existing authorization. Continue from accepted artifacts instead of recreating them. Pause for unresolved consequential choices and required approvals. A generated plan is not evidence of acceptance. Mode names and permissions differ between hosts; see [Claude Code modes](https://code.claude.com/docs/en/permission-modes) and [Codex permissions](https://learn.chatgpt.com/docs/agent-approvals-security). Auto does not replace repository or release gates.
-
-### Are native plans deleted when a session ends?
-
-There is no shared rule across Claude and Codex. Claude Code documents age-based cleanup of plan files, with a default retention period of 30 days, rather than deletion at session end. Codex also supports deliberately maintained repository plans. See [Claude Code retention](https://code.claude.com/docs/en/claude-directory#application-data) and [OpenAI's execution-plan approach](https://developers.openai.com/cookbook/articles/codex_exec_plans). These product details were checked on 7 September 2026.
-
-### What do durable artifacts add for auditability?
-
-They connect requirements and decisions to the code revision, actual checks, review findings, and release outcome. Commit and sync file-based records through the project's normal workflow, or use its maintained issue and PR records. A file in a disposable workspace is not durable just because it is Markdown. The skill supplies a working convention, not storage or retention enforcement. Git history alone is not a tamper-proof compliance audit trail.
-
-### Do I need four Markdown files for every change?
-
-No. A small fix can keep its essential record in an issue or PR. For material work, preserve the existing layout; when none exists, the [artifact guide](skills/ai-sdlc-skill/references/artifact-layout.md) recommends one change folder containing intent, specification, plan, and evidence as work progresses. Keep standing security and architecture documents in their canonical homes and link them.
-
-### How do AGENTS.md and CLAUDE.md fit alongside the skill?
-
-Repository instructions describe how to work in the project; the skill supplies a reusable delivery method; the issue or change packet describes this particular change. Keep shared rules in one place. For Claude and Codex together, my [shared-instructions article](https://andreasnissen.dev/writing/agents-md-claude-md-shared-instructions/) explains a thin `CLAUDE.md` importing `AGENTS.md`, host discovery, and when tool-specific guidance helps.
-
-### Does a saved plan or green helper report mean the change is ready?
-
-No. The plan describes intended work; checks provide observations about a candidate. The helper records command results and revision information, but cannot decide whether the checks cover the requirement, authenticate human approval, or authorize release. Review the actual change, resolve material findings, and refresh affected evidence when the candidate changes. See the [helper's documented limits](skills/ai-sdlc-skill/references/adoption.md).
-
-## Read the companion articles
-
-Follow the [AI-Assisted Software Delivery series](https://andreasnissen.dev/series/ai-assisted-software-delivery/) for an ordered path from shared repository instructions through method selection to pull-request evidence. Use the skill walkthrough alongside it for hands-on adoption.
-
-| Reader question | Article |
-| --- | --- |
-| How do I adopt the skill and follow a real change? | [AI SDLC Skill: From Intent to Verified Changes](https://andreasnissen.dev/projects/ai-sdlc-skill/) |
-| When is a minimal workflow enough, and when do Kiro, Anthropic, or AWS AI-DLC help? | [AI-Native Software Delivery: Which Method Fits Your Change?](https://andreasnissen.dev/writing/ai-native-software-delivery-methods/) |
-| How should Claude and Codex share repository rules? | [AGENTS.md and CLAUDE.md: Shared Rules, Different Entry Points](https://andreasnissen.dev/writing/agents-md-claude-md-shared-instructions/) |
-| What should connect checks and approval to a pull request? | [What Evidence Should an AI-Generated Pull Request Carry?](https://andreasnissen.dev/writing/evidence-for-ai-generated-pull-requests/) |
-
-The articles explain the decisions and trade-offs. The installed [SKILL.md](skills/ai-sdlc-skill/SKILL.md) remains the workflow source. The evidence article describes an architecture proposal, not an attestation system implemented by this skill.
+Commands run with the caller's privileges. The helper is not a sandbox, authenticated approval or proof that the checks cover the requirement. The skill installs no hooks, grants no permissions and authorizes no release.
 
 ## Evidence and limits
 
-The focused update in [PR 21](https://github.com/Andreasniss/ai-sdlc-skill/pull/21) adds independent acceptance checks, resumable blockers and release evidence. The current set has 30 cases. Its [12 October partial pilot](skills/ai-sdlc-skill/evals/focused-evidence-pilot.md) exercised the earlier candidate against the then-25-case set; it does not validate the reconciled instructions or current digest. Current candidate checks are recorded in the PR. No full behavior or cross-host pass is claimed.
+The [October 27 controlled comparison](https://github.com/Andreasniss/ai-sdlc-skill/blob/db9694664434cc95d704ad7619fe7ea3b09609a4/evals/minimal-skill-comparison-2026-10-27.md) used four synthetic adaptations of website tasks, three repeats per arm. No skill and full skill each accepted 12/12 runs. With **no skill as the baseline**, median worker tokens rose from 193,654 to 287,082.5 (**48.2% more**) and median worker time from 76.5 to 85.0 seconds (**about 11% more**); median tool calls stayed at 20.5. These are worker measurements, not total delivery cost or evidence of equivalent reliability on unfamiliar tasks. The [detailed article](https://andreasnissen.dev/writing/does-my-coding-skill-help/) explains the earlier comparison and grader corrections.
 
-Release 0.5.3 adds an optional [bounded harness experiment](skills/ai-sdlc-skill/references/harness-learning.md), inspired by Harness². It compares execution evidence and tests transfer before promoting reusable guidance. It adds no runner, scheduler, dependency or automatic learning service. Its pull request records the checks and selected behavior cases actually exercised; earlier release observations below do not validate these new instructions. The release introduced two cases; the current set contains 30 cases.
+[Claude Code plugin evaluations](evals/README.md) separately test discovery and forced skill use against no plugin, with their own grader and runtime limits. Keep those host-specific scores separate from the website-task results.
 
-Deterministic state, 20 October 2026, for this untagged update: the bundle has 58 passing deterministic tests, and the five repository documentation checks pass alongside them. They cover the verification helper's handling of success, failures, timeouts, invalid configuration, and candidate changes; the evaluation reporter's schema, duplicate JSON key rejection, and disqualifier handling; and bundle version, link, and licensing consistency. The pull request checks identify the exact tested revision.
+The current case inventory contains 30 behavior cases. Historical observations apply to their recorded instruction revisions and case sets, not automatically to today's bundle or models:
 
-A selected-case behavior pilot for 0.5.2 exercised scoped evidence, unavailable review, rendered documentation, focused repair review, and interrupted-change resumption in five fresh Codex Work Mode agent sessions. All five met their case criteria with no observed disqualifier. The other 15 cases were not rerun; this is partial evidence, not a passing full evaluation. The pull request records the instruction revision, case digest, observations, and runtime limits. This revision clarifies scoped evidence and unavailable review handling and adds three cases, bringing that historical set to 20. Earlier recorded runs do not validate against the current case-set digest. The [review-loop evaluation](skills/ai-sdlc-skill/evals/review-loop-evaluation.md) and [partial matched behavior pilot](skills/ai-sdlc-skill/evals/feedback-pilot.md) remain historical observations, not current instruction verification.
+- [September 20 review-loop evaluation](skills/ai-sdlc-skill/evals/review-loop-evaluation.md): 15 cases across three Codex sessions met their criteria. No no-skill comparison was run.
+- [September 13 feedback pilot](skills/ai-sdlc-skill/evals/feedback-pilot.md): three paired cases compared older and newer skill instructions. Both met the selected criteria; no advantage was demonstrated.
+- [October 12 focused evidence pilot](skills/ai-sdlc-skill/evals/focused-evidence-pilot.md): three paired cases compared an older skill with a candidate update. Both CSV runs found the defect; the candidate additionally executed explicit correct-output and wrong-output controls. This is a narrow instruction-version observation, not a no-skill benefit.
 
-Verification snapshot: 13 September 2026, for the 0.4.0 release in [PR 15](https://github.com/Andreasniss/ai-sdlc-skill/pull/15), whose checks identify that tested revision. Browser execution, cross-host compatibility and comparative productivity remain unverified throughout. The earlier repository integration pilots include routing, CI integration, and application checks:
+Those older pilots did not capture exact model builds or comparative token, elapsed-time and cost measurements. Cross-host runtime compatibility remains unverified. The [focused update PR](https://github.com/Andreasniss/ai-sdlc-skill/pull/21) and [harness-learning PR](https://github.com/Andreasniss/ai-sdlc-skill/pull/25) retain their scoped change and verification records.
 
-| Pilot | Reviewed identifier migration | Evidence |
-| --- | --- | --- |
-| 7DayFocus | [PR 25](https://github.com/Andreasniss/7dayfocus-ai-delivery-lab/pull/25) | [Pilot record](https://github.com/Andreasniss/7dayfocus-ai-delivery-lab/blob/main/docs/evidence-sdlc-pilot.md) |
-| Runbook Relay | [PR 24](https://github.com/Andreasniss/runbook-relay-webmcp/pull/24) | [Pilot record](https://github.com/Andreasniss/runbook-relay-webmcp/blob/main/docs/evidence-sdlc-pilot.md) |
+The 20 October 2026 deterministic snapshot records **58 passing deterministic tests** plus five repository documentation checks. These cover helpers, schemas and bundle consistency; they do not measure model judgment or prove skill value. Repository integration records for [7DayFocus](https://github.com/Andreasniss/7dayfocus-ai-delivery-lab/blob/main/docs/evidence-sdlc-pilot.md) and [Runbook Relay](https://github.com/Andreasniss/runbook-relay-webmcp/blob/main/docs/evidence-sdlc-pilot.md) likewise establish integration facts, not causal benefit.
 
-These are deterministic and repository integration results. They do not establish better model judgment, faster delivery, production readiness, or interactive compatibility across agent runtimes. Repository cleanliness is sampled before and after each command; transient changes restored between observations are outside that check. Reports are observations, not authenticated approvals.
+## Maintain or contribute
 
-The pilots retain their earlier reviewed bundles. For reproducible team adoption, record the full canonical source commit and review updates through a PR. Ordinary installations can use the CLI's explicit update command; the skill never updates itself on startup.
+The [installation guide](INSTALLATION.md) owns updates and migration. Preserve local edits, pin a reviewed full source commit for reproducibility, and review updates explicitly. The skill never updates itself on startup. The optional [plugin pilot](PLUGIN.md) packages the same bundle without hooks or permissions; it has no public marketplace listing.
 
-## Contribute and verify
+For documentation, packaging, helper tests and behavioral evaluation requirements, follow [CONTRIBUTING.md](CONTRIBUTING.md). Changing instructions changes agent configuration; deterministic file checks cannot establish how a model follows them. Follow [AGENTS.md](AGENTS.md) and [PRIVACY.md](PRIVACY.md) before contributing public changes.
 
-The optional Python helper runs a project's reviewed check commands against a clean Git commit and writes a report of the revision, configuration digest, and results. For example, it can record whether that project's build and tests passed for the candidate being reviewed. It does not decide which tests are sufficient or review the code. Ordinary agent use needs no helper setup: the agent can run the project's checks directly. See the [helper setup and limits](skills/ai-sdlc-skill/references/adoption.md) if you need that report.
-
-If you are changing or evaluating the helper itself, run this from a checkout of **this skill repository**:
-
-```sh
-python3 -m unittest discover -s skills/ai-sdlc-skill/tests -v
-```
-
-This runs the bundle's regression tests, including command failures, timeouts, and consistency checks for bundled documentation versions, links and licensing. Broader repository documentation and plugin packaging use separate commands in [CONTRIBUTING.md](CONTRIBUTING.md). None of these checks tests your application, installs the skill, or verifies that an agent loaded it. Use its [guide-maintenance standard](CONTRIBUTING.md#maintain-guides) when improving instructions.
-
-Changing the instructions is changing agent configuration. When `SKILL.md` or its references change, rerun the [behavior cases](skills/ai-sdlc-skill/evals/cases.md) against the host you actually use and record the run; see [evaluating this skill](skills/ai-sdlc-skill/references/evaluation.md). Those runs are self-reported observations of one host, not authenticated evidence.
-
-Preserve the execution boundaries and add meaningful regression coverage when changing the helper. Follow [AGENTS.md](AGENTS.md) and the [publication privacy checks](PRIVACY.md). Keep application-specific check commands in the adopter repository.
-
-See [sources and provenance](skills/ai-sdlc-skill/references/sources.md). The installation-first README and self-contained packaging were inspired by [Matt Pocock's skills repository](https://github.com/mattpocock/skills).
+The skill independently adapts selected [Anthropic AI-native SDLC guidance](https://claude.com/blog/the-ai-native-sdlc-playbook) and [Peter Steinberger's development practices](skills/ai-sdlc-skill/references/sources.md). See [sources and provenance](skills/ai-sdlc-skill/references/sources.md). The installation-first README and self-contained packaging were inspired by [Matt Pocock's skills repository](https://github.com/mattpocock/skills).
 
 Andreas owns intent, architecture, requirements, evaluation criteria, risk, and release decisions and reviews merged changes. AI tools assisted implementation and documentation. Automated and AI-assisted checks are evidence, not human reviewers or accountability owners.
 
