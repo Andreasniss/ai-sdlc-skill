@@ -6,6 +6,12 @@ An experimental delivery skill that preserves repository rules, scales planning 
 
 Version 0.5.3. Skill identifier and invocation: `ai-sdlc-skill` and `$ai-sdlc-skill`.
 
+## Does it add value on your workload?
+
+In a controlled comparison on adapted website tasks, no skill matched the full skill’s accepted results with lower worker token use. That result does not establish what helps your current model and workload. Compare matched tasks in fresh sessions with no skill, the full skill and reduced guidance, keeping requirements, tools and permissions the same. Judge verified outcomes and total effort, including failed attempts. Recheck when the model or workload changes; keeping less guidance is a valid result.
+
+The [repository README](https://github.com/Andreasniss/ai-sdlc-skill#compare-with-no-skill) owns the adoption comparison and quick start. The [project article](https://andreasnissen.dev/projects/ai-sdlc-skill/) explains the lessons behind it.
+
 ## Start here
 
 Read [SKILL.md](SKILL.md) for the workflow, [adoption.md](references/adoption.md) for execution limits, and [evaluation.md](references/evaluation.md) for rechecking behavior after the instructions change. The bundle has no Python package dependencies. Its optional helper needs Python 3.10+, Git, and a POSIX environment. It does not install hooks, change permissions, or authorize releases.
