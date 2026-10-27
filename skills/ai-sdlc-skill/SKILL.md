@@ -37,6 +37,7 @@ Report the outcome, meaningful checks and remaining limits. Identify the tested 
 
 Do not read every reference by default. Choose the one that resolves the current task:
 
+- Creating or improving a repository README, including mobile readability: [README quality](references/readme-quality.md).
 - New projects, initialization, review-only work or a stalled check: [common cases](references/common-cases.md).
 - A material change needs durable records or a handoff location: [artifact layout](references/artifact-layout.md).
 - Installation, the optional Python helper or its execution limits: [adoption](references/adoption.md).
