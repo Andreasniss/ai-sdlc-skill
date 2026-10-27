@@ -12,7 +12,21 @@ The current reduced edition, **0.6.0**, keeps scope, repository rules, meaningfu
 
 **Not yet benchmarked.** The published full-skill versus no-skill results do not measure this reduced edition. Deterministic bundle checks establish packaging and consistency, not model behavior or lower task-level token use. Evaluate this candidate against no skill on your own workload before adopting it.
 
-Use a full source commit with the [pinned installation procedure](INSTALLATION.md#optional-pin-a-reviewed-source-revision). Existing installations are not automatically updated.
+The pinned reduced bundle is [`572b7e707a62068d1bf5b90b3cca4c6b0bb9a982`](https://github.com/Andreasniss/ai-sdlc-skill/tree/572b7e707a62068d1bf5b90b3cca4c6b0bb9a982). This pin identifies an experimental candidate, not a benchmark endorsement. From a scratch directory:
+
+```sh
+git clone https://github.com/Andreasniss/ai-sdlc-skill.git ai-sdlc-reduced
+git -C ai-sdlc-reduced checkout --detach 572b7e707a62068d1bf5b90b3cca4c6b0bb9a982
+git -C ai-sdlc-reduced rev-parse HEAD
+```
+
+Check that the last command prints the exact pinned SHA. From your project directory, install from that local checkout:
+
+```sh
+npx skills@latest add /path/to/ai-sdlc-reduced --skill ai-sdlc-skill
+```
+
+Replace `/path/to/ai-sdlc-reduced` with the checkout's actual path. Preserve local edits and review the existing installation before replacing it; use the [installation guide](INSTALLATION.md#optional-pin-a-reviewed-source-revision). Existing installations are not automatically updated. The shorthand installation below follows the default branch; use the checkout route above to reproduce this pin.
 
 ## Decide whether it belongs in your workflow
 
@@ -52,18 +66,18 @@ For clear, authorized work, Auto can be sufficient. Use Plan mode when you want 
 
 Use a disposable task-list app with a known defect: completing one task also completes another task with the same title. You need a POSIX environment (macOS, Linux or WSL), Git, Python 3, Node.js, and a coding assistant with local file and terminal access. The assistant uses your existing subscription or API account.
 
-From a scratch directory, create the example using the [reviewed skill revision](https://github.com/Andreasniss/ai-sdlc-skill/tree/16c686ae68385c3b7bff9c609fab957159d2e4e5):
+From a scratch directory, create the example using the [reviewed skill revision](https://github.com/Andreasniss/ai-sdlc-skill/tree/572b7e707a62068d1bf5b90b3cca4c6b0bb9a982):
 
 ```sh
 git clone https://github.com/Andreasniss/ai-sdlc-skill.git ai-sdlc-source
-git -C ai-sdlc-source checkout 16c686ae68385c3b7bff9c609fab957159d2e4e5
+git -C ai-sdlc-source checkout 572b7e707a62068d1bf5b90b3cca4c6b0bb9a982
 python3 ai-sdlc-source/skills/ai-sdlc-skill/scripts/make_fixture.py \
   --state bug --into ai-sdlc-trial
 cd ai-sdlc-trial
 npx skills@latest add ../ai-sdlc-source --skill ai-sdlc-skill
 ```
 
-Choose your assistant and project installation scope. The [installation guide](https://github.com/Andreasniss/ai-sdlc-skill/blob/16c686ae68385c3b7bff9c609fab957159d2e4e5/INSTALLATION.md) covers manual installation and other hosts. Then open the trial folder in your assistant and ask:
+Choose your assistant and project installation scope. The [installation guide](https://github.com/Andreasniss/ai-sdlc-skill/blob/572b7e707a62068d1bf5b90b3cca4c6b0bb9a982/INSTALLATION.md) covers manual installation and other hosts. Then open the trial folder in your assistant and ask:
 
 > Use AI SDLC Skill to fix this task-list bug: when two tasks have the same title, completing one must leave the other open. Reproduce the defect before changing code. Add a regression check, fix the browser app and check the result. Keep adding tasks and filtering working. Do not publish or deploy. Report the skill file loaded, the diff, checks actually run and any checks you could not perform.
 
