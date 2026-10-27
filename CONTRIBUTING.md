@@ -58,6 +58,8 @@ third-party license and copyright notices; identify copied material and its sour
 Report sensitive vulnerabilities through [SECURITY.md](SECURITY.md), not a public
 issue. Ordinary bugs and improvements can use this repository's GitHub issues.
 
+For public README changes, use the [README quality guide](skills/ai-sdlc-skill/references/readme-quality.md), including its mobile checks and feedback loop.
+
 ## Maintain guides
 
 Use this standard for repository instructions, contributor documentation and
