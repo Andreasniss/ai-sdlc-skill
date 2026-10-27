@@ -22,6 +22,8 @@ Choose your agents in the installer. Project scope is the default; add `--global
 
 Preserve local edits and review changes before updating. An installer lockfile tracks installation state; it is not evidence that the agent used the skill or that its changes passed review. The [Skills CLI documentation](https://github.com/vercel-labs/skills) owns current options and supported agents. This is a common distribution tool, not a universal native installer for every chat product.
 
+The [reduced edition and pinned installation](README.md#reduced-edition-and-pinned-installation) identifies the current experimental candidate. Its behavior and benefit have not yet been benchmarked.
+
 ## Optional: pin a reviewed source revision
 
 For a team or reproducible pilot, replace `REVIEWED_FULL_COMMIT_SHA` below with the full 40-character SHA you reviewed. Check it out before the first installation:

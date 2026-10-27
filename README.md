@@ -1,10 +1,32 @@
 # AI SDLC Skill
 
-An experimental set of reusable instructions for carrying a software change from requirements through implementation, checks, review and release. Built by [Andreas Nissen](https://andreasnissen.dev), with AI assistance. Canonical identifier: `ai-sdlc-skill`, version 0.5.3.
+An experimental set of reusable instructions for carrying a software change from requirements through implementation, checks, review and release. Built by [Andreas Nissen](https://andreasnissen.dev), with AI assistance. Canonical identifier: `ai-sdlc-skill`, version 0.6.0.
 
 **Try it against no skill before adopting it.** The October controlled website-task comparison accepted 12/12 runs both with and without the skill; the full skill used 48.2% more median worker tokens than no skill. That limited result does not establish value for your workload. Guidance that helped an older model may be unnecessary for your current model and workload.
 
 This README owns the quick start and adoption decision. The [project article](https://andreasnissen.dev/projects/ai-sdlc-skill/) explains what building the skill taught me about evaluating guidance. Detailed host setup lives in [INSTALLATION.md](INSTALLATION.md).
+
+## Reduced edition and pinned installation
+
+The current reduced edition, **0.6.0**, keeps scope, repository rules, meaningful verification, release authority and handoffs in the default instructions. Detailed examples and procedures remain available through task-specific references. It removes mandatory stage/depth narration and repeated general workflow guidance.
+
+**Not yet benchmarked.** The published full-skill versus no-skill results do not measure this reduced edition. Deterministic bundle checks establish packaging and consistency, not model behavior or lower task-level token use. Evaluate this candidate against no skill on your own workload before adopting it.
+
+The pinned reduced bundle is [`572b7e707a62068d1bf5b90b3cca4c6b0bb9a982`](https://github.com/Andreasniss/ai-sdlc-skill/tree/572b7e707a62068d1bf5b90b3cca4c6b0bb9a982). This pin identifies an experimental candidate, not a benchmark endorsement. From a scratch directory:
+
+```sh
+git clone https://github.com/Andreasniss/ai-sdlc-skill.git ai-sdlc-reduced
+git -C ai-sdlc-reduced checkout --detach 572b7e707a62068d1bf5b90b3cca4c6b0bb9a982
+git -C ai-sdlc-reduced rev-parse HEAD
+```
+
+Check that the last command prints the exact pinned SHA. From your project directory, install from that local checkout:
+
+```sh
+npx skills@latest add /path/to/ai-sdlc-reduced --skill ai-sdlc-skill
+```
+
+Replace `/path/to/ai-sdlc-reduced` with the checkout's actual path. Preserve local edits and review the existing installation before replacing it; use the [installation guide](INSTALLATION.md#optional-pin-a-reviewed-source-revision). Existing installations are not automatically updated. The shorthand installation below follows the default branch; use the checkout route above to reproduce this pin.
 
 ## Decide whether it belongs in your workflow
 
@@ -44,18 +66,18 @@ For clear, authorized work, Auto can be sufficient. Use Plan mode when you want 
 
 Use a disposable task-list app with a known defect: completing one task also completes another task with the same title. You need a POSIX environment (macOS, Linux or WSL), Git, Python 3, Node.js, and a coding assistant with local file and terminal access. The assistant uses your existing subscription or API account.
 
-From a scratch directory, create the example using the [reviewed skill revision](https://github.com/Andreasniss/ai-sdlc-skill/tree/16c686ae68385c3b7bff9c609fab957159d2e4e5):
+From a scratch directory, create the example using the [reviewed skill revision](https://github.com/Andreasniss/ai-sdlc-skill/tree/572b7e707a62068d1bf5b90b3cca4c6b0bb9a982):
 
 ```sh
 git clone https://github.com/Andreasniss/ai-sdlc-skill.git ai-sdlc-source
-git -C ai-sdlc-source checkout 16c686ae68385c3b7bff9c609fab957159d2e4e5
+git -C ai-sdlc-source checkout 572b7e707a62068d1bf5b90b3cca4c6b0bb9a982
 python3 ai-sdlc-source/skills/ai-sdlc-skill/scripts/make_fixture.py \
   --state bug --into ai-sdlc-trial
 cd ai-sdlc-trial
 npx skills@latest add ../ai-sdlc-source --skill ai-sdlc-skill
 ```
 
-Choose your assistant and project installation scope. The [installation guide](https://github.com/Andreasniss/ai-sdlc-skill/blob/16c686ae68385c3b7bff9c609fab957159d2e4e5/INSTALLATION.md) covers manual installation and other hosts. Then open the trial folder in your assistant and ask:
+Choose your assistant and project installation scope. The [installation guide](https://github.com/Andreasniss/ai-sdlc-skill/blob/572b7e707a62068d1bf5b90b3cca4c6b0bb9a982/INSTALLATION.md) covers manual installation and other hosts. Then open the trial folder in your assistant and ask:
 
 > Use AI SDLC Skill to fix this task-list bug: when two tasks have the same title, completing one must leave the other open. Reproduce the defect before changing code. Add a regression check, fix the browser app and check the result. Keep adding tasks and filtering working. Do not publish or deploy. Report the skill file loaded, the diff, checks actually run and any checks you could not perform.
 
@@ -70,7 +92,7 @@ Stop the local server with Ctrl+C. Keep the trial for inspection or delete the t
 
 ## Use it for your change
 
-The workflow is **Plan → Design → Build → Test → Review → Deploy → Maintain**. Start at the stage the task needs; the stages are responsibilities, not mandatory ceremony. Read [SKILL.md](skills/ai-sdlc-skill/SKILL.md) for the instructions an agent loads.
+The reduced workflow is to establish the work, make and verify the change, then review, release or hand off as the task requires. Read [SKILL.md](skills/ai-sdlc-skill/SKILL.md) for the instructions an agent loads.
 
 | Task | Starting prompt | Expected evidence |
 | --- | --- | --- |
@@ -96,6 +118,13 @@ No. Ordinary use runs the project's own checks directly. The optional helper nee
 Commands run with the caller's privileges. The helper is not a sandbox, authenticated approval or proof that the checks cover the requirement. The skill installs no hooks, grants no permissions and authorizes no release.
 
 ## Evidence and limits
+
+Start with the account that matches your question:
+
+- [Lessons learned: Does My AI Skill Still Earn Its Place?](https://andreasnissen.dev/projects/ai-sdlc-skill/) covers why I now challenge instructions, reduce guidance and evaluate it again when the model or workload changes. It includes my skill, Addy Osmani’s popular collection, and the effort of building useful evals.
+- [Detailed experiment: Does My Coding Skill Earn Its Extra Work?](https://andreasnissen.dev/writing/does-my-coding-skill-help/) keeps the methods, results, grader corrections and limitations together. My skill has a matched no-skill comparison; Addy’s collection was compared with mine and has no no-skill control in that experiment.
+- [Controlled run report](https://github.com/Andreasniss/ai-sdlc-skill/blob/db9694664434cc95d704ad7619fe7ea3b09609a4/evals/minimal-skill-comparison-2026-10-27.md) and [collection comparison](https://github.com/Andreasniss/ai-sdlc-skill/blob/45d4f3c8b3f9dbe5901dded0788a283eaa516e87/evals/skill-collection-comparison-2026-10-26.md) retain the recorded configurations and per-run evidence.
+
 
 The [October 27 controlled comparison](https://github.com/Andreasniss/ai-sdlc-skill/blob/db9694664434cc95d704ad7619fe7ea3b09609a4/evals/minimal-skill-comparison-2026-10-27.md) used four synthetic adaptations of website tasks, three repeats per arm. No skill and full skill each accepted 12/12 runs. With **no skill as the baseline**, median worker tokens rose from 193,654 to 287,082.5 (**48.2% more**) and median worker time from 76.5 to 85.0 seconds (**about 11% more**); median tool calls stayed at 20.5. These are worker measurements, not total delivery cost or evidence of equivalent reliability on unfamiliar tasks. The [detailed article](https://andreasnissen.dev/writing/does-my-coding-skill-help/) explains the earlier comparison and grader corrections.
 
