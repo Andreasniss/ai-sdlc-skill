@@ -19,7 +19,10 @@ interfaces remain compatible. `articles.json` owns immutable catalog content;
 Archive queries match titles case-insensitively after trimming whitespace;
 legacy `series` URLs restrict results and preserve original catalog order.
 Clearing a scope should return all items when requested by the current issue.
-The `controls` list is the render model for visible navigation controls.
+The `controls` list is the render model for visible navigation controls only.
+Its API values are `series-buttons` for series navigation and `reader-goals`
+for reader-goal navigation. Search is a separate input, not a navigation control
+in this list. Preserve this schema when changing the navigation requirement.
 Black text contrast is measured over a panel alpha-composited onto white.
 The exercise renderer preserves existing terminal punctuation and appends a
 full stop only when absent. Reading estimates round up at 200 source words per
