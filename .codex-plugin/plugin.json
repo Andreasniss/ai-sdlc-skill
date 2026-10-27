@@ -1,6 +1,6 @@
 {
   "name": "ai-sdlc",
-  "version": "0.5.3",
+  "version": "0.6.0",
   "description": "Carry a scoped software change through verification and review with AI SDLC Skill.",
   "author": {
     "name": "Andreas Nissen"

@@ -2,15 +2,15 @@
 
 For file locations, start with [artifact layout and repository documents](references/artifact-layout.md). This installed folder contains reusable instructions. A project's `intent.md`, `spec.md`, `plan.md`, and `evidence.md` belong in that project's change folder, outside this bundle. [Open the complete 7DayFocus example](https://github.com/Andreasniss/7dayfocus-ai-delivery-lab/tree/main/docs/ai-dlc/changes/P04-plan-my-week).
 
-An experimental delivery skill that preserves repository rules, scales planning to the change, and records verification for the candidate revision. Independently implemented by Andreas Nissen from selected [Anthropic AI-native SDLC guidance](https://claude.com/blog/the-ai-native-sdlc-playbook).
+An experimental reduced delivery skill that preserves repository rules, checks the requested result and leaves a useful handoff. This edition is not yet benchmarked; the earlier full-skill results do not establish its behavior or benefit. Independently implemented by Andreas Nissen from selected [Anthropic AI-native SDLC guidance](https://claude.com/blog/the-ai-native-sdlc-playbook).
 
-Version 0.5.3. Skill identifier and invocation: `ai-sdlc-skill` and `$ai-sdlc-skill`.
+Version 0.6.0. Skill identifier and invocation: `ai-sdlc-skill` and `$ai-sdlc-skill`.
 
 ## Does it add value on your workload?
 
 In a controlled comparison on adapted website tasks, no skill matched the full skill’s accepted results with lower worker token use. That result does not establish what helps your current model and workload. Compare matched tasks in fresh sessions with no skill, the full skill and reduced guidance, keeping requirements, tools and permissions the same. Judge verified outcomes and total effort, including failed attempts. Recheck when the model or workload changes; keeping less guidance is a valid result.
 
-The [repository README](https://github.com/Andreasniss/ai-sdlc-skill#compare-with-no-skill) owns the adoption comparison and quick start. The [project article](https://andreasnissen.dev/projects/ai-sdlc-skill/) explains the lessons behind it.
+The [repository README](https://github.com/Andreasniss/ai-sdlc-skill#compare-with-no-skill) owns the adoption comparison and quick start. The [project article](https://andreasnissen.dev/projects/ai-sdlc-skill/) explains the lessons behind it, including the effort of evaluating my skill and Addy Osmani’s popular collection. The [detailed experiment write-up](https://andreasnissen.dev/writing/does-my-coding-skill-help/) keeps the measurements, grader corrections and limits together; the collection comparison did not include a no-skill control.
 
 ## Start here
 
