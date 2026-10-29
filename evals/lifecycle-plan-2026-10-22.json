@@ -1,0 +1,223 @@
+{
+  "runs": [
+    {
+      "arm": "checklist",
+      "case": "mixed-review-unavailable-check",
+      "repeat": 2,
+      "sessions": 2
+    },
+    {
+      "arm": "skill",
+      "case": "mixed-review-unavailable-check",
+      "repeat": 2,
+      "sessions": 2
+    },
+    {
+      "arm": "baseline",
+      "case": "mixed-review-unavailable-check",
+      "repeat": 2,
+      "sessions": 2
+    },
+    {
+      "arm": "skill",
+      "case": "ordinary-reading-time",
+      "repeat": 3,
+      "sessions": 1
+    },
+    {
+      "arm": "baseline",
+      "case": "ordinary-reading-time",
+      "repeat": 3,
+      "sessions": 1
+    },
+    {
+      "arm": "checklist",
+      "case": "ordinary-reading-time",
+      "repeat": 3,
+      "sessions": 1
+    },
+    {
+      "arm": "skill",
+      "case": "changed-archive-requirement",
+      "repeat": 3,
+      "sessions": 2
+    },
+    {
+      "arm": "baseline",
+      "case": "changed-archive-requirement",
+      "repeat": 3,
+      "sessions": 2
+    },
+    {
+      "arm": "checklist",
+      "case": "changed-archive-requirement",
+      "repeat": 3,
+      "sessions": 2
+    },
+    {
+      "arm": "checklist",
+      "case": "resume-versioned-assets",
+      "repeat": 2,
+      "sessions": 1
+    },
+    {
+      "arm": "skill",
+      "case": "resume-versioned-assets",
+      "repeat": 2,
+      "sessions": 1
+    },
+    {
+      "arm": "baseline",
+      "case": "resume-versioned-assets",
+      "repeat": 2,
+      "sessions": 1
+    },
+    {
+      "arm": "checklist",
+      "case": "changed-archive-requirement",
+      "repeat": 2,
+      "sessions": 2
+    },
+    {
+      "arm": "skill",
+      "case": "changed-archive-requirement",
+      "repeat": 2,
+      "sessions": 2
+    },
+    {
+      "arm": "baseline",
+      "case": "changed-archive-requirement",
+      "repeat": 2,
+      "sessions": 2
+    },
+    {
+      "arm": "baseline",
+      "case": "mixed-review-unavailable-check",
+      "repeat": 1,
+      "sessions": 2
+    },
+    {
+      "arm": "checklist",
+      "case": "mixed-review-unavailable-check",
+      "repeat": 1,
+      "sessions": 2
+    },
+    {
+      "arm": "skill",
+      "case": "mixed-review-unavailable-check",
+      "repeat": 1,
+      "sessions": 2
+    },
+    {
+      "arm": "skill",
+      "case": "resume-versioned-assets",
+      "repeat": 3,
+      "sessions": 1
+    },
+    {
+      "arm": "baseline",
+      "case": "resume-versioned-assets",
+      "repeat": 3,
+      "sessions": 1
+    },
+    {
+      "arm": "checklist",
+      "case": "resume-versioned-assets",
+      "repeat": 3,
+      "sessions": 1
+    },
+    {
+      "arm": "checklist",
+      "case": "ordinary-reading-time",
+      "repeat": 2,
+      "sessions": 1
+    },
+    {
+      "arm": "skill",
+      "case": "ordinary-reading-time",
+      "repeat": 2,
+      "sessions": 1
+    },
+    {
+      "arm": "baseline",
+      "case": "ordinary-reading-time",
+      "repeat": 2,
+      "sessions": 1
+    },
+    {
+      "arm": "skill",
+      "case": "mixed-review-unavailable-check",
+      "repeat": 3,
+      "sessions": 2
+    },
+    {
+      "arm": "baseline",
+      "case": "mixed-review-unavailable-check",
+      "repeat": 3,
+      "sessions": 2
+    },
+    {
+      "arm": "checklist",
+      "case": "mixed-review-unavailable-check",
+      "repeat": 3,
+      "sessions": 2
+    },
+    {
+      "arm": "baseline",
+      "case": "resume-versioned-assets",
+      "repeat": 1,
+      "sessions": 1
+    },
+    {
+      "arm": "checklist",
+      "case": "resume-versioned-assets",
+      "repeat": 1,
+      "sessions": 1
+    },
+    {
+      "arm": "skill",
+      "case": "resume-versioned-assets",
+      "repeat": 1,
+      "sessions": 1
+    },
+    {
+      "arm": "baseline",
+      "case": "ordinary-reading-time",
+      "repeat": 1,
+      "sessions": 1
+    },
+    {
+      "arm": "checklist",
+      "case": "ordinary-reading-time",
+      "repeat": 1,
+      "sessions": 1
+    },
+    {
+      "arm": "skill",
+      "case": "ordinary-reading-time",
+      "repeat": 1,
+      "sessions": 1
+    },
+    {
+      "arm": "baseline",
+      "case": "changed-archive-requirement",
+      "repeat": 1,
+      "sessions": 2
+    },
+    {
+      "arm": "checklist",
+      "case": "changed-archive-requirement",
+      "repeat": 1,
+      "sessions": 2
+    },
+    {
+      "arm": "skill",
+      "case": "changed-archive-requirement",
+      "repeat": 1,
+      "sessions": 2
+    }
+  ],
+  "seed": 5772026,
+  "status": "not executed",
+  "suite_digest": "58e86f74af74b61d2d7f32665f6def417b5e48fe7e074b6a7d825af78b94ec74"
+}

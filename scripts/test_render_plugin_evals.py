@@ -9,6 +9,8 @@ scaffolds build the fixtures the cases name, rubrics are blind to the arm, and e
 grader detects the change it exists for (checked with real JavaScript regular expressions).
 """
 import copy
+import errno
+import stat
 import json
 import re
 import shutil
@@ -17,11 +19,13 @@ import sys
 import tempfile
 import types
 import unittest
+from unittest import mock
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT / "scripts"))
 import render_plugin_evals as render  # noqa: E402
+import check_eval_workspace as workspace  # noqa: E402
 
 LINE = re.compile(r"^(?:#.*|[a-z_]+: (?:'(?:[^']|'')*'|[^'\s].*))$")
 NODE_CHECK = """
@@ -218,6 +222,60 @@ class Suite(unittest.TestCase):
                 self.assertFalse(any("evals" in part for p in Path(tmp).rglob("*")
                                      for part in p.relative_to(tmp).parts), case_id)
 
+    def test_staged_fixtures_are_writable_and_can_switch_branch(self):
+        # copy2 preserves modes, like a staging copy. This is not an eval-tool
+        # mount simulation, so it proves only the repository-controlled stage.
+        for tree in ("evals", "evals-forced"):
+            for case_id in self.spec.CASES:
+                with self.subTest(tree=tree, case=case_id), tempfile.TemporaryDirectory() as tmp:
+                    source = Path(tmp) / "source"
+                    source.mkdir()
+                    result = subprocess.run(["bash", str(ROOT / tree / case_id / "scaffold.sh")],
+                                            cwd=source, capture_output=True, text=True, timeout=120)
+                    self.assertEqual(result.returncode, 0, result.stderr)
+                    self.assertEqual(json.loads(result.stdout)["status"], "writable")
+                    staged = Path(tmp) / "staged"
+                    shutil.copytree(source, staged)
+                    before = workspace.git(staged, "rev-parse", "HEAD")
+                    branch = workspace.git(staged, "symbolic-ref", "--short", "HEAD")
+                    for path in [staged, *staged.rglob("*")]:
+                        relative = path.relative_to(staged)
+                        if path.is_dir() or ".git" not in relative.parts:
+                            self.assertTrue(path.stat().st_mode & stat.S_IWUSR, relative)
+                    self.assertEqual(workspace.probe(staged)["status"], "writable")
+                    self.assertEqual(workspace.git(staged, "rev-parse", "HEAD"), before)
+                    self.assertEqual(workspace.git(staged, "symbolic-ref", "--short", "HEAD"), branch)
+                    self.assertEqual(workspace.git(staged, "status", "--porcelain"), "")
+                    self.assertNotIn("eval-write-probe-", workspace.git(staged, "branch", "--list"))
+                    workspace.git(staged, "switch", "-c", "write-test")
+                    with (staged / "app.js").open("a") as handle:
+                        handle.write("\n// writable staged fixture\n")
+                    workspace.git(staged, "add", "app.js")
+                    self.assertIn("app.js", workspace.git(staged, "diff", "--cached", "--name-only"))
+                    self.assertFalse(list((staged / ".git").rglob("*.lock")))
+
+    def test_workspace_probe_separates_read_only_failure(self):
+        with tempfile.TemporaryDirectory() as tmp, mock.patch.object(
+                workspace.tempfile, "NamedTemporaryFile", side_effect=OSError(errno.EROFS, "read only")):
+            result = workspace.probe(Path(tmp))
+        self.assertEqual(result, {"status": "blocked", "stage": "worktree-write",
+                                  "error_type": "OSError", "errno": errno.EROFS})
+
+    def test_workspace_probe_reports_git_failure_without_raw_paths(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            self.builder.build(Path(tmp), "rules-feature")
+            real_git = workspace.git
+            def failing_git(root, *args):
+                if args[:2] == ("switch", "-c"):
+                    raise subprocess.CalledProcessError(128, ["git"], stderr="private diagnostic")
+                return real_git(root, *args)
+            with mock.patch.object(workspace, "git", side_effect=failing_git):
+                result = workspace.probe(Path(tmp))
+            self.assertEqual(result["status"], "blocked")
+            self.assertEqual(result["stage"], "git-switch")
+            self.assertNotIn("private", json.dumps(result))
+            self.assertEqual(real_git(Path(tmp), "symbolic-ref", "--short", "HEAD"), "main")
+
     def test_every_rubric_is_blind_to_the_arm(self):
         for path, (text, _) in self.rendered.items():
             if "/graders/" not in path:
@@ -398,6 +456,18 @@ class GraderBehavior(unittest.TestCase):
             self.assertIsInstance(got, bool, "%s/%s: %s" % (case_id, name, got))
             self.assertEqual(got, wanted, "%s/%s on %r" % (case_id, name, text))
 
+    def test_initial_render_does_not_satisfy_search_listener(self):
+        grader = next(g for g in self.spec.CASES["ship-ready-feature"]["graders"]
+                      if g["name"] == "search-triggers-render")
+        items = []
+        for quote in ('"', "'"):
+            for body in ("query = box.value;", "render(tasks, selection);"):
+                wiring = (f"const box = document.getElementById({quote}search{quote});\n"
+                          f"box.addEventListener({quote}input{quote}, () => {{ {body} }});\n")
+                code = self.builder.VIEW.replace("/*EXTRA_WIRING*/", wiring)
+                items.append({"pattern": grader["pattern"], "flags": "", "text": code})
+        self.assertEqual(js_regex(items), [False, True, False, True])
+
     def test_skill_indicator_matches_the_tool_call_encoding(self):
         pattern = self.spec.SKILL_INPUT_MATCH
         texts = ['{"skill":"ai-sdlc-skill"}', '{"skill":"ai-sdlc:ai-sdlc-skill","args":""}',
@@ -432,7 +502,7 @@ class GraderBehavior(unittest.TestCase):
                    "decisions-mention-undo", "old-decision-marked", "undo-button", "undo-in-app-js",
                    "undo-in-app-under-test", "undo-tested", "undo-wired", "undo-test-asserts",
                    "check-record-updated", "search-triggers-render", "search-test-empty", "search-composes-with-filter", "search-test-with-filter",
-                   "search-test-identity"}
+                   "search-test-identity", "search-used-in-render", "search-in-app-js-case-insensitive"}
         seen = set()
         for entry in self.spec.CASES.values():
             for grader in entry["graders"]:
