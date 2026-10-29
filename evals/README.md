@@ -56,6 +56,19 @@ Graders, in order of preference:
 Every `expected` line is covered by a grader or carries a stated reason; the generator refuses a spec
 that leaves one unaccounted for. The generated comment in each grader names the line it covers.
 
+The [Codex subagent pilot](codex-subagent-pilot-2026-10-21.md) separately compares
+explicitly supplied skill instructions with a baseline on the three cases. It is
+not a native plugin-discovery test or a score comparable to these Claude runs.
+
+The separate [lifecycle incident replay pack](lifecycle/README.md) prepares four
+complete, dependency-free cases for a future baseline/checklist/full-skill
+comparison. It includes an ordinary control, an interrupted handoff, a changed
+requirement and mixed review with an unavailable service. Its deterministic
+fixture and grader checks call no models. These are reduced incident adaptations,
+not production website reproductions. The [protocol](lifecycle/protocol.md)
+fixes staged delivery, scoring, overhead measures and stopping rules before runs.
+Existing plugin case criteria and historical results remain unchanged.
+
 ## Running it
 
 This is manual and every run is billed to your account. Nothing in CI calls a model.
@@ -87,8 +100,39 @@ A run record names the skill revision (`git rev-parse HEAD:skills/ai-sdlc-skill`
 Code version, the models, the actual cost and the limits. Results belong under
 `evals/plugin-eval-run-<date>/` with a short `evals/plugin-eval-run-<date>.md`.
 
+## Workspace failure classification
+
+The scaffold runs [check_eval_workspace.py](../scripts/check_eval_workspace.py)
+after building the fixture. It tests actual file writes and a temporary Git branch,
+then restores the starting branch. A blocked result aborts setup. The test runs as
+the scaffold user, outside the agent sandbox; it cannot certify a later mount.
+See the [investigation and description proposal](harness-trigger-proposal.md).
+
+For the next authorized run, retain the scaffold status and inspect actual tool
+results in each arm locally. Classify each attempt separately from its outcome score:
+
+- **Setup blocked:** the scaffold write or branch probe failed. Do not treat this
+  as a completed agent trial.
+- **Runtime write blocked:** an attempted file or Git write in the agent sandbox
+  failed with a concrete filesystem or permission error. Preserve the operation,
+  error category and arm in the sanitized run record. If needed, run the same
+  probe inside that sandbox through the host's supported diagnostic route.
+- **No work, environment unverified:** only the agent claims a read-only mount,
+  with no failed write result. Do not infer EROFS from that claim.
+- **Writable:** actual runtime writes succeed. Score the work normally.
+
+Keep all attempts and raw outcome scores visible, with counts for each category
+per arm. Report environment-blocked attempts separately; any secondary comparison
+on writable attempts must disclose its denominator and exclusions. Do not silently
+drop failed attempts or convert them into a skill failure or success. Keep raw
+traces local and publish only reviewed, sanitized evidence. Do not remount,
+disable the sandbox, or broaden permissions to obtain a passing result.
+
 ## Limits
 
+- A successful scaffold probe does not establish runtime writability. The reported
+  intermittent read-only failure is not reproduced by local fixture tests; its
+  host-side cause remains unresolved.
 - One host: Claude Code. Nothing here says another host behaves the same way.
 - A Claude model judges Claude runs. Deterministic graders carry most of the score for that reason.
 - Fixtures are synthetic, small and public.
@@ -110,6 +154,9 @@ Code version, the models, the actual cost and the limits. Results belong under
   fooled, so the remaining gaps are accepted and the judge reads the final session. Known ones: the case-insensitive
   check can be met by lowercasing two unrelated strings, and the render and empty-search checks follow data flow
   by pattern only, so an unusual code shape can pass or fail them wrongly.
+- Listener, duplicate-title and membership graders recognize common inline JavaScript
+  forms. Named callbacks, deeper nested blocks, custom factories and assertions can
+  require manual inspection. Regexes do not prove data flow or executable behavior.
 - Cost figures are list-price estimates from the tool.
 
 These files carry the repository's [Apache-2.0](../LICENSE) license and [NOTICE](../NOTICE).

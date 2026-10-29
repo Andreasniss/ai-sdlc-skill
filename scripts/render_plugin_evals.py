@@ -381,7 +381,8 @@ def scaffold(case):
             "# found relative to this script, and the workspace keeps no reference back to the eval directory.\n"
             "set -euo pipefail\n"
             "here=\"$(cd \"$(dirname \"${BASH_SOURCE[0]}\")\" && pwd)\"\n"
-            "python3 \"$here/%s\" --state %s --into . > /dev/null\n") % (case["fixture"], relative, case["fixture"])
+            "python3 \"$here/%s\" --state %s --into . > /dev/null\n"
+            "python3 \"$here/../../scripts/check_eval_workspace.py\"\n") % (case["fixture"], relative, case["fixture"])
 
 
 def render_all(cases_doc, spec, builder, forced=False):
