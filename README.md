@@ -1,5 +1,8 @@
 # AI SDLC Skill
 
+> [!WARNING]
+> **I no longer recommend using this skill.** My latest evaluation found it bought one extra accepted run in twelve on the harder cases for about 28% more median tokens, and on simple tasks it only added cost. Current models and harnesses do this work well from a repository's own instructions. The reasoning and results are in [Does My AI Skill Still Earn Its Place?](https://andreasnissen.dev/projects/ai-sdlc-skill/). This repository stays public as the record of the experiment.
+
 Reusable instructions that help a coding agent carry a software change through implementation, checks, review and handoff.
 
 **Experimental, version 0.6.0.** Test it against no skill before adopting it. In a small October comparison, the earlier full skill and no skill both completed 12/12 tasks; the full skill used 48.2% more median worker tokens. The current reduced edition has not been benchmarked. [Methods and limits](GUIDE.md#evidence-and-limits).
