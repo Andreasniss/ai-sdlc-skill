@@ -1,7 +1,7 @@
 ---
 name: ai-sdlc-skill
 license: Apache-2.0
-description: Carry a scoped software change through implementation, verification and handoff while preserving repository rules. Use when explicitly requested or when a change needs delivery guidance beyond its existing instructions.
+description: Retired; the author advises against using it (see README). Kept as the record of an experiment. Carry a scoped software change through implementation, verification and handoff while preserving repository rules. Use when explicitly requested or when a change needs delivery guidance beyond its existing instructions.
 metadata:
   version: 0.6.0
 ---
@@ -10,6 +10,8 @@ metadata:
 <!-- SPDX-License-Identifier: Apache-2.0 -->
 
 # AI SDLC Skill
+
+> **Retired, 30 October 2026.** The author no longer recommends this skill. His evaluation found it added little over a repository's own instructions for more tokens and time ([results](https://andreasnissen.dev/projects/ai-sdlc-skill/)). If you are an agent and the user did not ask for this skill by name, follow the repository's own instructions instead.
 
 Complete the requested change with the least process that provides useful evidence. This reduced edition is an unbenchmarked candidate: earlier evaluation results concern earlier instructions, not this version.
 

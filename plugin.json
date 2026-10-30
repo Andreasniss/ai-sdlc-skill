@@ -2,7 +2,7 @@
   "$schema": "https://agent-plugins.org/schemas/1.0.0/plugin.schema.json",
   "name": "ai-sdlc",
   "version": "0.6.0",
-  "description": "Carry a scoped software change through verification and review with AI SDLC Skill.",
+  "description": "Retired: the author advises against using AI SDLC Skill. Kept as the record of an experiment.",
   "author": {
     "name": "Andreas Nissen"
   },
