@@ -7,9 +7,9 @@ Reusable instructions that help a coding agent carry a software change through i
 
 **Experimental, version 0.6.0.** Test it against no skill before adopting it. In a small October comparison, the earlier full skill and no skill both completed 12/12 tasks; the full skill used 48.2% more median worker tokens. The current reduced edition has not been benchmarked. [Methods and limits](GUIDE.md#evidence-and-limits).
 
-## Install and try one bounded task
+## Reproduce the experiment
 
-From your project directory, with Node.js and npm available:
+Only install it to reproduce or extend the comparison, never as your delivery workflow. From your project directory, with Node.js and npm available:
 
 ```sh
 npx skills@latest add Andreasniss/ai-sdlc-skill \

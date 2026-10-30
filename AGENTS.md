@@ -1,6 +1,6 @@
 # Repository instructions
 
-Use [AI SDLC Skill](skills/ai-sdlc-skill/SKILL.md) for scoped implementation, verification, and review. Existing user authorization persists; never fabricate approval or require repetitive approval for an already authorized action.
+The skill in this repository is retired; do not use it as the delivery workflow for this repository either. Follow these instructions for scoped implementation, verification, and review. Existing user authorization persists; never fabricate approval or require repetitive approval for an already authorized action.
 
 Before public upload, follow [PRIVACY.md](PRIVACY.md). Keep private authoring material, raw sessions, secrets, and customer or employer data out of this repository.
 
